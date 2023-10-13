@@ -1,4 +1,4 @@
-import { Callout } from 'nextra/components/callout'
+import { Tabs } from '../components/tabs'
 
 
 # Getting started
@@ -14,8 +14,8 @@ The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo
 
 import { Tabs } from 'nextra/components'
  
-
-<Callout>
-  More configuration options for the docs theme can be found
-  [here](/themes/docs/configuration).
-</Callout>
+<Tabs items={['Javascript', 'Python', 'cURL']}>
+  <Tabs.Tab>123</Tabs.Tab>
+  <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
+  <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
+</Tabs>
