@@ -2,16 +2,17 @@ import { Tabs } from '../components/tabs'
 import { Callout } from '../components/callout'
 import { Cards, Card } from '../components/cards'
 
-<Cards>
-  <Card icon="👾" title="Callout" href="/docs/guide/built-ins/callout" />
-  <Card icon="👾" title="Tabs" href="/docs/guide/built-ins/tabs" />
-  <Card icon="👾" title="Steps" href="/docs/guide/built-ins/steps" />
-</Cards>
 
 # Getting started
  
 Artifacts is **programmable MMORPG** where you can control your 5 characters using the API.
 Build your own interface, automate or play directly from your terminal.
+
+<Cards>
+  <Card icon="👾" title="Callout" href="/docs/guide/built-ins/callout" />
+  <Card icon="👾" title="Tabs" href="/docs/guide/built-ins/tabs" />
+  <Card icon="👾" title="Steps" href="/docs/guide/built-ins/steps" />
+</Cards>
 
 
 ## Overview
@@ -21,7 +22,8 @@ The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo
 
  
 <Tabs items={['Javascript', 'Python', 'cURL']}>
-  <Tabs.Tab>123</Tabs.Tab>
+  <Tabs.Tab>```js copy
+let a = 1;</Tabs.Tab>
   <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
   <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
 </Tabs>
