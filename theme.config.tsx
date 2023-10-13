@@ -2,16 +2,16 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: <span>Artifacts Docs</span>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://artifactsmmo.com/',
   },
   chat: {
     link: 'https://discord.com',
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://artifactsmmo.com/',
   footer: {
-    text: 'Nextra Docs Template',
+    text: '© 2023 Artifacts. All rights reserved. ',
   },
 }
 
