@@ -26,13 +26,7 @@ The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo
 import { Tabs } from 'nextra/components'
  
 <Tabs items={['Javascript', 'Python', 'cURL']}>
-  <Tabs.Tab>**Javascript**: 
-```js copy"
-fetch('https://api.spacetraders.io/v2/')
-.then(response => response.json())
-.then(response => console.log(response))
-.catch(err => console.error(err));
-```</Tabs.Tab>
-  <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
-  <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
+  <Tabs.Tab>```js copy fetch('https://api.spacetraders.io/v2/') .then(response => response.json()) .then(response => console.log(response)) .catch(err => console.error(err));```</Tabs.Tab>
+  <Tabs.Tab>is a package manager for the JavaScript programming language.</Tabs.Tab>
+  <Tabs.Tab>is a software packaging system.</Tabs.Tab>
 </Tabs>
