@@ -1,11 +1,13 @@
-# Introduction
+# Getting started
  
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+Artifacts is **programmable MMORPG** where you can control your 5 characters using the API.
+Build your own interface, automate or play directly from your terminal.
 
-## What is Nextra?
+## Overview
+Artifacts is an open game and learning platform that offers a set of HTTP endpoints for controlling your characters to move on the map, fight monsters, gather resources, craft items, buy and sell your items at the Grand Exchange and much more.
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo.com/redoc). You can send your first request right here in your browser to check the status of the game server, or try our [Quickstart Guide](https://docs.spacetraders.io/quickstart/new-game) to learn the basics in under five minutes.
 
-## Documentation
-
-The documentation is available at [https://nextra.site](https://nextra.site).
+```js copy filename="example.js"
+fetch('https://api.spacetraders.io/v2/') .then(response => response.json()) .then(response => console.log(response)) .catch(err => console.error(err));
+```
