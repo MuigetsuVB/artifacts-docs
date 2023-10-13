@@ -1,6 +1,6 @@
 import cn from 'clsx'
 import type { ReactElement, ReactNode } from 'react'
-import { InformationCircleIcon } from '../components/icons'
+import { InformationCircleIcon } from './icons'
 
 const TypeToEmoji = {
   default: '💡',
