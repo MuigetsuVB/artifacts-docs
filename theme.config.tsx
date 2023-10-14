@@ -14,7 +14,7 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: 'dark',
     forcedTheme: 'dark',
-    themes:['dark']
+    
   },  
 }
 
