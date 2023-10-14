@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.com',
   },
-  docsRepositoryBase: 'https://artifactsmmo.com/',
+  docsRepositoryBase: 'https://docs.artifactsmmo.com/',
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
   },
