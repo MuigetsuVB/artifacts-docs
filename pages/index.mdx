@@ -1,8 +1,17 @@
-Getting started
+import { Tabs } from 'nextra/components'
+import { Callout } from 'nextra/components'
+import { Cards,Card } from 'nextra/components'
+
+ Getting started
  
 Artifacts is **programmable MMORPG** where you can control your 5 characters using the API.
 Build your own interface, automate or play directly from your terminal.
 
+<Cards>
+  <Card icon="👾" title="Callout" href="/docs/guide/built-ins/callout" />
+  <Card icon="👾" title="Tabs" href="/docs/guide/built-ins/tabs" />
+  <Card icon="👾" title="Steps" href="/docs/guide/built-ins/steps" />
+</Cards>
 
 
 ## Overview
@@ -11,9 +20,17 @@ Artifacts is an open game and learning platform that offers a set of HTTP endpoi
 The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo.com/redoc). You can send your first request right here in your browser to check the status of the game server, or try our [Quickstart Guide](https://docs.spacetraders.io/quickstart/new-game) to learn the basics in under five minutes.
 
  
-
-import { Callout } from 'nextra/components'
+<Callout emoji="👾">
+  **Space Invaders** is a 1978 shoot 'em up arcade game developed by Tomohiro
+  Nishikado.
+</Callout>
  
+<Tabs items={['Javascript', 'Python', 'cURL']}>
+  <Tabs.Tab>```js filename="demo.js" {3} copylet a = 1;console.log(a);```</Tabs.Tab>
+  <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
+  <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
+</Tabs>
+
 <Callout emoji="👾">
   **Space Invaders** is a 1978 shoot 'em up arcade game developed by Tomohiro
   Nishikado.
