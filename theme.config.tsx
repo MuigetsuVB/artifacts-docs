@@ -7,9 +7,9 @@ const config: DocsThemeConfig = {
     link: 'https://artifactsmmo.com/',
   },
   chat: {
-    link: 'https://discord.com',
+    link: 'https://discord.gg/prEBQ8a6Vs',
   },
-  docsRepositoryBase: 'https://docs.artifactsmmo.com/',
+  docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/',
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
   },
