@@ -7,6 +7,7 @@ const config: DocsThemeConfig = {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
+  darkMode: false,
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
   },
