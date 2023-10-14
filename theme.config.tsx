@@ -1,6 +1,5 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
-import { useRouter } from 'next/router'
 
 const config: DocsThemeConfig = {
   logo: <span><img src="https://api.artifactsmmo.com/images/docs/small-logo.png" alt="logo" /></span>,
@@ -23,15 +22,3 @@ const config: DocsThemeConfig = {
 }
 
 export default config
-
-import { useRouter } from 'next/router'
-export default {
-  useNextSeoProps() {
-    const { asPath } = useRouter()
-    if (asPath !== '/') {
-      return {
-        titleTemplate: '%s – SWR'
-      }
-    }
-  }
-}
