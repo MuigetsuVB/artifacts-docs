@@ -6,7 +6,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
-  titleTemplate: 'Artifacts',
+  titleTemplate: 'Artifacts Docs',
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
@@ -22,4 +22,3 @@ const config: DocsThemeConfig = {
 }
 
 export default config
- 
