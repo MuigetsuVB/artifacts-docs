@@ -1,7 +1,9 @@
 {
   "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
+  "quickstart": "Quickstart",
+  "game_concepts": "Game Concepts",
+  "api_guide": "API Guide",
+
   "about": {
     "title": "About",
     "type": "page"
