@@ -9,11 +9,10 @@ const config: DocsThemeConfig = {
   },
   useNextSeoProps() {
     const { asPath } = useRouter()
-    if (asPath !== '/') {
       return {
         titleTemplate: '%s – Artifacts'
       }
-    }
+    
   },
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
