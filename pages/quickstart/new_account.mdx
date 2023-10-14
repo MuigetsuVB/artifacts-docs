@@ -28,7 +28,7 @@ When a request asks for a specific value, like for the skin, all possible choice
 curl --location 'https://api.artifactsmmo.com/characters/create' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
---header 'Authorization: Bearer TOKEN' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
 --data '{
   "name": "<string>",
   "skin": "<string>"
@@ -39,7 +39,7 @@ curl --location 'https://api.artifactsmmo.com/characters/create' \
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Accept", "application/json");
-myHeaders.append("Authorization", "Bearer TOKEN");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
 
 var raw = JSON.stringify({
   "name": "<string>",
@@ -68,13 +68,13 @@ You can view this information on your characters at any time using this request:
 ```http filename="cURL" copy
 curl --location 'https://api.artifactsmmo.com/my/characters' \
 --header 'Accept: application/json' \
---header 'Authorization: Bearer TOKEN'
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
 ```
 
 ```js filename="Javascript" copy
 var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
-myHeaders.append("Authorization", "Bearer TOKEN");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
 
 var requestOptions = {
   method: 'GET',
