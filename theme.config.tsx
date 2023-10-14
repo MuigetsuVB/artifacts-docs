@@ -15,7 +15,9 @@ const config: DocsThemeConfig = {
     defaultTheme: 'dark',
     forcedTheme: 'dark',
     
-  },  
+  }, 
+  primaryHue: 155,
+  primarySaturation: 58 
 }
 
 export default config
