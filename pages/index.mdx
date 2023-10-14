@@ -3,36 +3,48 @@ import { Callout } from 'nextra/components'
 import { Cards,Card } from 'nextra/components'
 
 
- Getting started
+#Getting started
  
-Artifacts is **programmable MMORPG** where you can control your 5 characters using the API.
+Artifact is an MMORPG in which you can control your 5 characters using an API.
 Build your own interface, automate or play directly from your terminal.
 
 <Cards>
-  <Card title="Quickstart" href="/quickstart" />
+  <Card title="Quickstart" href="/quickstart/" />
   <Card title="Database" href="https://artifactsmmo.com/databases" />
   <Card title="API Reference" href="https://api.artifactsmmo.com/redoc" />
 </Cards>
 
 
 ## Overview
-Artifacts is an open game and learning platform that offers a set of HTTP endpoints for controlling your characters to move on the map, fight monsters, gather resources, craft items, buy and sell your items at the Grand Exchange and much more.
+Artifacts is an open world game and learning platform that offers a set of HTTP endpoints for controlling your characters to move on the map, fight monsters, gather resources, craft items, buy and sell your items at the Grand Exchange and much more.
 
-The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo.com/redoc). You can send your first request right here in your browser to check the status of the game server, or try our [Quickstart Guide](https://docs.spacetraders.io/quickstart/new-game) to learn the basics in under five minutes.
+The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo.com/redoc). You can send try our [Quickstart Guide](/quickstart/) to learn the basics in under five minutes.
 
- 
-<Callout emoji="👾">
-  **Space Invaders** is a 1978 shoot 'em up arcade game developed by Tomohiro
-  Nishikado.
-</Callout>
- 
-<Tabs items={['Javascript', 'Python', 'cURL']}>
-  <Tabs.Tab>```js filename="demo.js" {3} copylet a = 1;console.log(a);```</Tabs.Tab>
-  <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
-  <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
-</Tabs>
+Unlike a traditional game, Arifacts is headless and does not have a first-party client to play the game.
+Au lieu de cela, vous allez devoir créer vos propres scripts dans votre language de programmation préféré pour interagir avec l'API.
 
-<Callout emoji="👾">
-  **Space Invaders** is a 1978 shoot 'em up arcade game developed by Tomohiro
-  Nishikado.
-</Callout>
+Pour aider les joueurs, nous avons construit une base de donnés qui contient tout le contenu du jeu que vous pouvez consulter en [cliquant ici](https://artifactsmmo.com/database)
+
+We have a Discord channel where you can share your projects, ask questions, or give feedback on what others are building.
+
+##Gameplay
+En quelques mots, Artifacts est un MMORPG plutôt classique dans lequel vous pouvez battre des monstres, récolter des ressources, crafter des objets etc.. avec une économie contrôlé par les joueurs.
+Si vous voulez en savoir plus sur le gameplay, je vous invites à consulter les concepts du jeu en [cliquant ici](https://artifactsmmo.com/game_concepts).
+
+##Roadmap
+Artifacts est un jeu en alpha et nous avons prévu d'ajouter du contenu graduellement dans les prochains mois.
+- Nouveaux skills
+- Système de montures
+- Système de familliers
+- Donjons
+- Quêtes
+- Succès
+- Artifacts
+- Échange player to player
+- Nouvelles zones, plus de niveaux.
+- create webhooks to receive notifications when events occur in the game
+- et plus encore... mais on va garder quelques surprises.
+
+
+##Go
+Maintenant que vous en savez un peu plus sur le jeu, je vous invites à continuer avec our [Quickstart Guide](/quickstart/) to learn the basics in under five minutes.
