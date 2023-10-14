@@ -1,3 +1,41 @@
-# New Account
-  
-Satori (悟り) is a Japanese Buddhist term for awakening, "comprehension; understanding".
+# New account
+
+The quick start guide should take around 5 minutes to complete and will guide a new user through some common HTTP requests when working with the Artifacts API.
+
+The guide will feature examples with cURL and Javascript, but you can find examples in your preferred programming language directly on [Postman](https://www.postman.com/technical-astronomer-98717517/workspace/artifacts-mmo/collection/21288292-e66222ff-825e-4ad9-8764-9667b3311629).
+
+You can also send requests directly on [Postman](https://www.postman.com/technical-astronomer-98717517/workspace/artifacts-mmo/collection/21288292-e66222ff-825e-4ad9-8764-9667b3311629), if you want to test without using a programming language.
+
+## Create account
+
+The first step is to [create an account on our site](https://artifactsmmo.com/account/create) and get your token [by logging in](https://artifactsmmo.com/account). It's also possible to do this via API requests, but we'll start simply for this guide. **The token is used by the api to identify you when you make requests. It is important to keep it secret.**
+
+![token](https://api.artifactsmmo.com/images/docs/token.png)
+
+## Create your first character
+
+Now we can create your first character!
+
+In the query, you'll need to change the character's name and choose a skin.
+
+Here's the list of available skins:
+|![skin1](https://api.artifactsmmo.com/images/characters/men1.png)|![skin2](https://api.artifactsmmo.com/images/characters/men2.png)|![skin3](https://api.artifactsmmo.com/images/characters/men3.png)|![women1](https://api.artifactsmmo.com/images/characters/women1.png)|![women2](https://api.artifactsmmo.com/images/characters/women2.png)|![women3](https://api.artifactsmmo.com/images/characters/women3.png)
+|--|--|--|--|--|--|
+|men1|men2|men3|women1|women2|women3
+When a request asks for a specific value, like for the skin, all possible choices are listed in the [Reference API right here](https://api.artifactsmmo.com/redoc#tag/Characters/operation/create_character_characters_create_post).
+
+Example cURL
+Example JS
+
+[View on Postman](https://www.postman.com/technical-astronomer-98717517/workspace/artifacts-mmo/request/21288292-2dc45457-9996-4e76-a1d0-9cfa3843691e?ctx=code)
+
+The response includes all your character's variables: hit point, attack, position on the map, equipment, inventory, etc.
+
+You can view this information on your characters at any time using this query:
+
+Example cURL
+Example JS
+
+[View on Postman](https://www.postman.com/technical-astronomer-98717517/workspace/artifacts-mmo/request/21288292-ba1152ac-0203-4857-a8ea-e13055a990d0)
+
+Now we're ready to start playing with our character.
