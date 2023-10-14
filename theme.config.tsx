@@ -6,8 +6,15 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
-  title: 'Artifacts MMO',
-  docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
+  useNextSeoProps() {
+    const { asPath } = useRouter()
+    if (asPath !== '/') {
+      return {
+        titleTemplate: '%s – Artifacts'
+      }
+    }
+  },
+    docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
   },
@@ -22,3 +29,15 @@ const config: DocsThemeConfig = {
 }
 
 export default config
+
+import { useRouter } from 'next/router'
+export default {
+  useNextSeoProps() {
+    const { asPath } = useRouter()
+    if (asPath !== '/') {
+      return {
+        titleTemplate: '%s – SWR'
+      }
+    }
+  }
+}
