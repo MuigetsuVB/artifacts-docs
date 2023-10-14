@@ -22,10 +22,41 @@ Here's the list of available skins:
 |![skin1](https://api.artifactsmmo.com/images/characters/men1.png)|![skin2](https://api.artifactsmmo.com/images/characters/men2.png)|![skin3](https://api.artifactsmmo.com/images/characters/men3.png)|![women1](https://api.artifactsmmo.com/images/characters/women1.png)|![women2](https://api.artifactsmmo.com/images/characters/women2.png)|![women3](https://api.artifactsmmo.com/images/characters/women3.png)
 |--|--|--|--|--|--|
 |men1|men2|men3|women1|women2|women3
+
 When a request asks for a specific value, like for the skin, all possible choices are listed in the [Reference API right here](https://api.artifactsmmo.com/redoc#tag/Characters/operation/create_character_characters_create_post).
 
-Example cURL
-Example JS
+```curl filename="cURL" copy
+curl --location 'https://api.artifactsmmo.com/characters/create' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--data '{
+  "name": "<string>",
+  "skin": "<string>"
+}'
+```
+
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Accept", "application/json");
+
+var raw = JSON.stringify({
+  "name": "<string>",
+  "skin": "<string>"
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/characters/create", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+```
 
 [View on Postman](https://www.postman.com/technical-astronomer-98717517/workspace/artifacts-mmo/request/21288292-2dc45457-9996-4e76-a1d0-9cfa3843691e?ctx=code)
 
