@@ -9,15 +9,9 @@ const config: DocsThemeConfig = {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
   head: () => {
-    const { asPath, defaultLocale, locale } = useRouter()
     const { frontMatter } = useConfig()
-    const url =
-      'https://my-app.com' +
-      (defaultLocale === locale ? asPath : `/${locale}${asPath}`)
- 
     return (
       <>
-        <meta property="og:url" content={url} />
         <meta property="og:title" content={frontMatter.title || 'Artifacts'} />
         <meta
           property="og:description"
