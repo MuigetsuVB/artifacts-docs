@@ -1,9 +1,5 @@
-import { Tabs } from '../components/tabs'
-import { Callout } from '../components/callout'
-import { Cards, Card } from '../components/cards'
 
-
-# Getting started
+ Getting started
  
 Artifacts is **programmable MMORPG** where you can control your 5 characters using the API.
 Build your own interface, automate or play directly from your terminal.
@@ -19,13 +15,16 @@ Build your own interface, automate or play directly from your terminal.
 Artifacts is an open game and learning platform that offers a set of HTTP endpoints for controlling your characters to move on the map, fight monsters, gather resources, craft items, buy and sell your items at the Grand Exchange and much more.
 
 The API is fully documented using OpenAPI and [Redocly](https://api.artifactsmmo.com/redoc). You can send your first request right here in your browser to check the status of the game server, or try our [Quickstart Guide](https://docs.spacetraders.io/quickstart/new-game) to learn the basics in under five minutes.
-
+import { Tabs } from 'nextra/components'
+import { Callout } from 'nextra/components'
+ 
+<Callout emoji="👾">
+  **Space Invaders** is a 1978 shoot 'em up arcade game developed by Tomohiro
+  Nishikado.
+</Callout>
  
 <Tabs items={['Javascript', 'Python', 'cURL']}>
-  <Tabs.Tab>```js filename="demo.js" {3} copy
-let a = 1;
-
-console.log(a);```</Tabs.Tab>
+  <Tabs.Tab>```js filename="demo.js" {3} copylet a = 1;console.log(a);```</Tabs.Tab>
   <Tabs.Tab>**Python** is a package manager for the JavaScript programming language.</Tabs.Tab>
   <Tabs.Tab>**cURL** is a software packaging system.</Tabs.Tab>
 </Tabs>
