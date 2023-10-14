@@ -5,13 +5,15 @@
   "api_guide": "API Guide",
 
   "about": {
-    "title": "About",
-    "type": "page"
+    "title": "Database",
+    "type": "page",
+    "href": "https://artifactsmmo.com/database",
+    "newWindow": true
   },
   "contact": {
-    "title": "Contact ↗",
+    "title": "API Reference ↗",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
+    "href": "https://api.artifactsmmo.com/redoc",
     "newWindow": true
   }
 }
