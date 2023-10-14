@@ -25,7 +25,7 @@ const config: DocsThemeConfig = {
     themes: ['dark']
   }, 
   primaryHue: 164,
-  primarySaturation: 74,
+  primarySaturation: 55,
 
 }
 
