@@ -3,9 +3,8 @@
   "quickstart": "Quickstart",
   "gameplay": "Gameplay",
   "api_guide": "API Guide",
-
   "about": {
-    "title": "Database",
+    "title": "Database ↗",
     "type": "page",
     "href": "https://artifactsmmo.com/database",
     "newWindow": true
