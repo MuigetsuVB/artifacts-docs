@@ -7,6 +7,13 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
+  head: (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta property="og:title" content="Artifacts" />
+      <meta property="og:description" content="Artifacts MMO Documentation" />
+    </>
+  ),
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
     text: '© 2023 Artifacts. All rights reserved. ',
