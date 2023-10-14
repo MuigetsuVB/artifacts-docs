@@ -14,10 +14,11 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: 'dark',
     forcedTheme: 'dark',
-    
+    themes: ['dark']
   }, 
   primaryHue: 164,
-  primarySaturation: 74 
+  primarySaturation: 74,
+
 }
 
 export default config
