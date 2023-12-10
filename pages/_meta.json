@@ -12,7 +12,7 @@
   "contact": {
     "title": "API Reference ↗",
     "type": "page",
-    "href": "https://api.artifactsmmo.com/redoc",
+    "href": "https://api.artifactsmmo.com/docs",
     "newWindow": true
   }
 }
