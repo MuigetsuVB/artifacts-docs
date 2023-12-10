@@ -1,3 +1,6 @@
+import { Callout } from 'nextra/components'
+
+
 # Movement
   
 Movement is very important in Artifacts. Your character will have to move on the map to find monsters to kill, resources to gather and more.
@@ -6,14 +9,19 @@ Movement is very important in Artifacts. Your character will have to move on the
 
 The 2D world uses a movement system with X,Y coordinates.
 
-![](../../assets/A9aGA3Msk7hj-KN-sElTz_map.png)
+![Characters](https://api.artifactsmmo.com/images/docs/map.png)
 
 [View the World Map](https://artifactsmmo.com/world)
 
 You can use this GET request to get the list of the maps.
 
-:::codeblocktabs
-```javascript
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/maps/?page=1&size=50' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
 var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
@@ -30,52 +38,8 @@ fetch("https://api.artifactsmmo.com/maps/?page=1&size=50", requestOptions)
    .catch(error => console.log('error', error));
 ```
 
-```python
-import requests
-import json
 
-url = "https://api.artifactsmmo.com/maps/?page=1&size=50"
-
-payload={}
-headers = {
-   'Accept': 'application/json',
-   'Content-Type': 'application/json'
-}
-
-response = requests.request("GET", url, headers=headers, data=payload)
-
-print(response.text)
-
-```
-
-```csharp
-var client = new RestClient("https://api.artifactsmmo.com/maps/?page=1&size=50");
-client.Timeout = -1;
-var request = new RestRequest(Method.GET);
-request.AddHeader("Accept", "application/json");
-request.AddHeader("Content-Type", "application/json");
-IRestResponse response = client.Execute(request);
-Console.WriteLine(response.Content);
-```
-
-```go
-var client = new RestClient("https://api.artifactsmmo.com/maps/?page=1&size=50");
-client.Timeout = -1;
-var request = new RestRequest(Method.GET);
-request.AddHeader("Accept", "application/json");
-request.AddHeader("Content-Type", "application/json");
-IRestResponse response = client.Execute(request);
-Console.WriteLine(response.Content);
-```
-
-```curl
-curl --location --request GET 'https://api.artifactsmmo.com/maps/?page=1&size=50' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json'
-```
-:::
-
-[View API Reference](https://docs.artifactsmmo.com/all-maps)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/all_maps_maps__get)
 
 The response includes all the maps in the game and the content of each map. It's the way to find out where you can find a monster or a resource, for example.
 
@@ -85,12 +49,21 @@ The response includes all the maps in the game and the content of each map. It's
 
 For our first move, we'll go to -4,1 to kill an easy-to-kill monster. Here's the POST request to use.
 
-:::hint{type="info"}
+<Callout type="info" emoji="ℹ️">
 To control a character, you need to insert its name in the url of your API request.
-:::
+</Callout>
 
-:::codeblocktabs
-```javascript
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 4,
+  "y": -1
+}'
+```
+```js filename="Javascript" copy
 var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
@@ -114,105 +87,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
    .catch(error => console.log('error', error));
 ```
 
-```python
-import requests
-import json
-
-url = "https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move"
-
-payload = json.dumps({
-   "x": 4,
-   "y": -1
-})
-headers = {
-   'Accept': 'application/json',
-   'Content-Type': 'application/json',
-   'Authorization': 'Bearer INSERT_TOKEN_HERE'
-}
-
-response = requests.request("POST", url, headers=headers, data=payload)
-
-print(response.text)
-
-```
-
-```csharp
-var client = new RestClient("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move");
-client.Timeout = -1;
-var request = new RestRequest(Method.POST);
-request.AddHeader("Accept", "application/json");
-request.AddHeader("Content-Type", "application/json");
-request.AddHeader("Authorization", "Bearer INSERT_TOKEN_HERE");
-var body = @"{" + "\n" +
-@"  ""x"": 4," + "\n" +
-@"  ""y"": -1" + "\n" +
-@"}";
-request.AddParameter("application/json", body,  ParameterType.RequestBody);
-IRestResponse response = client.Execute(request);
-Console.WriteLine(response.Content);
-```
-
-```go
-package main
-
-import (
-   "fmt"
-   "strings"
-   "net/http"
-   "io/ioutil"
-)
-
-func main() {
-
-   url := "https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move"
-   method := "POST"
-
-   payload := strings.NewReader(`{
-  "x": 4,
-  "y": -1
-}`)
-
-   client := &http.Client {
-   }
-   req, err := http.NewRequest(method, url, payload)
-
-   if err != nil {
-      fmt.Println(err)
-      return
-   }
-   req.Header.Add("Accept", "application/json")
-   req.Header.Add("Content-Type", "application/json")
-   req.Header.Add("Authorization", "Bearer INSERT_TOKEN_HERE")
-
-   res, err := client.Do(req)
-   if err != nil {
-      fmt.Println(err)
-      return
-   }
-   defer res.Body.Close()
-
-   body, err := ioutil.ReadAll(res.Body)
-   if err != nil {
-      fmt.Println(err)
-      return
-   }
-   fmt.Println(string(body))
-}
-```
-
-```curl
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE' \
---data-raw '{
-  "x": 4,
-  "y": -1
-}'
-```
-:::
-
-[View the API Reference](https://docs.artifactsmmo.com/action-move)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
 
 After moving, your character will be on a cooldown and you won't be able to make an action again until the cooldown expires. Try sending another moving request to see the response for a cooldown error code.
 
