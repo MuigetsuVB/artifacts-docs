@@ -1,12 +1,14 @@
 import { Callout } from 'nextra/components'
 
+# New account
+
 The quick start guide should take around 5 minutes to complete and will guide a new user through some common requests when working with the Artifacts API.
 
 The guide provides examples using with cURL and Javascript but you can see more examples in the API Reference and send your request directly from your browser.
 
 ***
 
-# Create account
+## Create account
 
 The first step is to [create an account on our site](https://artifactsmmo.com/account/create) and get your token [by logging in](https://artifactsmmo.com/account). It's also possible to do this via API requests, but we'll start simply for this guide. 
 
@@ -68,14 +70,14 @@ fetch("https://api.artifactsmmo.com/characters/create", requestOptions)
    .catch(error => console.log('error', error));
 ```
 
-[View API Reference](https://docs.artifactsmmo.com/create-character)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/create_character_characters_create_post)
 
 The response includes all your character's variables: hit point, attack, level, position on the map, equipment, inventory, etc.
 
 You can view this information again at any time using this request:
 
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/my/characters?page=1&size=50' \
+curl --location --request GET 'https://api.artifactsmmo.com/my/characters' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
@@ -93,13 +95,13 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/characters?page=1&size=50", requestOptions)
+fetch("https://api.artifactsmmo.com/my/characters", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
 
-[View API Reference](https://docs.artifactsmmo.com/my-characters)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_characters_characters__get)
 
 You can now start using your character.
 
