@@ -3,13 +3,19 @@
   "quickstart": "Quickstart",
   "gameplay": "Gameplay",
   "api_guide": "API Guide",
-  "about": {
+  "database": {
     "title": "Database ↗",
     "type": "page",
     "href": "https://artifactsmmo.com/database",
     "newWindow": true
   },
-  "contact": {
+  "client": {
+    "title": "Client ↗",
+    "type": "page",
+    "href": "https://artifactsmmo.com/client",
+    "newWindow": true
+  },
+  "api_ref": {
     "title": "API Reference ↗",
     "type": "page",
     "href": "https://api.artifactsmmo.com/docs",
