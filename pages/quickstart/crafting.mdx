@@ -1,3 +1,170 @@
 # Crafting
-  
-Satori (悟り) is a Japanese Buddhist term for awakening, "comprehension; understanding".
+
+Crafting skills allow you to create items when you're in a workshop.
+
+## Weaponcrafting
+
+To craft our dagger, we're going to use the Weaponcrafting skill. This is the skill that will enable you to craft any type of weapon.
+
+### Move
+
+The Weaponcraft workshop is located at 2,1. As in the previous steps, you'll need to go to the Worskhop map using this API request.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 2,
+  "y": 1
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "x": 2,
+   "y": 1
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+In the response, you'll see his combat stats and all the items you can drop by killing him.
+You can also view the list of monsters directly [in the database](https://artifactsmmo.com/database/monsters).&#x20;
+
+### Crafting
+
+When you're on the map and your cooldown is over, you can make this request POST to craft the weapon.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/crafting' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "code": "copper_dagger"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "code": "copper_dagger"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/crafting", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+
+The response includes the cooldown and xp you gain. The weapon is now in your character's inventory.
+
+## Equip your new weapon
+
+You'll now need to de-equip your current weapon and equip your new one.
+
+To unequip, use this request POST:
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "slot": "weapon"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "slot": "weapon"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/unequip/", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
+
+And for equip, use this request POST:
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "code": "copper_dagger",
+  "slot": "weapon"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "code": "copper_dagger",
+   "slot": "weapon"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/equip/", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
+
+Now you're ready to return to the fight to gain experience and drop resources to craft better equipment.
