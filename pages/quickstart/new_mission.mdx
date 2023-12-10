@@ -1,0 +1,141 @@
+# New mission
+  
+We're now going to craft a new weapon that will let you kill monsters more quickly
+
+## Items
+
+You can view the items and their crafts directly [on our site](https://artifactsmmo.com/database/items), or use this GET request to see all the items in the game.
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/items/?page=1&size=50' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/items/?page=1&size=50", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items__get)
+
+In our case, we already know which weapon we're going to make: the Copper Dagger.
+
+![Dagger](https://api.artifactsmmo.com/images/docs/copper-dagger.png)
+
+You can consult the stats and craft directly [on the site](https://artifactsmmo.com/database/items/copper_dagger) or use this GET request.
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/items/copper_dagger' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/items/copper_dagger", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_item_items__code__get)
+
+In the response, you'll see that this is an item that can be crafted with the Weaponcrafting skill, and that you'll need 6 copper ores.
+
+## Gathering
+
+Gathering skills will allow you to collect essential resources for crafting all kinds of items.&#x20;
+
+With the Mining skill, you'll be gathering coppers ores. If you look [at the map](https://artifactsmmo.com/database/maps/world), you'll see that there are copper rocks on map 0,-1.
+
+### Move
+
+As in the second step, you'll need to move on the map to collect the resource.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 0,
+  "y": -1
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "x": 0,
+   "y": -1
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+### Mining
+
+When you're on the map and your cooldown is over, you can make this request to mine coopers ores.
+
+```http filename="cURL" copy
+curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+
+In the response, you'll see that you've gathered 1-2 ores for each request. You'll need to repeat the action a few times until you have at least 6 ores in your inventory. You can see the contents of your inventory directly in the response.
