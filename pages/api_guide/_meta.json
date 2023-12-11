@@ -1,0 +1,5 @@
+{ 
+    "rate_limits": "Rate limits",
+    "openapi_spec": "OpenAPI Spec",
+    "authorization": "Authorization"
+  }
