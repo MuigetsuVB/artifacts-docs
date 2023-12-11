@@ -1,0 +1,65 @@
+# Actions
+
+To execute an action with your character, you need to send an API request.
+
+To execute an action with your character, you need to send an API request.
+
+Here's the list of actions currently available:
+
+*   [Move](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+*   [Fight](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+*   [Gathering](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+*   [Crafting](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
+*   [Equip item](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
+*   [Unequip item](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
+*   [Delete item](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
+
+*   Bank
+    *   [Deposit item](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_my__name__action_deposit_post)
+    *   [Deposit gold](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_deposit_gold_post)
+    *   [Withdraw item](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_my__name__action_withdraw_post)
+    *   [Withdraw gold](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_withdraw_gold_post)
+
+*   Grand Exchange
+    *   [Buy item](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_buy_post)
+    *   [Sell item](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_sell_post)
+
+## Cooldown
+
+When you make an action, you instantly receive the result, but your character will be in a cooldown period for some time after you've made the majority of the game's actions.
+
+To do **any action**, your character cannot be in cooldown but some actions, like depositing in the bank, buying/selling at the GE and destroying an item, don't give you a cooldown.
+
+If you are in cooldown and try to make an action, you will receive an error 499 showing the remaining cooldown time.
+
+
+## Logs
+
+Every action you take is logged. You can view a character's logs with this request:
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer ENTER_YOUR_TOKEN_HERE'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer ENTER_YOUR_TOKEN_HERE");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Request](https://api.artifactsmmo.com/docs/#/operations/character_logs_my__name__logs_get)
+

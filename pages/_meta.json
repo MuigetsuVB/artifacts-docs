@@ -1,7 +1,7 @@
 {  
   "index": "Introduction",
   "quickstart": "Quickstart",
-  "gameplay": "Gameplay",
+  "concepts": "Game concepts",
   "api_guide": "API Guide",
   "database": {
     "title": "Database ↗",

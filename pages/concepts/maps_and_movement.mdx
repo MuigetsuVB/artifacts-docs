@@ -1,0 +1,80 @@
+# Maps
+  
+The world is in 2D, and each map is identified by an X and Y coordinate.
+
+![Characters](https://api.artifactsmmo.com/images/docs/map.png)
+
+[View the World Map](https://artifactsmmo.com/database/maps/world)
+
+You can also view the list of maps [on our website](https://artifactsmmo.com/database/maps) or use [an API request](https://api.artifactsmmo.com/docs/#/operations/all_maps_maps__get).
+
+Here's an example of an API request response.
+
+```json filename="JSON" copy
+{
+  "data": {
+    "name": "Forest",
+    "code": "forest_1",
+    "x": -1,
+    "y": -1,
+    "content": {
+      "type": "monster",
+      "code": "red_slime"
+    }
+  }
+}
+```
+
+If there's anything on the map, you'll be able to view it in the "content" section.
+
+This is what you can find on a map:
+*   Monster (All monsters: <https://artifactsmmo.com/database/monsters>)
+*   Ressource (All ressources: <https://artifactsmmo.com/database/ressources>)
+*   Workshop (All crafts by workshop : <https://artifactsmmo.com/database/crafts>)
+*   Bank&#x20;
+*   Grand Exchange
+
+
+# Movement
+
+To do most of the actions in the game, you'll need to move on the map.
+
+The move cooldown is currently fixed at 5 seconds per map. In the future, it will be possible to increase movement speed to reduce this cooldown.
+
+Here's an example of an API request to move your character.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 4,
+  "y": -1
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "x": 4,
+   "y": -1
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Request](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
