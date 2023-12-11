@@ -1,3 +1,198 @@
-# Characters
-  
-This is the about page! This page is shown on the navbar.
+import { Callout } from 'nextra/components'
+
+## Stats
+
+Here are all the stats a player can have:
+
+*   Hit points (HP)
+*   Elemental attacks (fire,water,earth,air)
+*   Elemental damages (fire,attack,earth,air)
+*   Elementals resistance (fire,attack,earth,air)
+*   Haste
+
+You can view your character's stats directly [on the site ](https://artifactsmmo.com/account/characters)or use [this request](https://api.artifactsmmo.com/docs/#/operations/my_characters_my_characters_get).
+
+### Elemental attacks
+
+Attack is the basic stats. Each attack removes one hit point from its opponent.
+
+### Elemental damages
+
+Damage increases the attack of an element. Damage is given by consumables and equipment.
+
+Here's the formula for calculating damage:
+**Attack \* (Damage \* 0.01)**
+
+For example, if a player has 10 fire attack and 30 fire damage, it will make a 13 fire damage attack. 1 damage = 1% extra damage.
+
+### Elemental resistances
+
+The resistance reduces the attack damage of its opponent and the more resistance a player/monster has, the more chance he has of blocking his opponent's attacks. Resistance is given by consumables and equipment.
+
+Here's the formula for calculating damage reduction:
+**Attack \* (Resistance \* 0.01)
+
+**For example, if a monster has 30 air resistance and the player attacks with 10 attack air, the monster will block 3 out of 10 damage.  1 of resistance = 1% of resistance.**
+
+**Here's the formula to calculate the attack blocking:
+
+**100 / Resistance \* 0.01) \* 0.1)**
+
+For example, a player with 30 air resitance would have a 3% chance of blocking an air attack. 1 of resistance = 0.1% chance of blocking.
+
+### Haste
+
+The haste reduces the cooldown of a fight. You'll find more info in the Fights section below.
+
+***
+
+## Fights
+
+Combat is based on a turn-by-turn system. The player always attacks first.&#x20;
+
+Fights can take a maximum of 100 turns (i.e. 50 attacks for the player, 50 attacks for the monster), otherwise you've automatically lost the fight.
+
+For the moment, there are no consequences to losing a fight, but this should change in the future.
+
+Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time.
+
+Here's the formula for calculating the cooldown:
+**Turns \* 2 - (Haste \* 0.01) \* (Turns \* 2)**
+
+For example, if a fight takes 20 turns and a player has 10 haste, the cooldown will be reduced by 4 seconds. 36 instead of 40 seconds. 1 haste = 1% less.
+
+### Equipements and consumables&#x20;
+
+To help you in fight, you can equip equipment and consumables. A consumable is consumed automatically when it meets a specific condition.
+
+Here's everything you can equip:
+
+*   Helmet (helmet)
+*   Body armor
+*   Leg armor
+*   Boots
+*   Weapon
+*   Shield&#x20;
+*   Ring (2 slots)
+*   Amulet
+*   Artifact (3 slots)
+*   Consumable (2 slots)
+
+#### Consumables keywords
+
+<Callout type="warning" emoji="⚠️">
+For the moment, only one type of consumable exists, but it's under development and others will be arriving soon.
+</Callout>
+
+
+| Keyword | Condition                                            |
+| ------- | ---------------------------------------------------- |
+| Restore | Heals X HP when the player has lost 50% of his life. |
+
+[View all consumables](https://artifactsmmo.com/database/items?category=consumable)
+
+### Equip
+
+To equip an item, you can use this API request.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "slot": "SLOT_NAME"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "slot": "SLOT_NAME"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/unequip/", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
+
+### Unequip
+
+To unequip an item, you can use this API request.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "code": "ITEM_CODE",
+  "slot": "SLOT_NAME"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "code": "ITEM_CODE",
+   "slot": "SLOT_NAME"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/equip/", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
+
+### Action
+
+To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/maps-and-movement) You can start a fight using this API request.
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/monsters/yellow_slime' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/monsters/yellow_slime", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+iew the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get)
