@@ -1,0 +1,89 @@
+import { Callout } from 'nextra/components'
+
+##What is Artifacts?
+
+Artifacts is an **asynchronous MMORPG** in which you can control up to **5 characters at the same time**. Your characters can fight monsters, gather resources, craft items and much more. 
+
+Unlike a traditional game, you'll have to **write your own scripts** in your preferred programming language to control your characters via an API.
+
+This short guide will help you learn how to move your character, kill your first monster, gather ores and craft your first weapon.  
+
+The quickstart tutorial contains examples with cURL and Javascript, but it's possible to see examples with dozens of other programming languages on the [Reference API](https://api.artifactsmmo.com/docs/#/).
+
+## Before you start
+
+The first step is to [create your account](https://artifactsmmo.com/account/create) and your first character [by logging in](https://artifactsmmo.com/account/characters).
+
+After that you'll need your token, which you can find [on your account](https://artifactsmmo.com/account/).
+![Token](https://api.artifactsmmo.com/images/docs/token.png)
+
+<Callout type="warning" emoji="⚠️">
+The token is used by the server to identify you when you make requests.&#x20;
+**It is important to keep it secret.**
+</Callout>
+
+I also recommand you open the web client by [clicking here](https://artifactsmmo.com/client). 
+This is the easiest way to view your characters (xp, skills, inventory, equipment) and the Artifacts world map.
+
+Ready to start?
+
+## Moving
+
+The 2D world uses a movement system with X,Y coordinates.
+
+![Map](https://api.artifactsmmo.com/images/docs/map.png)
+
+To move, you'll need to know the coordinates of the map you want to move your character to. There are several ways of doing this, including using an [API request](https://api.artifactsmmo.com/docs/#/operations/all_maps_maps__get), but for the purposes of this guide, we're going to use the information available in the client.
+
+![Client](https://api.artifactsmmo.com/images/docs/client.png)
+
+If you look at (-4,1) on the map, you'll find the Yellow Slime. A low-level monster that's easy enough to kill when you start the game. We're going to fight him.
+
+![Slime](https://api.artifactsmmo.com/images/docs/yellow_slime.png)
+
+
+By default, your character spawns in position (0,0) on the map. To move him, you'll need to make your first POST request.  
+
+We'll show you examples in cURL and Javascript in the guide, but you can send API requests directly from your browser and see examples in other programming languages in the [API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post).
+
+<Callout type="info" emoji="ℹ️">
+To control a character, you need to insert its name in the url of your API request.
+</Callout>
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 4,
+  "y": -1
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "x": 4,
+   "y": -1
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+After moving, your character will be on a cooldown and you won't be able to make an action again until the cooldown expires. Try sending another moving request to see the response for a cooldown error code.
