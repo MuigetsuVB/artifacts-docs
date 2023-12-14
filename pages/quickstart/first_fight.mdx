@@ -1,45 +1,23 @@
-# Your first fight
+import { Callout } from 'nextra/components'
 
-Fights earn your character experience for leveling up, and allow you to drop monster resources for crafting items.
 
-## Monster information
+## Your first fight
 
-Before fighting a monster, it's important to know its stats.
-In the -4,1 map, we'll be fighting a Yellow Slime. Here's the GET request to view the monster's stats:
+Now that you're on the map, you're ready to fight the Yellow Slime.
 
-```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/monsters/yellow_slime' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json'
-```
-```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
+![Slime](https://api.artifactsmmo.com/images/docs/yellow_slime2.png)
 
-var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
-};
+<Callout type="info" emoji="ℹ️">
+If you click on "Inspect", you'll be able to see the JSON version of the monster. This will help you in the future when writing scripts.
+</Callout>
 
-fetch("https://api.artifactsmmo.com/monsters/yellow_slime", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
-```
+As you can see, the monster is weak, with only 10 hit points and 2 earth attacks. If you look at your stats, you have 1 earth damage from the weapon your character equips by default. You can view the weapon in the "Equipment" tab.
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get)
+![Stats](https://api.artifactsmmo.com/images/docs/stats_character.png)
 
-In the response, you'll see his combat stats and all the items you can drop by killing him.
-You can also view the list of monsters directly [in the database](https://artifactsmmo.com/database/monsters).&#x20;
+You'll need 10 hits to kill the monster, as it doesn't have enough resistance to block your damage. You attack the monster in turn, so it will deal 20 damage. You'll win because you have 50 hit points. Note that if a fight lasts more than 200 turns (100 turns each), you automatically lose it.
 
-## Fighting
-
-When you create your character, he's already equipped with a weapon. The [Wooden Staff](https://artifactsmmo.com/database/items/wooden_staff) is a level 1 weapon with an attack of 1 earth damage. Your character cannot attack if he has no weapon equipped.
-
-Here's the request to use to start the fight:
-
+Let's attack this monster with this POST request:
 
 ```http filename="cURL" copy
 curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
