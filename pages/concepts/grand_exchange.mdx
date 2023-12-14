@@ -3,10 +3,6 @@ import { Callout } from 'nextra/components'
 
 # Grand Exchange
 
-<Callout type="info" emoji="ℹ️">
-This feature is still under testing, and we'll be publishing more information on the argorithm that manages price increases and decreases in the future.
-</Callout>
- 
 The Grande Exchange lets you buy and sell items from other players. Item prices increase and decrease according to buy and sell orders. 
 
 You can view all items for sale and their prices using this request. 
@@ -34,3 +30,80 @@ fetch("https://api.artifactsmmo.com/ge/?page=1&size=50", requestOptions)
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/all_ge_items_ge__get)
+
+
+## Buy/sell item
+
+To buy or sell an item, you must be on a map containing a Grand Exchange.
+
+You can use this POST request to purchase an item:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"code":"string","quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_buy_post)
+
+
+You can use this POST request to sell an item:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/sell \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"code":"string","quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_sell_post)
