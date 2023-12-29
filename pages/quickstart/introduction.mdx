@@ -1,3 +1,4 @@
+
 import { Callout } from 'nextra/components'
 
 # Introduction
@@ -6,9 +7,10 @@ Artifacts is an **asynchronous MMORPG** in which you can control up to **5 chara
 
 Unlike a traditional game, you'll have to **write your own scripts** in your preferred programming language to control your characters via an API.
 
-This short guide will help you learn how to move your character, kill your first monster, gather ores and craft your first weapon.  
+For a quick start, you can write **your first Javascript scripts directly in the client's Code Editor**, otherwise you can use any language you like on your own IDE.  You can see examples in other programming languages in the [Reference API](https://api.artifactsmmo.com/docs/#/).
 
-The quickstart tutorial contains examples with cURL and Javascript, but it's possible to see examples with dozens of other programming languages on the [Reference API](https://api.artifactsmmo.com/docs/#/).
+
+
  
 ## Before you start
 
@@ -22,8 +24,8 @@ The token is used by the server to identify you when you make requests.&#x20;
 **It is important to keep it secret.**
 </Callout>
 
-I also recommand you open the web client by [clicking here](https://artifactsmmo.com/client). 
-This is the easiest way to view your characters (xp, skills, inventory, equipment) and the Artifacts world map.
+You can open the client by [clicking here](https://artifactsmmo.com/client). 
+The client is the easiest way to view your characters (xp, skills, inventory, equipment) and the Artifacts world map.
 
 **Ready to start?**
 
@@ -37,9 +39,9 @@ To move, you'll need to know the coordinates of the map you want to move your ch
 
 ![Client](https://api.artifactsmmo.com/images/docs/client.png)
 
-If you look at (-4,1) on the map, you'll find the Yellow Slime. A low-level monster that's easy enough to kill when you start the game. We're going to fight him.
+If you look at (0,1) on the map, you'll find the chicken. A low-level monster that's easy enough to kill when you start the game. We're going to fight him.
 
-![Slime](https://api.artifactsmmo.com/images/docs/yellow_slime.png)
+![Chicken](https://api.artifactsmmo.com/images/docs/chicken.png)
 
 
 By default, your character spawns in position (0,0) on the map. To move him, you'll need to make your first POST request.  
@@ -56,8 +58,8 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARAC
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE' \
 --data-raw '{
-  "x": 4,
-  "y": -1
+  "x": 0,
+  "y": 1
 }'
 ```
 ```js filename="Javascript" copy
@@ -67,8 +69,8 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
 
 var raw = JSON.stringify({
-   "x": 4,
-   "y": -1
+   "x": 0,
+   "y": 1
 });
 
 var requestOptions = {
@@ -86,4 +88,4 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
 
-After moving, your character will be on a cooldown and you won't be able to make an action again until the cooldown expires. Try sending another moving request to see the response for a cooldown error code.
+After moving, your character will be on a cooldown and you won't be able to make an action again until the cooldown expires. 

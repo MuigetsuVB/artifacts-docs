@@ -1,9 +1,51 @@
+
 import { Callout } from 'nextra/components'
 
+## Unequip your weapon
+
+The other item required for crafting is **your current weapon**, the **Wooden Stick**. You can now unequip it and use it for crafting.
+
+To unequip, use this request POST:
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "slot": "weapon"
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "slot": "weapon"
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/unequip/", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
+
+We now have all the items in our inventory.
 
 ## Crafting
 
-To craft our dagger, we're going to use the **Weaponcrafting skill**. This is the skill that will enable you to craft any type of weapon.
+To craft our staff, we're going to use the **Weaponcrafting skill**. This is the skill that will enable you to craft any type of weapon.
 
 To do this, you'll need to go to a craft station. The nearest one is at (2,1)
 
@@ -61,7 +103,7 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
 --data-raw '{
-  "code": "copper_dagger"
+  "code": "wooden_staff"
 }'
 ```
 ```js filename="Javascript" copy
@@ -71,7 +113,7 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
 
 var raw = JSON.stringify({
-   "code": "copper_dagger"
+   "code": "wooden_staff"
 });
 
 var requestOptions = {
@@ -93,45 +135,8 @@ The response includes the cooldown and xp you gain. **The weapon is now in your 
 
 ## Equip your new weapon
 
-You'll now need to de-equip your current weapon and equip your new one.
 
-To unequip, use this request POST:
-
-```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip/' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
---data-raw '{
-  "slot": "weapon"
-}'
-```
-```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
-
-var raw = JSON.stringify({
-   "slot": "weapon"
-});
-
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
-};
-
-fetch("https://api.artifactsmmo.com/my/{name}/action/unequip/", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
-```
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
-
-And for equip, use this request POST:
+To equip your new weapon, use this request POST:
 
 ```http filename="cURL" copy
 curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip/' \
@@ -139,7 +144,7 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
 --data-raw '{
-  "code": "copper_dagger",
+  "code": "wooden_staff",
   "slot": "weapon"
 }'
 ```
@@ -150,7 +155,7 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
 
 var raw = JSON.stringify({
-   "code": "copper_dagger",
+   "code": "wooden_staff",
    "slot": "weapon"
 });
  

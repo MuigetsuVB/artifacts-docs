@@ -1,16 +1,22 @@
+
 # New mission
 
-To kill monsters faster, you'll need a more powerful weapon. The easiest weapons and equipment to craft when you start the game are those that use **level 1 skill resources**, such as Copper Ore. If you look at the map, you'll see that there's a Copper Rocks resource node at (0,-1).
+To kill monsters faster, you'll need a better weapon.
+To do this, we're going to upgrade our current weapon to a more powerful one.
 
-![Token](https://api.artifactsmmo.com/images/docs/copper_ore1.png)
+Most crafts include skill resources such as ores and wood. To improve our weapon, we'll need to gather Ash Wood, a level 1 woodcutting resource.
 
-If you click on **Cooper Ore**, you'll be able to see all the crafts you can do with it.
+ If you look at the map, you'll see that there's a Ash Tree resource node at (-1,0).
 
-![Token](https://api.artifactsmmo.com/images/docs/copper_ore2.png)
+![tree](https://api.artifactsmmo.com/images/docs/ash_tree1.png)
 
-The simplest weapon to make is the **Copper Dagger**, for which you'll need 6 ores. We're going to make this weapon.
+If you click on **Ash Wood**, you'll be able to see all the crafts you can do with it.
 
-Before gathering ores, you'll need to move to the map (0,-1) using the same POST request.
+![tree2](https://api.artifactsmmo.com/images/docs/ash_tree1.png)
+
+The craft we're going to make is **Wooden Staff.** Most other equipment that uses wood will need to be transformed into a plank before being used in a craft.
+
+Before gathering woods, you'll need to move to the map (-1,0) using the same POST request.
  
 ```http filename="cURL" copy
 curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
@@ -18,8 +24,8 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARAC
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE' \
 --data-raw '{
-  "x": 0,
-  "y": -1
+  "x": -1,
+  "y": -0
 }'
 ```
 ```js filename="Javascript" copy
@@ -29,8 +35,8 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
 
 var raw = JSON.stringify({
-   "x": 0,
-   "y": -1
+   "x": -1,
+   "y": 0
 });
 
 var requestOptions = {
@@ -76,7 +82,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 
-In the response, you'll see that you've gathered 1-2 ores for each request. You'll need to repeat the action a few times until you have **at least 6 ores in your inventory**. You can see the contents of your inventory directly in the response.
+In the response, you'll see that you've gathered 1 wood for each request. You'll need to repeat the action another time to have **the 2 woods needed in the craft**. You can see the contents of your inventory directly in the response.
 
 You can also see the result of each action in your logs, and view the inventory of all your characters in the client. 
 
