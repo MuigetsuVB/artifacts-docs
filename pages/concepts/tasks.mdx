@@ -1,0 +1,80 @@
+import { Callout } from 'nextra/components'
+
+
+# Tasks
+
+
+<Callout type="warning" emoji="⚠️">
+Tasks are a new feature under development. Task coins are not exchangeable at the moment.
+</Callout>
+
+Tasks assign you random objectives (such as killing monsters, collecting resources, bringing back items) and when you complete tasks, you get a currency: tasks coins.
+
+You can check your objective and its progress directly on your character by using this [request](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get).
+
+
+## Actions
+
+To get a new task or to complete it, you need to be on a map with a tasks master.
+
+You can use this POST request to accept a new task.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/task/new \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/task/new';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+ 
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
+
+
+You can use this POST request to complete a task
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/task/complete \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/task/complete';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post

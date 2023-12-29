@@ -40,7 +40,7 @@ You can use this POST request to purchase an item:
 
 ```http filename="cURL" copy
 curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/buy \
+  --url https://api.artifactsmmo.com/my/{name}/action/ge/buy \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
@@ -50,7 +50,7 @@ curl --request POST \
 }'
 ```
 ```js filename="Javascript" copy
-const url = 'https://api.artifactsmmo.com/my/{name}/action/buy';
+const url = 'https://api.artifactsmmo.com/my/{name}/action/ge/buy';
 const options = {
   method: 'POST',
   headers: {
@@ -76,17 +76,18 @@ You can use this POST request to sell an item:
 
 ```http filename="cURL" copy
 curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/sell \
+  --url https://api.artifactsmmo.com/my/{name}/action/ge/sell \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
   --data '{
   "code": "string",
-  "quantity": 1
+  "quantity": 1,
+  "price: 1,
 }'
 ```
 ```js filename="Javascript" copy
-const url = 'https://api.artifactsmmo.com/my/{name}/action/sell';
+const url = 'https://api.artifactsmmo.com/my/{name}/action/ge/sell';
 const options = {
   method: 'POST',
   headers: {
@@ -94,7 +95,7 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
   },
-  body: '{"code":"string","quantity":1}'
+  body: '{"code":"string","quantity":1,"price:1}'
 };
 
 try {

@@ -99,7 +99,7 @@ You can use this POST request to deposit an item:
 
 ```http filename="cURL" copy
 curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/deposit \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
@@ -109,7 +109,7 @@ curl --request POST \
 }'
 ```
 ```js filename="Javascript" copy
-const url = 'https://api.artifactsmmo.com/my/{name}/action/deposit';
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit';
 const options = {
   method: 'POST',
   headers: {
@@ -139,7 +139,7 @@ You can use this POST request to withdraw golds:
 
 ```http filename="cURL" copy
 curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/withdraw/gold \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
@@ -148,7 +148,7 @@ curl --request POST \
 }'
 ```
 ```js filename="Javascript" copy
-const url = 'https://api.artifactsmmo.com/my/{name}/action/withdraw/gold';
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
 const options = {
   method: 'POST',
   headers: {

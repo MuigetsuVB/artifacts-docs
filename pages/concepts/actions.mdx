@@ -17,12 +17,13 @@ Here's the list of actions currently available:
 *   [Withdraw gold (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_withdraw_gold_post)
 *   [Buy item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_buy_post)
 *   [Sell item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_sell_post)
+*   [Accept task](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
+*   [Comlete task](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
+
 
 ## Cooldown
 
 When you make an action, you instantly receive the result, but your character will be in a cooldown period for some time after you've made the majority of the game's actions.
-
-To do **any action**, your character cannot be in cooldown but some actions, like depositing in the bank, buying/selling at the GE and destroying an item, don't give you a cooldown.
 
 If you are in cooldown and try to make an action, you will receive an error 499 showing the remaining cooldown time.
 
@@ -48,7 +49,7 @@ var requestOptions = {
    headers: myHeaders,
    redirect: 'follow'
 };
-
+ 
 fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
