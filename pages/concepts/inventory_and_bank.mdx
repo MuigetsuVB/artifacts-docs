@@ -2,7 +2,7 @@
 
 Each character has 20 slots in his inventory, which can hold a maximum of 100 items. So you can have 20 different items, but a maximum of 100 items in total. At each level, the maximum total items increases by 2.
 
-You can view the contents of your inventory with[ this request.](https://api.artifactsmmo.com/docs/#/operations/my_characters_my_characters_get)
+You can view the contents of your inventory with[ this request.](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get)
  
 ```http filename="JSON" copy
 ....
@@ -92,7 +92,7 @@ try {
   console.error(error);
 }
 ```
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_my__name__action_withdraw_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_my__name__action_bank_withdraw_post)
 
 
 You can use this POST request to deposit an item:
@@ -129,7 +129,7 @@ try {
 }
 ```
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_my__name__action_deposit_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_my__name__action_bank_deposit_post)
 
 ### Deposit/withdraw golds
 
@@ -167,7 +167,7 @@ try {
   console.error(error);
 }
 ```
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_withdraw_gold_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
 
 
 You can use this POST request to deposit golds:
@@ -203,4 +203,4 @@ try {
 }
 ```
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_deposit_gold_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)

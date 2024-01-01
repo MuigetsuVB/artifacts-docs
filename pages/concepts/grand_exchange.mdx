@@ -46,7 +46,8 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '{
   "code": "string",
-  "quantity": 1
+  "quantity": 1,
+  "price":1
 }'
 ```
 ```js filename="Javascript" copy
@@ -58,7 +59,7 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
   },
-  body: '{"code":"string","quantity":1}'
+  body: '{"code":"string","quantity":1,"price":1}'
 };
 
 try {
@@ -69,7 +70,7 @@ try {
   console.error(error);
 }
 ```
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_buy_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_ge_buy_post)
 
 
 You can use this POST request to sell an item:
@@ -107,4 +108,4 @@ try {
 }
 ```
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_sell_post)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_ge_sell_post)
