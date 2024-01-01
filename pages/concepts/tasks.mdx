@@ -5,10 +5,11 @@ import { Callout } from 'nextra/components'
 
 
 <Callout type="warning" emoji="⚠️">
-Tasks are a new feature under development. Task coins are not exchangeable at the moment.
+Tasks are a new feature under development.
 </Callout>
 
 Tasks assign you random objectives (such as killing monsters, collecting resources, bringing back items) and when you complete tasks, you get a currency: tasks coins.
+Tasks coins can be exchanged at all Tasks Masters. For 3 coins, you can get a random reward. Rewards include exclusive resources you can't get any other way.
 
 You can check your objective and its progress directly on your character by using this [request](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get).
 
@@ -78,3 +79,35 @@ try {
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
+
+
+You can use this POST request to exchange your coins.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/task/exchange \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/task/exchange';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
