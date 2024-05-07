@@ -1,4 +1,3 @@
-
 import { Callout } from 'nextra/components'
 
 
@@ -6,16 +5,16 @@ import { Callout } from 'nextra/components'
 
 Now that you're on the map, you're ready to fight the chicken.
 
-![Chicken](https://api.artifactsmmo.com/images/docs/chicken2.png)
+![Chicken](https://api.artifactsmmo.com/images/docs/chicken.png)
  
-As you can see, the monster is weak, with only 15 hit points and 1 water attack. If you look at your stats, you have 1 earth damage from the weapon your character equips by default. You can view the weapon in the "Equipment" tab.
+As you can see, the monster is weak, with only 60 hit points and 4 water attack. If you look at your stats, you have 4 earth damage from the weapon your character equips by default. You can view the weapon in the "Equipment" tab.
 
 ![Stats](https://api.artifactsmmo.com/images/docs/stats_character.png)
 
-With 1 attack, you'll need 15 turns to kill it. With 40 HP, you'll easily win the fight.
+With 4 attacks, you'll need 29 turns to kill it. With 125 HP, you'll easily win the fight.
 
 Let's attack this monster with this POST request:
-
+ 
 ```http filename="cURL" copy
 curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
@@ -46,3 +45,5 @@ In the response, you can see if you win or lose the fight, complete logs of what
 
 To reduce the fight cooldown, your character needs to be more powerful, because the longer the fight, the longer the cooldown.
 
+You can also view fight details in the client logs.
+![Log](https://api.artifactsmmo.com/images/docs/log_example.png)

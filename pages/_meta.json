@@ -3,11 +3,11 @@
   "quickstart": "Quickstart",
   "concepts": "Game concepts",
   "api_guide": "API Guide",
-  "ressources": "Ressources",
+  "resources": "Resources",
   "database": {
     "title": "Database ↗",
     "type": "page",
-    "href": "https://artifactsmmo.com/database",
+    "href": "https://artifactsmmo.com/encyclopedia",
     "newWindow": true
   },
   "client": {

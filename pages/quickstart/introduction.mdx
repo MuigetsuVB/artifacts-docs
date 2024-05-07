@@ -1,4 +1,3 @@
-
 import { Callout } from 'nextra/components'
 
 # Introduction
@@ -7,7 +6,7 @@ Artifacts is an **asynchronous MMORPG** in which you can control up to **5 chara
 
 Unlike a traditional game, you'll have to **write your own scripts** in your preferred programming language to control your characters via an API.
 
-For a quick start, you can write **your first Javascript scripts directly in the client's Code Editor**, otherwise you can use any language you like on your own IDE.  You can see examples in other programming languages in the [Reference API](https://api.artifactsmmo.com/docs/#/).
+For a quick start, you can write **your first Javascript scripts directly in the client's code editor**, otherwise you can use any language you like on your own IDE.  You can see examples in other programming languages in the [Reference API](https://api.artifactsmmo.com/docs/#/).
 
 
  
@@ -23,11 +22,28 @@ After that you'll need your token, which you can find [on your account](https://
 The token is used by the server to identify you when you make requests.&#x20;
 **It is important to keep it secret.**
 </Callout>
+ 
+You can now open the game client by [clicking here](https://artifactsmmo.com/client). 
 
-You can open the client by [clicking here](https://artifactsmmo.com/client). 
-The client is the easiest way to view your characters (xp, skills, inventory, equipment) and the Artifacts world map.
 
 **Ready to start?**
+
+## Client
+
+ The client lets you play with your characters and see all the information you need. It's literally your dashboard for following your characters in real time.
+
+![Client](https://api.artifactsmmo.com/images/docs/scgame1.png)
+
+On the top left, you have your logs, i.e. all the actions performed by your characters, and when you click on a log, you get all the details.
+![Log](https://api.artifactsmmo.com/images/docs/log_example.png)
+
+At bottom left, a list of your characters, and when you click on a character, you can control it and see all the information about it.
+
+And finally, in the top right-hand corner, you'll find the “Code Editor” button, which opens the Javascript code editor.
+
+![IDE](https://api.artifactsmmo.com/images/docs/ide.png)
+
+The IDE runs in a Node.js environment, so you need to type node name_of_your_script.js in the terminal to run it. By default, the script is called index.js, so you can type node index.js
 
 ## Moving
 
@@ -37,12 +53,9 @@ The 2D world uses a movement system with X,Y coordinates.
 
 To move, you'll need to know the coordinates of the map you want to move your character to. There are several ways of doing this, including using an [API request](https://api.artifactsmmo.com/docs/#/operations/all_maps_maps__get), but for the purposes of this guide, we're going to use the information available in the client.
 
-![Client](https://api.artifactsmmo.com/images/docs/client.png)
-
 If you look at (0,1) on the map, you'll find the chicken. A low-level monster that's easy enough to kill when you start the game. We're going to fight him.
 
 ![Chicken](https://api.artifactsmmo.com/images/docs/chicken.png)
-
 
 By default, your character spawns in position (0,0) on the map. To move him, you'll need to make your first POST request.  
 

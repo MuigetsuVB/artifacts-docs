@@ -67,7 +67,7 @@ var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
-
+ 
 var requestOptions = {
    method: 'POST',
    headers: myHeaders,
@@ -82,7 +82,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 
-In the response, you'll see that you've gathered 1 wood for each request. You'll need to repeat the action another time to have **the 2 woods needed in the craft**. You can see the contents of your inventory directly in the response.
+In the response, you'll see that you've gathered 1 wood for each request. You'll need to repeat the action to have **the 4 woods needed in the craft**. You can see the contents of your inventory directly in the response.
 
 You can also see the result of each action in your logs, and view the inventory of all your characters in the client. 
 
