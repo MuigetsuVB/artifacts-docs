@@ -25,6 +25,13 @@ const config: DocsThemeConfig = {
   }, 
   primaryHue: 164,
   primarySaturation: 55,
+  editLink: {
+    component: null
+  },
+  feedback: {
+    content: null
+  }
+
 
 }
 
