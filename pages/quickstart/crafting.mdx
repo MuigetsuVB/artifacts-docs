@@ -8,7 +8,7 @@ The other item required for crafting is **your current weapon**, the **Wooden St
 To unequip, use this request POST:
  
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip/' \
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -33,7 +33,7 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/{name}/action/unequip/", requestOptions)
+fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
@@ -139,7 +139,7 @@ The response includes the cooldown and xp you gain. **The weapon is now in your 
 To equip your new weapon, use this request POST:
 
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip/' \
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -166,7 +166,7 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/{name}/action/equip/", requestOptions)
+fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
