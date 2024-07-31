@@ -1,5 +1,7 @@
 {  
   "index": "Introduction",
+  "funding": "Funding",
+  "roadmap": "Roadmap",
   "quickstart": "Quickstart",
   "concepts": "Game concepts",
   "api_guide": "API Guide",
