@@ -1,6 +1,7 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const config: DocsThemeConfig = {
   logo: <span><img src="/logo.png" alt="logo" /></span>,
