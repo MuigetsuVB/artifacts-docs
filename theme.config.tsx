@@ -14,13 +14,6 @@ const config: DocsThemeConfig = {
       }
     
   },
-  head: (
-    <>
-      <meta property="og:title" content="Artifacts MMO" />
-      <meta property="og:description" content="Artifacts is a API-based MMORPG game. Use any programming language to control your characters with the API." />
-    </>
-  )
-  ,
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
     text: '© 2024 Artifacts. All rights reserved. ',
@@ -37,8 +30,13 @@ const config: DocsThemeConfig = {
   },
   feedback: {
     content: null
-  }
-
+  },
+  head: (
+    <>
+      <meta property="og:title" content="Artifacts MMO" />
+      <meta property="og:description" content="Artifacts is a API-based MMORPG game. Use any programming language to control your characters with the API." />
+    </>
+  )
 
 }
 
