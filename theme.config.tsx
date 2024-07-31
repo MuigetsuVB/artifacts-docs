@@ -33,6 +33,7 @@ const config: DocsThemeConfig = {
   },
   head: (
     <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta property="og:title" content="Artifacts MMO" />
       <meta property="og:description" content="Artifacts is a API-based MMORPG game. Use any programming language to control your characters with the API." />
     </>
