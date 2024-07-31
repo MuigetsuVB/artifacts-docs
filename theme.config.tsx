@@ -3,7 +3,7 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
 
 const config: DocsThemeConfig = {
-  logo: <span><img src="https://api.artifactsmmo.com/images/docs/small-logo.png" alt="logo" /></span>,
+  logo: <span><img src="logo.png" alt="logo" /></span>,
   chat: {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
@@ -31,9 +31,11 @@ const config: DocsThemeConfig = {
   feedback: {
     content: null
   },
+  staticImage: true,
   head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" href="favicon.png" />
       <meta property="og:title" content="Artifacts - Documentation" />
       <meta property="og:description" content="Artifacts is a API-based MMORPG game. Use any programming language to control your characters with the API." />
     </>
