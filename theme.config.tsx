@@ -3,7 +3,7 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
 
 const config: DocsThemeConfig = {
-  logo: <span><img src="https://api.artifactsmmo.com/images/docs/small-logo.png" alt="logo" /></span>,
+  logo: <span><img src="https://artifactsmmo.com/images/docs/small-logo.png" alt="logo" /></span>,
   chat: {
     link: 'https://discord.gg/prEBQ8a6Vs',
   },
