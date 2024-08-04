@@ -89,7 +89,7 @@ Here's everything you can equip:
 To equip an item, you can use this API request.
 
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -114,20 +114,20 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/{name}/action/un", requestOptions)
+fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
 
 ### Unequip
 
 To unequip an item, you can use this API request.
 
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -154,13 +154,13 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
+fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
 
 ### Action
 
