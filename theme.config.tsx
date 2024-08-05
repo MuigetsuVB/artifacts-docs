@@ -37,7 +37,7 @@ const config: DocsThemeConfig = {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" href="https://api.artifactsmmo.com/docs/favicon.png" />
       <meta property="og:title" content="Artifacts - Documentation" />
-      <meta property="og:description" content="Artifacts is a API-based MMORPG game. Use any programming language to control your characters with the API." />
+      <meta property="og:description" content="Artifacts is a API-based MMORPG. Use any programming language to control your characters with the API." />
     </>
   )
 
