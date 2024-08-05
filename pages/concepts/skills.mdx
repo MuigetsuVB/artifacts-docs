@@ -19,7 +19,7 @@ var requestOptions = {
    headers: myHeaders,
    redirect: 'follow'
 };
-
+ 
 fetch("https://api.artifactsmmo.com/resources/?page=1&size=50", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
