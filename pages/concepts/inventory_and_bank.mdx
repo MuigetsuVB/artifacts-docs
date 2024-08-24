@@ -19,7 +19,7 @@ You can view the contents of your inventory with[ this request.](https://api.art
 
 At the bank, you can deposit items and golds. The bank is shared with all your characters, it's the best way to trade with your other characters.
 
-Currently, there is no limit to the number of items you can deposit in your bank.
+The bank is limited to 30 slots, but you can buy expansions at a cost of 12,500 golds, and the price doubles with each expansion purchased.
 
 ### Deposit/withdraw item
 
@@ -170,3 +170,37 @@ try {
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
+
+### Buy expansions
+
+To buy an expansion, you need to be on a map containing a bank. It costs 12,500 golds for 20 slots, and doubles for each expansion.
+
+You can use this POST request to buy an expansion:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)

@@ -75,7 +75,7 @@ try {
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
 
 
-You can use this POST request to exchange your coins.
+You can use this POST request to exchange 3 coins tasks for a random reward.
 
 ```http filename="cURL" copy
 curl --request POST \
@@ -105,3 +105,35 @@ try {
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
+
+
+You can use this POST request to cancel a task at the cost of a task coin.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/task/cancel \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/task/cancel';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post)
