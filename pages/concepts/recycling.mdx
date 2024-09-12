@@ -13,6 +13,10 @@ curl --request POST \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
 ```
 ```js filename="Javascript" copy
 const url = 'https://api.artifactsmmo.com/my/{name}/action/recycling';
@@ -22,7 +26,9 @@ const options = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
-  }
+  },
+    body: '{"code":"string","quantity":1}'
+
 };
   
 try {
