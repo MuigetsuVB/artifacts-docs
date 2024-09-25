@@ -3,7 +3,7 @@ import { Callout } from 'nextra/components'
 # Tasks
 
 Tasks assign you random objectives (such as killing monsters, collecting resources, bringing back items) and when you complete tasks, you get a currency: tasks coins.
-Tasks coins can be exchanged at all Tasks Masters. For 3 coins, you can get a random reward. Rewards include exclusive resources you can't get any other way.
+Tasks coins can be exchanged at all Tasks Masters. For 6 coins, you can get a random reward. Rewards include exclusive resources you can't get any other way.
 
 You can check your objective and its progress directly on your character by using this [request](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get).
 
@@ -75,7 +75,7 @@ try {
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
 
 
-You can use this POST request to exchange 3 coins tasks for a random reward.
+You can use this POST request to exchange 6 coins tasks for a random reward.
 
 ```http filename="cURL" copy
 curl --request POST \
@@ -105,6 +105,44 @@ try {
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
+
+
+You can use this POST request to trade items at a Task Master (Items).
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/tasks/trade' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--data-raw '{
+  "item": "name",
+  "quantity":0
+}' 
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+
+var raw = JSON.stringify({
+  "item": "name",
+  "quantity":0
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/{name}/action/tasks/trade", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
 
 
 You can use this POST request to cancel a task at the cost of a task coin.
