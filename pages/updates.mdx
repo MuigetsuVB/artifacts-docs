@@ -3,7 +3,7 @@ Here's the preliminary patch notes for Season 3. The test server will be availab
 
 Changelogs:
 
-**Grand Exchange**
+**Grand Exchange:**
 - Complete overhaul of the system. Place sales orders to sell your items to other players at your chosen price. No more automatic buying and selling by the server!
 - `/my/{name}/action/grandexchange/buy` to buy from a sales order (you don't have to buy the entire order).
 - `/my/{name}/action/grandexchange/sell` to create sales orders.
@@ -14,7 +14,7 @@ Changelogs:
 - `/grandexchange/orders/{id}` to view a specific sales order.
 - `/grandexchange/history/{code}` to view the public sales history of a specific item.
 
-**Characters**
+**Characters:**
 - Characters can now lose health in combat.
 - New skill added: Alchemy.
 - New endpoint `/my/{name}/action/use` to use consumable items.
@@ -23,55 +23,55 @@ Changelogs:
 - Added `account` to `CharacterSchema`.
 - Added variables related to the new Alchemy skill.
 
-**Items**
+**Items:**
 - 100 new items.
 - Consumables (food) can now be used outside of combat with the endpoint `/my/{name}/action/use`.
 - Potions (utility items) can now be used in combat (replacing food in that context).
 - 2 new keywords for effects (only for consumables): `heal` to restore life outside combat and `gold` to add golds to the character using the item.
 - All items are now tradable (subject to change).
 
-**Tasks**
+**Tasks:**
 - Tasks now reward gold.
 - Modified `TaskFullSchema` to include rewards.
 - Rewards have been adjusted, with new unique resources and items available.
 - For consistency, Task Rewards now use `DropRateSchema`, with rates expressed as `1/rate`.
 
-**Achievements**
+**Achievements:**
 - Achievements are now account-based, so all characters contribute to the same achievements. This is more consistent with the gameplay of Artifacts.
 - Achievements now reward gold.
 - Achievement-related schemas have been revised  (`BaseAchievementSchema` > `AchievementSchema`, `AchievementSchema` > `AccountAchievementSchema`).
 - Modified the endpoint `/characters/{name}/achievements` to `/accounts/{account}/achievements`.
 
-**Events**
+**Events:**
 - A new event has been added.
 - Changed endpoint `/events` to `/events/active`.
 - Added a new endpoint `/events` that lists all existing events.
 
-**Bank Expansion**
+**Bank Expansion:**
 - The cost of an expansion is now 5000 gold and doubles with each purchase (the price may be adjusted based on test server data).
 
-**Monsters**
+**Monsters:**
 - 6 new monsters.
 - Drop rates have been increased.
 
-**Resources**
+**Resources:**
 - 5 new resources.
 - Changes to saps (sap, magic sap); these are now common resources.
 - Added stones (diamond, ruby, sapphire, emerald, topaz) for mining at a rate of 1/500. By gathering 10 identical stones, you can craft a gem.
 
-**Leaderboard**
+**Leaderboard:**
 - Changed the endpoint `/leaderboard` to `/leaderboard/characters`.
 - Added the endpoint `/leaderboard/accounts`.
 
-**Token**
+**Token:**
 - You now need to use your email instead of your account name to log in/generate your token.
 
-**Global Changes**
+**Global Changes:**
 - Renamed "golds" to "gold" wherever applicable.
 - Replaced literal lists with enums wherever applicable (e.g., list of slots, list of skills).
 - **Attempt system for transactions:** A current issue involved requests being blocked by transactions on multi-character/multi-player endpoints. As a test, an attempt system has been set up to try the transaction again before returning a 486 error. This may slow down some requests, but will ensure a response.
 
-**Client**
+**Client:**
 - Fixed a bug that displayed the Cancel/Complete buttons on incorrect Task Masters.
 - Updated the client to support Season 3 features.
 
@@ -84,9 +84,9 @@ Here's the patchnote for version 2.4.
 
 Changelogs:
 
-**Server**
+**Server:**
 - New endpoint  `/my/details`
 - The endpoint`/my/change_password` now requests validation of the current password.
 
-**Website**
+**Website:**
 - Account UI has been updated
