@@ -86,3 +86,224 @@ Please note that as of November 9, it will be mandatory to use your EMAIL to log
 
 **Website:**
 - Account UI has been updated
+
+---
+
+## Update 10/12/24: Happy Halloween
+Here's the patchnote for version 2.3.
+
+**Server:**
+- 2 new monsters
+- 4 new items
+- Endpoint update `/tasks/list` to include rewards for each task.
+
+**Client:**
+- Updated map
+
+---
+
+## Update 09/24/24
+Here's the patchnote for version 2.2.
+
+**Server:**
+- Maximum level increased to 40.
+- 15 new items
+- 2 new monsters
+- 1 new event
+- 1 new resource 
+- New task type: Items (New endpoint Trade)
+- New effect for items: Inventory space 
+- Items can now give negative effect
+- Tasks reward updated:
+  - Monsters : Level 1 to 14: 3 tasks coins, Level 15 to 29: 4 tasks coins, Level 30 to 35: 5 tasks coins
+  - Items: Level 1 to 14: 2 tasks coins, Level 15 to 29: 3 tasks coins, Level 30 to 35: 4 tasks coins
+- Update tasks reward items pool
+- Exchanging your coins will now cost 6 coins.
+- New endpoint: Tasks reward
+- New endpoint: Tasks list
+
+**Client:**
+- You can now click on an event to see its location on the map.
+- Updated art for Birch Wood
+
+---
+
+## Update 02/09/24
+Small update.
+
+**Server:**
+- Add currency to type in Get All Items
+
+**Client:**
+- New UI for achievements
+
+---
+
+## Update 08/25/24 : Season 2
+Here's the patchnote for season 2.
+
+**Server:**
+- Maximum level increased to 35.
+- 27 new items.
+- 3 new monsters, 2 new resources.
+- 3 new events.
+- Experience calculation modified for fights and skills.
+- Monster drop rates modified.
+- Fish drop rate lowered.
+- Craft rebalancing.
+- Rebalancing of some items stats.
+- Achievements: 41 achievements available for this season.
+- Updated map, new bank, relocation of some resources and monsters.
+- New endpoint: `/task/cancel` to cancel a task in exchange for a task coin.
+- Return to the spawn on death.
+- You can now equip/unequip as many consumables as you wish (maximum 100).
+- The endpoint `my/bank/golds` has been replaced by `my/bank`, which contains golds and all bank-related information.
+- The bank is now limited to 30 slots (30 different items).
+- New endpoint `my/{character}/action/bank/buy_expansion` for purchasing bank expansions (20 additional slots) for 12,500 golds, doubling with each expansion purchased.
+- New endpoint `/leaderboard` to see leaderboards. Includes a new leaderboard by achievements points.
+- Removing the sort filter on the `/characters` endpoint.
+- Effects is now mandatory in the `ItemSchema`.
+- Adjustment of bank-related schemas.
+- Endpoints now correctly return an empty list instead of a 404 error when required.
+- Removal of the / bar in data endpoints to increase consistency.
+- Header now returns server version.
+- artifact type added to `/items` endpoint filters.
+
+**Client:**
+- Added a button to cancel a task.
+- Added consumable quantities to the equipment tab.
+- Updated documentation.
+- Fixed a bug that would not correctly update the bank after removing/adding an item or golds.
+- Added an interface for purchasing bank expansions.
+
+**Site:**
+- Added consumable quantities to Character pages.
+- Added achievements to Character pages
+
+---
+
+## Update 08/08/24
+Bug fixes.
+
+**Server:**
+- Add an error code when a transaction is already in progress with an item in the bank.
+- Add an error code when an item is in transaction on the GE.
+- StatusSchema modified to add server time.
+- CharacterSchema modified, cooldown_expiration now mandatory.
+- CraftSchema modification, skill and level are now mandatory.
+
+---
+
+## Update 08/05/24
+Bug fixes and a new endpoint.
+
+**Server:**
+- MapSchema replaces the DestinationSchema model in the endpoint move.
+- Fixed bug when recycling multiple items at the same time.
+- Fixed Get all maps filter error
+- New endpoint: Delete character (`/characters/delete`)
+
+**Client:**
+- Optimization of some API calls
+
+---
+
+## Update 08/04/24
+A few changes and new features. 
+
+**Server:**
+- `remaingSeconds` and `totalSeconds` removed from the CooldownSchema
+- `inventory_slotX` and `inventory_slotX_quantity` removed from CharacterSchema
+- Minimum cooldown are now 3 seconds for action.
+- An error that allowed cooldowns to be bypassed has been fixed.
+- Events are back.
+- Logs are now limited to the last 100 account actions.
+- Gold filter added to Get All characters (`/characters/`) endpoint.
+- Balancing:
+  - Mushroom Soup : "Gives ~~5~~** 12%** fire damage at the start of fight.
+  - Cheese : "Gives ~~5~~ **12%** air damage at the start of fight.
+  - Fried Eggs : "Gives ~~5~~ **12%** water damage at the start of fight. Craft: ~~3~~ **5** eggs
+  - Beef Stew : "Gives ~~5~~ **12%** earth damage at the start of fight.
+- GE Price update: Jasper crystal, Magical cure and all items containing them.
+- Ge Price update:  Monster resources lvl 25 and more.
+
+**Client:**
+- Gold leaderboard added.
+
+**Documentation:**
+- Recycling page added:  https://docs.artifactsmmo.com/concepts/recycling
+
+---
+
+## Update 08/03/24
+Here are a few changes that may have an impact on your projects. 
+
+**Server:**
+-  Added started_at to cooldown schema
+- Removed endpoint /my/logs/{character}
+- If you use images from the game to develop your visual interface, **please update** the image server link. The old link will soon be deactivated. New links available : https://docs.artifactsmmo.com/resources/images
+
+---
+
+## Update 07/31/24
+Various small changes.
+
+**Server:**
+- Items: Craft now displays correct null rather than an empty object
+- Resources: Schema added for drops
+- Monsters: Schema added for drops
+- My Characters Request: Schema updated for CharacterSchema
+- Get Bank Items Request: Added item_code filter to search for an item in your bank
+
+**Client:**
+- Fixed bug that closed modals when clicked outside.
+
+**API Documentation:**
+- Dark mode is now available.
+
+---
+
+## Update 07/30/24
+Round 2 bug fixes.
+
+**Server:**
+- Add task_master in content_type filter
+- Fixed error message on code 598 on gathering action request
+- Fixed text problem in ResourceSchema
+- **BREAKING CHANGE:** CharacterSchema update: The `inventory` is now in an array. 
+- **BREAKING CHANGE:** CooldownSchema update: `totalSeconds` to `total_seconds`, `remainingSeconds` to `remaining_seconds`  for more consistency.
+- **BREAKING CHANGE:** MonsterSchema update: `golds` replaced by `min_gold` and `max_gold` for more consistency.
+- **BREAKING CHANGE:** GEItemSchema update: `item` replaced by `code` for more consistency.
+
+**Client:**
+- Fixed a problem where only 50 items were displayed in the bank
+- Fix backspace issue in number inputs
+
+---
+
+## Update 07/30/24
+A small update has been deployed to change the xp formulas for combat, crafting and resource harvesting.
+
+**Server:**
+- Combat: XP reduction has been increased when you are too far from the monster's level.
+- Gathering skills: XP reduction has been increased when you are too far from the resource level.
+- Crafts: Crafts related to mining and woodcutting skills now give less XP.
+
+---
+
+## Update 07/29/24
+The update includes only various fixes for the client and server.
+
+**Server:**
+- Modified the server pagination system.
+- Added the "sort" parameter to the Get All Characters (`/characters`) request.
+- Fixed the Get Map  (`/maps/{x}/{y}`)  and Get All Maps  (`/maps`)  requests. If the map contains nothing, null is now displayed.
+- Fixed the regex related to email and password during registration. It is now possible to use all special characters for passwords.
+- Added Craft items and Effects schemas in items.
+- Fixed an error with the equip and unequip paths.
+- Fix the coordinates of the maps in the graveyard.
+- **BREAKING CHANGE: **The Grand Exchange now has a sell price (`sell_price`) and a buy price (`buy_price`). `price` no longer exists. A sales tax has been added when selling items.
+
+**Client:**
+- Fixed the token issue in the Web IDE.
+- Changed the time display format to HH:MM:SS
