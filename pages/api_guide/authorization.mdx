@@ -30,7 +30,7 @@ fetch("https://api.artifactsmmo.com/my/characters?page=1&size=50", requestOption
    .catch(error => console.log('error', error));
 ```
 
-The API will return a 403 Forbidden error if you attempt to access an endpoint without a valid JWT bearer token.
+The API will return a 452 error if you attempt to access an endpoint without a valid JWT bearer token.
 
 One common mistake is to forget to include the Bearer prefix in the Authorization header. For example, a proper Authorization header contains the value Bearer .
  
