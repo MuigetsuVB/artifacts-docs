@@ -1,0 +1,83 @@
+## Rest
+
+Resting allows you to recover your hit points. The cooldown is 1 second per 5 HP recovered.
+
+You can rest by using this POST request.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/rest \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
+
+## Using items
+
+You can use all items categorized as consumable. 
+You can see the list of items [on our website](https://client-test.artifactsmmo.com/encyclopedia/items?category=consumable) or use [an API request](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get).
+
+
+| Keyword | Condition                                            |
+| ------- | ---------------------------------------------------- |
+| Heal | Restores x health points to your character. |
+| Gold   | Adds x gold to your character's inventory. |
+
+
+You can use an item by using this POST request.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/use \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
+

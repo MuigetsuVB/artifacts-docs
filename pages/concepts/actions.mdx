@@ -3,12 +3,14 @@
 To execute an action with your character, you need to send an API request.
  
 Here's the list of actions currently available:
- 
+  
 *   [Move](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
 *   [Fight](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+*   [Rest](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
 *   [Gathering](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 *   [Crafting](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
 *   [Recycling](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
+*   [Use item](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
 *   [Equip item](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
 *   [Unequip item](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
 *   [Delete item](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
@@ -17,8 +19,9 @@ Here's the list of actions currently available:
 *   [Withdraw item (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_my__name__action_bank_withdraw_post)
 *   [Withdraw gold (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
 *   [Buy expansion (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
-*   [Buy item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_ge_buy_post)
-*   [Sell item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_sell_item_my__name__action_ge_sell_post)
+*   [Buy item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post)
+*   [Create order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post)
+*   [Cancel order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post)
 *   [Accept task](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
 *   [Complete task](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
 *   [Trade (task)](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
@@ -34,6 +37,7 @@ When you make an action, you instantly receive the result, but your character wi
 | ----------------   | ---------------------------------- |
 | Movement        |5s per map |
 | Fight             |2s per turn (reduce with haste)|
+| Rest             |1s per 5 HP (minimum 3 seconds)|
 | Crafting  |5s per item|
 | Recycling |2s per item|
 | Gathering   |25s (reduce with skill level and tools)|

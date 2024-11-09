@@ -1,9 +1,9 @@
 ## Gathering
  
-Gathering skills allow you to gather resources on the map. Currently, 3 gathering skills are available: Woodcutting, Mining and Fishing.
+Gathering skills allow you to gather resources on the map. Currently, 4 gathering skills are available: Woodcutting, Mining, Fishing and Alchemy.
 
 You can see all the resources that can be gathered with this API request.
-
+ 
 ```http filename="cURL" copy
 curl --location --request GET 'https://api.artifactsmmo.com/resources/?page=1&size=50' \
 --header 'Accept: application/json' \
@@ -61,7 +61,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
  
 ## Crafting
 
-Crafting skills let you make all kinds of items.  You can craft with 5 skills: Weaponcrafting, Gearcrafting, Jewelrycrafting, Mining and Woodcutting.
+Crafting skills let you make all kinds of items.  You can craft with 6 skills: Weaponcrafting, Gearcrafting, Jewelrycrafting, Mining, Woodcutting and Alchemy.
 
 If you want to see all the crafts of a skill, you can use the Get Item request with the craft_skill parameter. Here's an example request:
 

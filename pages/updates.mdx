@@ -1,8 +1,8 @@
-## Update 11/09/24: Season 3 
-Here's the preliminary patch notes for Season 3. The test server will be available from November 4. 
+## Update 11/09/24: Season 3
+Here's the patch notes for Season 3.
 
 **Grand Exchange:**
-- Complete overhaul of the system. Place sales orders to sell your items to other players at your chosen price. No more automatic buying and selling by the server!
+- Complete overhaul of the system. Place sales orders to sell your items to other players at your chosen price. 
 - `/my/{name}/action/grandexchange/buy` to buy from a sales order (you don't have to buy the entire order).
 - `/my/{name}/action/grandexchange/sell` to create sales orders.
 - `/my/{name}/action/grandexchange/cancel` to cancel a sales order.
@@ -16,13 +16,14 @@ Here's the preliminary patch notes for Season 3. The test server will be availab
 - Characters can now lose health in combat.
 - New skill added: Alchemy.
 - New endpoint `/my/{name}/action/use` to use consumable items.
-- New endpoint `/my/{name}/action/rest` to recover health without consumables (1s/10HP, minimum 3s).
+- New endpoint `/my/{name}/action/rest` to recover health without consumables (1s/5HP, minimum 3s).
 - Added `max_hp` to `CharacterSchema`.
 - Added `account` to `CharacterSchema`.
 - Added variables related to the new Alchemy skill.
 
+
 **Items:**
-- 100 new items.
+- 106 new items.
 - Consumables (food) can now be used outside of combat with the endpoint `/my/{name}/action/use`.
 - Potions (utility items) can now be used in combat (replacing food in that context).
 - 2 new keywords for effects (only for consumables): `heal` to restore life outside combat and `gold` to add golds to the character using the item.
@@ -40,13 +41,16 @@ Here's the preliminary patch notes for Season 3. The test server will be availab
 - Achievement-related schemas have been revised  (`BaseAchievementSchema` > `AchievementSchema`, `AchievementSchema` > `AccountAchievementSchema`).
 - Modified the endpoint `/characters/{name}/achievements` to `/accounts/{account}/achievements`.
 
+**Accounts:**
+- New endpoint `accounts/{account}`
+
 **Events:**
 - A new event has been added.
 - Changed endpoint `/events` to `/events/active`.
 - Added a new endpoint `/events` that lists all existing events.
 
 **Bank Expansion:**
-- The cost of an expansion is now 5000 gold and doubles with each purchase (the price may be adjusted based on test server data).
+- The cost of an expansion is now 2500 gold and doubles with each purchase (the price may be adjusted based on test server data).
 
 **Monsters:**
 - 6 new monsters.
@@ -58,6 +62,7 @@ Here's the preliminary patch notes for Season 3. The test server will be availab
 - Added stones (diamond, ruby, sapphire, emerald, topaz) for mining at a rate of 1/500. By gathering 10 identical stones, you can craft a gem.
 
 **Leaderboard:**
+-  The leaboard is now limited to the top 100 in each category. It is updated every hour.
 - Changed the endpoint `/leaderboard` to `/leaderboard/characters`.
 - Added the endpoint `/leaderboard/accounts`.
 

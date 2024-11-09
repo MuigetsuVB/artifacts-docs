@@ -2,10 +2,12 @@
     "actions": "Actions",
     "maps_and_movement": "Maps and Movement",
     "stats_and_fights": "Stats and Fights",
+    "resting_and_using_items": "Resting and using items",
     "skills": "Skills",
     "recycling": "Recycling",
     "inventory_and_bank": "Inventory and Bank",
     "grand_exchange": "Grand Exchange",
     "tasks": "Tasks", 
-    "events": "Events"
+    "events": "Events",
+    "achievements": "Achievements"
   }

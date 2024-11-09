@@ -55,8 +55,7 @@ The haste reduces the cooldown of a fight. You'll find more info in the Fights s
 Combat is based on a turn-by-turn system. The player always attacks first.&#x20;
 
 Fights can take a maximum of 100 turns (i.e. 50 attacks for the player, 50 attacks for the monster), otherwise you've automatically lost the fight.
-
-For the moment, there are no consequences to losing a fight, but this should change in the future.
+If you lose a fight, you return to the spawn (0,0) with 1 HP.
 
 Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time. The minimum combat cooldown is 5 seconds.
 
@@ -64,10 +63,10 @@ Here's the formula for calculating the cooldown:
 **Turns \* 2 - (Haste \* 0.01) \* (Turns \* 2)**
 
 For example, if a fight takes 20 turns and a player has 10 haste, the cooldown will be reduced by 4 seconds. 36 instead of 40 seconds. 1 haste = 1% less.
+ 
+### Equipments and utilities&#x20;
 
-### Equipments and consumables&#x20;
-
-To help you in fight, you can equip equipment and consumables. A consumable is consumed automatically when it meets a specific condition.
+To help you in fight, you can equip equipment and utilities. A utility is consumed automatically when it meets a specific condition.
 
 Here's everything you can equip:
 
@@ -80,16 +79,16 @@ Here's everything you can equip:
 *   Ring (2 slots)
 *   Amulet
 *   Artifact (3 slots)
-*   Consumable (2 slots)
+*   Utilities (2 slots)
 
-#### Consumables keywords 
+#### Utilities keywords 
  
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
 | Restore | Heals X HP when the player has lost 50% of his life. |
-| Boost   | Gives X (HP or % damage) at the start of fight. |
+| Boost   | Gives X (HP, % damage, % res) at the start of fight. |
 
-[View all consumables](https://artifactsmmo.com/encyclopedia/items?category=consumable)
+[View all utilities](https://artifactsmmo.com/encyclopedia/items?category=utility)
 
 ### Equip
 
