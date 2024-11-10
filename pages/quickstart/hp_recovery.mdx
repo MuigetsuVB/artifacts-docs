@@ -9,37 +9,31 @@ The easiest way to do this is to rest.
 To do this, you can execute this POST request when your combat cooldown is over.
  
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/rest' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE' \
---data-raw '{
-  "x": -1,
-  "y": -0 
-}'
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
 ```
 ```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+const url = 'https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
 
-var raw = JSON.stringify({
-   "x": -1,
-   "y": 0
-});
-
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
 };
-
-fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/rest", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
