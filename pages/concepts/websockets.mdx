@@ -1,0 +1,129 @@
+# Websockets
+
+*Websockets is only available to founder members.*
+
+WebSockets allow you to receive real-time notifications from the server.
+
+**Notifications supported:**
+|Name|Subscription code|Category|Type|Descripiton
+|--|--|--|--|--|
+| Event spawn|event_spawn | Events|Server|Send `ActiveEventSchema` when an event spawn. |
+| Event removed|event_removed| Events |Server| Send `ActiveEventSchema` when an event expires and is removed. |
+| Grand Exchange new order |grandexchange_neworder | Grand Exchange|Server| Send `GEOrderSchema` when a sales order is created on the Grand Exchange |
+| Grand Exchange sell |grandexchange_sell | Grand Exchange|Server| Send `GeOrderHistorySchema` when a sale is made on the Grand Exchange. |
+| Achievement unlock |achievement_unlocked | Achievements|Account| Send `AchievementSchema` when an achievement is unlocked on your account. |
+
+
+## How does it work?
+
+The WebSocket server is: `wss://realtime.artifactsmmo.com`
+
+Next, you need to include your token and the types of notifications you want to receive in the first message you send to the server.
+
+```python
+message = {
+        "token": token,
+        "subscriptions": ["event_spawn", "event_removed", "grandexchange_neworder", "grandexchange_sell", "achievement_unlocked"]
+    }    
+```
+
+If you want to receive all notifications, you don't need to include subscriptions.
+
+
+### Examples:
+
+```python filename="Python" copy
+import asyncio
+import websockets
+import json
+
+url = "wss://realtime.artifactsmmo.com"
+token ="YOUR_TOKEN" # Replace with your  token
+
+message = {
+        "token": token,
+        "subscriptions": ["event_spawn", "event_removed", "grandexchange_neworder", "grandexchange_sell", "achievement_unlocked"]
+    }    
+
+async def receive_messages():
+
+    async with websockets.connect(url) as websocket:
+        await websocket.send(json.dumps(message))
+        
+        print("Connected to the WebSocket server")
+        try:
+            while True:
+               # Waits for a message from the server
+                message_received = await websocket.recv()
+                message_received = json.loads(message_received)
+
+                print(f"Message received: {message_received}")
+        except websockets.ConnectionClosed:
+            print("Connection closed by the server")
+
+
+
+# Start the WebSocket client
+asyncio.run(receive_messages())
+```
+
+```java filename="Java" copy
+<dependency>
+    <groupId>org.java-websocket</groupId>
+    <artifactId>Java-WebSocket</artifactId>
+    <version>1.5.7</version>
+</dependency>
+
+public class WebSocketHandler extends WebSocketClient {
+
+    public WebSocketHandler(URI serverUri) {
+        super(serverUri);
+    }
+
+    @Override
+    public void onOpen(ServerHandshake handshakedata) {
+        String message = """
+        {"token": "%s",
+        "subscriptions": ["event_spawn", "event_removed,"grandexchange_sell", "grandexchange_neworder", "achievement_unlocked"]};
+        """.formatted(TOKEN);
+        send(message);
+        System.out.println("Connected to WebSocket server");
+    }
+
+    @Override
+    public void onMessage(String message) {
+        System.out.println("Received message: " + message);
+    }
+
+    @Override
+    public void onClose(int code, String reason, boolean remote) {
+        System.out.println("Disconnected from WebSocket server: " + reason);
+    }
+
+    @Override
+    public void onError(Exception ex) {
+        System.err.println("WebSocket error: " + ex.getMessage());
+    }
+
+    public static void main(String[] args){
+        try {
+            WebSocketHandler client = new WebSocketHandler(new URI("wss://realtime.artifactsmmo.com"));
+            client.connectBlocking();
+        } catch (URISyntaxException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## Server responses
+
+Server messages always include notification type and data. Data is always the same schema returned by the API if possible.
+
+Here's an example of a server message:
+```python
+{
+  'type': 'grandexchange_neworder', 
+  'data': '{"id":"67337920ef441b2c7466d5e8","seller":"muigetsu","code":"copper_ore","quantity":1,"price":1,"created_at":"2024-11-12T15:49:52.343Z"}'
+}
+```
