@@ -1,6 +1,10 @@
+import { Callout } from 'nextra/components' 
+
 # Websockets
 
-*Websockets is only available to founder members.*
+<Callout type="warning" emoji="⚠️">
+Websockets is only available to founder members.
+</Callout>
 
 WebSockets allow you to receive real-time notifications from the server.
 
@@ -30,7 +34,7 @@ message = {
 If you want to receive all notifications, you don't need to include subscriptions.
 
 
-### Examples:
+### Examples
 
 ```python filename="Python" copy
 import asyncio
@@ -65,6 +69,43 @@ async def receive_messages():
 
 # Start the WebSocket client
 asyncio.run(receive_messages())
+```
+
+```js filename="Javascript" copy
+const WebSocket = require('ws');
+
+const url = "wss://realtime.artifactsmmo.com";
+const token = "YOUR_TOKEN"; // Replace with your token
+
+const message = {
+    token: token,
+    subscriptions: ["event_new", "grandexchange_sell", "my_grandexchange_sell", "grandexchange_neworder"]
+};
+
+async function receiveMessages() {
+    const websocket = new WebSocket(url);
+
+    websocket.on('open', () => {
+        websocket.send(JSON.stringify(message));
+        console.log("Connected to the WebSocket server");
+    });
+
+    websocket.on('message', (data) => {
+        const messageReceived = JSON.parse(data);
+        console.log("Message received:", messageReceived);
+    });
+
+    websocket.on('close', () => {
+        console.log("Connection closed by the server");
+    });
+
+    websocket.on('error', (error) => {
+        console.error("WebSocket error:", error);
+    });
+}
+
+// Start the WebSocket client
+receiveMessages();
 ```
 
 ```java filename="Java" copy
