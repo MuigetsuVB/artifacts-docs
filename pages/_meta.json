@@ -7,8 +7,9 @@
   "concepts": "Game concepts",
   "api_guide": "API Guide",
   "resources": "Resources",
+  "others": "Others",
   "database": {
-    "title": "Database ↗",
+    "title": "Encyclopedia ↗",
     "type": "page",
     "href": "https://artifactsmmo.com/encyclopedia",
     "newWindow": true
