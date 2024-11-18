@@ -173,22 +173,24 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
 To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement) You can start a fight using this API request.
 
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/monsters/yellow_slime' \
+curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
---header 'Content-Type: application/json'
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
 ```
 ```js filename="Javascript" copy
 var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+ 
 var requestOptions = {
-   method: 'GET',
+   method: 'POST',
    headers: myHeaders,
    redirect: 'follow'
 };
-
-fetch("https://api.artifactsmmo.com/monsters/yellow_slime", requestOptions)
+ 
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
