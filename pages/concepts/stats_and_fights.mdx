@@ -1,13 +1,17 @@
 import { Callout } from 'nextra/components' 
  
 ## Stats 
-
+ 
 Here are all the stats a player can have:
 
 *   Hit points (HP)
 *   Elemental attacks (fire, water, earth,air)
 *   Elemental damages (fire, water, earth,air)
+*   Damage
 *   Elementals resistance (fire, water, earth,air)
+*   Prospecting
+*   Wisdom
+*   Critical Strike
 *   Haste
 
 You can view your character's stats directly [on the site ](https://artifactsmmo.com/account/characters)or use [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
@@ -18,13 +22,21 @@ Attack is the basic stats. Each attack removes one hit point from its opponent.
 
 ### Elemental damages
 
-Damage increases the attack of an element, it is given by consumables and equipment.
+Damage increases the attack of an element, it is given by utilies and equipment.
+If an equipment or utility gives damages without specifying the element, it applies to all elements.
 
 Here's the formula for calculating the effects of damage:
 **Attack \* (Damage \* 0.01)**
 
 For example, if a player has a base attack of 100 and a damage buff of 30, the output damage will be 130.
 1 damage buff = 1% extra base damage (1 extra damage using the example above)
+
+### Critical strike
+
+Critical strike gives you a chance to perform a strike that will perform 1.5x the total attack.
+
+For example, if a player has 10 critical strikes, he has a 10% chance of performing a critical strike.
+1 critical strike = 1% critical strike. If he hits 100 without a critical hit, then he'll hit 150 if he performs a critical hit.
 
 ### Elemental resistances
 
@@ -49,6 +61,16 @@ For example, A player with a resistance buff of 10 would result in a 1% chance o
 ### Haste
 
 The haste reduces the cooldown of a fight. You'll find more info in the Fights section below.
+
+### Wisdom and Prospecting
+
+Wisdom and prospecting are stats that give you bonuses at the end of combat.
+
+Wisdom increases the XP you'll earn (10 wisdom = 1% extra xp).
+1 wisdom = 0.1% more xp.
+
+Prospecting increases your chance of dropping items. (10 prospecting = 1% extra drop chance).
+1 prospecting = 0.1% more chance of dropping.
 
 ## Fights
 
@@ -80,15 +102,44 @@ Here's everything you can equip:
 *   Amulet
 *   Artifact (3 slots)
 *   Utilities (2 slots)
+*   Bag
+*   Rune
 
 #### Utilities keywords 
  
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
 | Restore | Heals X HP when the player has lost 50% of his life. |
-| Boost   | Gives X (HP, % damage, % res) at the start of fight. |
+| Boost   | Gives X (HP, % damage, % res, prospecting, critical strike) at the start of fight. |
+| Antipoison   | At the beginning of the turn, if the character has at least one poison on him, removes x poison damage.
 
 [View all utilities](https://artifactsmmo.com/encyclopedia/items?category=utility)
+
+#### Runes keywords
+
+Runes are equipment that will launch an ability in combat. There are currently 3 that you can obtain for gold by visiting the NPC in 6,13.
+
+| Keyword | Condition                                            |
+| ------- | ---------------------------------------------------- |
+| Burn | On your first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block. |
+| Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
+| Healing   | Every 3 played turns, restores x% of HP at the start of the turn.|
+
+[View all runes](https://artifactsmmo.com/encyclopedia/items?category=rune)
+
+
+### Monsters effects/abilites
+
+Some monsters launch abilites called effects. These are additional effects that can be activated during combat in addition to their attacks.
+
+| Keyword | Condition                                            |
+| ------- | ---------------------------------------------------- |
+| Burn | On your first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block. |
+| Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
+| Healing   | Every 3 played turns, restores x% of HP at the start of the turn.
+| Reconstitution   | At the beginning of the turn x, restores all HP.
+| Poison   | At the start of his first turn, apply a poison of x on one of your opponents. Loses xHP per turn, damage cannot be dodged.
+
 
 ### Equip
 

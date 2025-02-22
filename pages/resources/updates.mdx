@@ -1,3 +1,76 @@
+## Update 22/02/25: Season 4
+Here's the patch notes for Season 4.
+
+**Monsters** 
+- They will be able to cast abilities such as:
+    - Burn: On your first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block.
+   - Poison: At the start of his first turn, apply a poison of x on one of your opponents. Loses x lives per turn, damage cannot be dodged.
+   - Reconstitution: At the beginning of turn x, regains all HP.
+   - Healing: Every 3 played turns, regains x% of life.
+- Monsters can now make critical hits (x1.5 of total damage).
+- `effects`, `critical_strike` added to the `MonsterSchema` model.
+- New monster resources have been added to: Bandit Lizard, Vampire and Owlbear.
+- 3 new monsters (Spider, Highwayman, Cursed Tree)
+
+**Characters:**
+- New stats:
+   - % Damage: Deals damage in all elements
+   - Wisdom: Increases the experience you gain in combat against monsters (10 wisdom = 1% extra)
+   - Prospecting: Increases your drop rate (10 prospecting = 1% extra)
+   - % Critical Strike: Increases your chance to make critical hits
+- New Bag slot: The Artifact Backpack has changed category.
+- New Rune slot: Runes are effects (spells) that your character can cast in combat. The first 3 runes will be sold by the NPC Rune Vendor.
+- `rune_slot`, `bag_slot`, `wisdom`, `prospecting` added to the `BaseCharacterSchema` model.
+- New actions:  `/my/{name}/action/npc/buy`, `/my/{name}/action/npc/sell`
+
+**Items**
+- New Antipoison consumable effect: At the beginning of the turn, if the character has at least one poison on him, removes x poison damage.
+- New item effects for Runes :
+   - Healing: Every 3 played turns, regains x% of life.
+   - Burn: On your first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block.
+   - Lifesteal: For each critical hit, the character heals x% of your attack damage of all elements.
+- Over 40 new items.
+ - The crafts have been reviewed to integrate the new resources.
+- Modification, rebalancing of equipment/weapons to add the new statistics.
+
+**Events**
+- New event `type`: npc
+- New events:
+  - Cursed tree (Monster)
+  - Nomadic Merchant (NPC)
+  - Gemstone Merchant (NPC)
+  - Timber Merchant (NPC)
+  - Fish Merchant (NPC)
+  - Herbal Merchant (NPC)
+
+**NPC**
+- 6 NPCs avaliable:
+   - Rune vendor
+   - Nomadic Merchant
+   - Gemstone Merchant
+   - Timber Merchant
+   - Fish Merchant
+   - Herbal Merchant
+- New endpoint `/npcs` to see all npcs.
+- New endpoint `/npcs/{code}` to see a specific npc.
+- New endpoint `/npcs/{code}/items` too see items for sale or purchase by an npc.
+
+**Maps**
+- New `content_type`: npc
+
+**Achievements**
+- New achievement `type`: use.
+- Achievements have been updated to remove rare drops related to events.
+
+**Other changes:**
+- All effects are now available on the `/effects` endpoints
+- The `sunflower` resource has been renamed `sunflower_field`
+- The gold leaderboard is now by account rather than by character.
+- The Grand Exchange tax is now 3%.
+- The number of XP earned during crafts has been revised upwards to favor a smoother progression.
+- The price of the first bank extension has been increased to 5 000 gold.
+
+
 ##  Update 12/26/24
 
 Here's the patchnote for version 3.3.

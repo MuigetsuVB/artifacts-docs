@@ -1,0 +1,137 @@
+# NPCs 
+ 
+NPCs are merchandise characters from whom you can buy or sell items. Some are static, while others appear dynamically through the [event system](/concepts/events).
+ 
+
+## List of NPCs
+
+You can use this GET request to view the list of all existing NPCs.
+ 
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/npcs' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
+
+fetch("https://api.artifactsmmo.com/npcs", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+## Buying/selling items
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_get)
+
+
+You can use this GET request to view the list of items that npc sells/buys.
+ 
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/npcs/{code}/items' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
+
+fetch("https://api.artifactsmmo.com/npcs/{code}/items", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs__code__items_get)
+
+## Actions
+
+To buy or sell an item, you must be on a map with an NPC. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement)
+
+You can use this POST request to buy an item.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
+
+You can use this POST request to sell an item.
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
