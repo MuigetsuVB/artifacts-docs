@@ -1,3 +1,25 @@
+## Update 20/03/25: 4.1
+
+Here's the patch notes for version 4.1.
+
+**Leaderboard:**
+- Endpoints now return the top 1000 instead of the top 100.
+- Added the `name` parameter to search for a specific player.
+
+**Fight:**
+- Fixed a bug related to the `boost_hp` keyword.
+
+**Achievements:**
+- Crafting-type achievements now correctly trigger WebSocket notifications.
+
+**Events:**
+- Added a `type` parameter to filter events by a specific type.
+
+**Characters:**
+- The endpoint `/my/characters` has been replaced by `/accounts/{account}/characters`.
+Note: The endpoint /my/characters remains temporarily available. Please migrate to the new endpoint, as it will be removed soon.
+
+
 ## Update 22/02/25: Season 4
 Here's the patch notes for Season 4.
 
