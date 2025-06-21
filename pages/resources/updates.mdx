@@ -1,3 +1,88 @@
+## Update 29/06/25: Season 5 (Draft)
+
+Here's the patch notes for Season 5.
+
+**Server Details**
+- The default Status endpoint has been redesigned and renamed to Server Details, now including season and rate limit information.
+
+**Badges**
+- The list of seasonal badges is now visible at the Server Details (`/`) endpoint.
+- Badges are now automatically granted when the corresponding condition is met.
+
+**Characters**
+- Maximum level for both skills and combat increased to **45**.
+
+**Skins**
+- It is now possible to change your character's skin using the Action Change Skin endpoint (`/my/{name}/action/change_skin`).
+- Aside from the default skins, unlocked skins are visible through the Get Account endpoint (`/accounts/{account}`).
+- A seasonal-themed skin can be unlocked by earning **100% of achievement points** in a season.
+
+**Note**: Skin changing is currently only available via the API.
+
+ **Combat**
+- The "attack block" system for monsters and players has been removed. It was too random and disconnected from gameplay.
+- New combat effect: **Corrupted** : Each attack of a given element reduces the opponent's resistance to that element by x%.
+
+**Account**
+- Changes and additions to the MyAccountDetails and AccountDetails schemas in preparation for future features.
+
+**Bank**
+- Fixed a bug where depositing items into the bank generated two log messages.
+
+**Events**
+- previous_skin has been replaced by previous_map, which now includes the MapSchema of the replaced map.
+- The "Cursed Forest" event has been removed; the monster is now static at coordinates 9,9.
+- Events can now spawn on maps with existing content, replacing it.
+- 3 new events:
+  - Corrupted Area (Ogre) 
+  - Corrupted Area (Owlbear)
+  - Corrupted Area (Portal)
+
+**Monsters**
+- 4 new monsters:
+  - Sheep: Level 5
+  - Corrupted Ogre : Level 20
+  - Corrupted Owlbear : Level 30
+  - Grimlet : Level 45
+
+**Maps**
+- Visual redesign of some maps to better match the Artifacts universe.
+
+** Items**
+- New system for equipping or using items based on conditions. Any character variable can be used to define these conditions. 
+- Added new tools and changed tool conditions: tools now require a skill level rather than combat level.
+- Rebalanced a large number of equipment items (stats, craft).  
+- Hell gear moved to level 45 and new gear added.
+- Some items have been reworked (name, image) to better match the Artifacts universe.
+
+** Skills**
+- Harvesting skill cooldowns have been increased because new tools have been added to all level brackets.
+- The **wisdom** stat now increases XP gain for all skills.
+- The **prospecting** stat increases the chances of getting skill-related resource drops.
+
+**NPCs**
+- New NPC trader system allowing item-for-item trades.
+- Endpoints updated:
+  - `/npcs/details`: view list of NPCs
+  - `/npcs/items`: view list of tradeable items, with filters (currency, code, npc)
+- New currency field in the NPCItem schema.  If it's not gold, it's the item code.
+- 4 new NPCs:
+  - **Tailor**: Converts raw materials (cowhide, snake hide, wool) into refined resources.
+  - **Tasks Trader**: Trades task coins for task-related resources.
+  - **Archaeologist**: Exchanges artifact fragments and rare resources for complete items.
+  - **Cultist Wizard**: Trades corrupted gems for new unique items.
+
+**Equip**
+- When equipping a new item, the currently equipped item is automatically unequipped.
+
+** Give**
+- It is now possible to give items or gold to another one of your characters on the same map using two new endpoints:
+  - Give Gold: `/my/{name}/action/give_gold`
+  - Give Item: `/my/{name}/action/give_item`
+
+**Note**: This feature is only available via API.
+
+
 ##  Update 05/07/25
 
 Here's the patchnote for version 4.3. 
