@@ -26,10 +26,13 @@ Here's the patch notes for Season 5.
 **Account**
 - Changes and additions to the `MyAccountDetails` and `AccountDetails` schemas in preparation for future features.
 
-**Bank**
-- Fixed a bug where depositing items into the bank generated two log messages.
-- The number of bank slots is now 50 rather than 30.
-- The cost of a bank expansion is now 4 500 gold for 20 slots.
+## Bank
+- Fixed a bug where depositing items into the bank generated duplicate log messages.  
+- The default number of bank slots is now **50** (previously 30).  
+- Bank expansions now cost **4,500 gold** for **20 additional slots**.  
+- It is now possible to **deposit and withdraw multiple items at once**. The data is now a list of `SimpleItemSchema`.  
+- The item deposit endpoint has been changed from `/deposit` to `/deposit/item` for greater consistency.  
+- The item withdrawal endpoint has been changed from `/withdraw` to `/withdraw/item` for greater consistency.
 
 **Events**
 - `previous_skin` has been replaced by `previous_map`, which now includes the `MapSchema` of the replaced map.
@@ -80,8 +83,8 @@ Here's the patch notes for Season 5.
 
 **Give**
 - It is now possible to give items or gold to another one of your characters on the same map using two new endpoints:
-  - Give Gold: `/my/{name}/action/give_gold`
-  - Give Item: `/my/{name}/action/give_item`
+  - Give Gold: `/my/{name}/action/give/gold`
+  - Give Item: `/my/{name}/action/give/item`
 
 **Note**: This feature is only available via API.
 
