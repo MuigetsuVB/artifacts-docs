@@ -135,6 +135,56 @@ Some monsters launch abilites called effects. These are additional effects that 
 
 ### Equip
 
+To equip an item, your character must meet all the item's conditions. An item's conditions can use any character variable and an operator such as gt, lt, or eq.
+
+For example, the Iron Sword requires your character to be above level 9.
+
+```http filename="JSON" copy
+{
+  "name": "Iron Sword",
+  "code": "iron_sword",
+  "level": 10,
+  "type": "weapon",
+  "subtype": "",
+  "description": "A reliable weapon for any adventurer. The weight of iron gives your strikes extra force.",
+  "tradeable": true,
+  "conditions": [
+    {
+      "code": "level",
+      "operator": "gt",
+      "value": 9
+    }
+  ],
+  "effects": [
+    {
+      "code": "attack_earth",
+      "value": 24,
+      "description": "Adds 24 Earth Attack to its stats when equipped."
+    },
+    {
+      "code": "critical_strike",
+      "value": 5,
+      "description": "Adds 5% Critical Strike to its stats when equipped. Critical strikes adds 50% extra damage to an attack (1.5x). "
+    }
+  ],
+  "craft": {
+    "skill": "weaponcrafting",
+    "level": 10,
+    "items": [
+      {
+        "code": "iron_bar",
+        "quantity": 6
+      },
+      {
+        "code": "feather",
+        "quantity": 2
+      }
+    ],
+    "quantity": 1
+  }
+}
+```
+
 To equip an item, you can use this API request.
 
 ```http filename="cURL" copy
