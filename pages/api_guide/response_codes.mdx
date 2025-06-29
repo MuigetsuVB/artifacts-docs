@@ -23,6 +23,11 @@ code_too_many_requests: int = 429
 code_not_found: int = 404
 code_fatal_error: int = 500
 
+#Email token error codes
+code_invalid_email_reset_token =  560
+code_expired_email_reset_token = 561
+code_used_email_reset_token = 562
+
 # Account Error Codes
 code_token_invalid: int = 452
 code_token_expired: int = 453
@@ -32,6 +37,8 @@ code_username_already_used: int = 456
 code_email_already_used: int = 457
 code_same_password: int = 458
 code_current_password_invalid: int = 459
+code_account_not_member: int = 451
+code_account_skin_not_owned: int = 550
 
 # Character Error Codes
 code_character_not_enough_hp: int = 483
@@ -49,7 +56,7 @@ code_character_gold_insufficient: int = 492
 code_character_not_skill_level_required: int = 493
 code_character_name_already_used: int = 494
 code_max_characters_reached: int = 495
-code_character_not_level_required: int = 496
+code_character_condition_not_met: int = 496
 code_character_inventory_full: int = 497
 code_character_not_found: int = 498
 code_character_in_cooldown: int = 499
@@ -81,4 +88,8 @@ code_bank_full: int = 462
 # Maps Error Codes
 code_map_not_found: int = 597
 code_map_content_not_found: int = 598
-```
+
+
+# NPC Error Codes
+code_npc_not_for_sale: int = 441
+code_npc_not_for_buy: int = 442
