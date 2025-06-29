@@ -48,17 +48,12 @@ You can see the list of items [on our website](https://artifactsmmo.com/encyclop
 
 To use an item, your character must meet all the item's conditions. An item's conditions can use any character variable and an operator such as gt, lt, or eq.
 
-For example, the Cooked Beef requires your character to be above level 4.
+
+For example, the [Cooked Beef](https://www.artifactsmmo.com/encyclopedia/items/cooked_beef/) requires your character to be above level5.
 
 ```http filename="JSON" copy
 {
-  "name": "Cooked Beef",
-  "code": "cooked_beef",
-  "level": 5,
-  "type": "consumable",
-  "subtype": "food",
-  "description": "Juicy, well-cooked beef that restores a good amount of health. A staple of adventurers everywhere.",
-  "tradeable": true,
+...
   "conditions": [
     {
       "code": "level",
@@ -66,29 +61,10 @@ For example, the Cooked Beef requires your character to be above level 4.
       "value": 4
     }
   ],
-  "effects": [
-    {
-      "code": "heal",
-      "value": 150,
-      "description": "Heal 150 HP when the item is used."
-    }
-  ],
-  "craft": {
-    "skill": "cooking",
-    "level": 5,
-    "items": [
-      {
-        "code": "raw_beef",
-        "quantity": 1
-      }
-    ],
-    "quantity": 1
-  }
-}
+....
 ```
 
-
-You can use an item by using this POST request.
+This is the POST request you can use to equip an item.
 
 ```http filename="cURL" copy
 curl --request POST \
