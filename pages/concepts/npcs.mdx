@@ -1,14 +1,13 @@
 # NPCs 
  
-NPCs are merchandise characters from whom you can buy or sell items. Some are static, while others appear dynamically through the [event system](/concepts/events).
- 
+NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the event system. 
 
 ## List of NPCs
 
 You can use this GET request to view the list of all existing NPCs.
  
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/npcs' \
+curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
 ```
@@ -23,40 +22,37 @@ var requestOptions = {
    redirect: 'follow'
 }; 
 
-fetch("https://api.artifactsmmo.com/npcs", requestOptions)
+fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_get)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
 
-## Buying/selling items
+## Buying/selling/trading items
 
-You can use this GET request to view the list of items that npc sells/buys.
+You can use this GET request to view the list of items that npc sells/buys/trades. 
+If the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
  
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/npcs/{code}/items' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json'
+curl --request GET \
+  --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
+  --header 'Accept: application/json'
 ```
 ```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
+const url = 'https://api.artifactsmmo.com/npcs/items/{npc_code}';
+const options = {method: 'GET', headers: {Accept: 'application/json'}};
 
-var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
-}; 
-
-fetch("https://api.artifactsmmo.com/npcs/{code}/items", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs__code__items_get)
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs_items__code__get)
 
 ## Actions
 
