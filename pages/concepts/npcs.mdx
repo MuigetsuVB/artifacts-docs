@@ -31,8 +31,10 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
 
 ## Buying/selling/trading items
 
-You can use this GET request to view the list of items that npc sells/buys/trades. If the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
- 
+When viewing the items on an NPC, if the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
+
+You can use this GET request to view the list of items that npc sells/buys/trades. 
+
 ```http filename="cURL" copy
 curl --request GET \
   --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
