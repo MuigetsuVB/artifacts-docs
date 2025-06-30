@@ -20,7 +20,7 @@ Achievement points and the number of achievements required to complete a season 
 
 ## Account Achievements
 
-You can use this POST request to view a character's list of achievements.
+You can use this GET request to view your account's list of achievements.
 
 ```http filename="cURL" copy
 curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
@@ -45,7 +45,6 @@ fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOpt
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
-```
 
 You can also view the complete list of possible achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
 
