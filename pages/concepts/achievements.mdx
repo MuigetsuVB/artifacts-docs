@@ -2,7 +2,6 @@
 
 Achievements are objectives to be met during the season by all your characters. They grant you gold and achievement points, which allow you to earn season badges.
 
-![Client](https://artifactsmmo.com/images/docs/badges_msg.png)
 
 > **Note:** Achievements are tracked at the account level. All your characters contribute together to unlock achievements.
 
@@ -20,55 +19,42 @@ Achievement points and the number of achievements required to complete a season 
 - `other` – Miscellaneous achievements
 - `use` – Use consumables
 
-## Querying Achievements
+## Account Achievements
 
-You can use this **GET** request to view your account’s achievements and their progress:
+You can use this POST request to view a character's list of achievements.
 
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements?type=&completed=&page=1&size=50' \
+curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
 ```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
 
-Query parameters:
-- `type`: Filter by achievement type (see list above)
-- `completed`: true/false – completed or not
-- `page`/`size`: Pagination
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
 
-Example response:
-```json
-{
-  "data": [
-    {
-      "name": "Monster Slayer",
-      "code": "slay_100_monsters",
-      "description": "Defeat 100 monsters.",
-      "points": 5,
-      "type": "combat_kill",
-      "target": "monster",
-      "total": 100,
-      "current": 42,
-      "completed_at": null,
-      "rewards": { "gold": 100 }
-    }
-    // ...
-  ]
-}
+fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
 ```
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
-
-You can also view the complete list of possible achievements with:
-
-```http
-GET /achievements
 ```
+
+You can also view the complete list of possible achievements using [ `/achievements` endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
+
 
 ## Season Badges
 
+![Client](https://artifactsmmo.com/images/docs/badges_msg.png)
+
+
 Each season, accumulating enough achievement points can earn you unique seasonal badges.  
 You can view the current badges and requirements via the `/badges` endpoint or in the server details.
-
----
-
-Si tu veux que je génère la page corrigée directement au format `.mdx`, fais-le moi savoir !
