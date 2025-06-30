@@ -2,10 +2,9 @@
 
 Achievements are objectives to be met during the season by all your characters. They grant you gold and achievement points, which allow you to earn season badges.
 
-
 > **Note:** Achievements are tracked at the account level. All your characters contribute together to unlock achievements.
 
-Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements and available badges using the [server status endpoint](/api_guide/openapi_spec) or the `/badges` endpoint.
+Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements using the [server status endpoint](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get)
 
 ## Achievement Types
 
@@ -48,13 +47,34 @@ fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOpt
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
 ```
 
-You can also view the complete list of possible achievements using [ `/achievements` endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
+You can also view the complete list of possible achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
 
 
 ## Season Badges
 
 ![Client](https://artifactsmmo.com/images/docs/badges_msg.png)
 
-
 Each season, accumulating enough achievement points can earn you unique seasonal badges.  
-You can view the current badges and requirements via the `/badges` endpoint or in the server details.
+
+You can view the current badges and requirements using this GET request.
+
+```http filename="cURL" copy
+curl --request GET \
+  --url https://api.artifactsmmo.com/badges \
+  --header 'Accept: application/json'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/badges';
+const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get)
+
