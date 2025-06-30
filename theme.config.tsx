@@ -16,7 +16,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/MuigetsuVB/mmo-docs/blob/main/',
   footer: {
-    text: '© 2024 Artifacts. All rights reserved. ',
+    text: '© 2025 Artifacts. All rights reserved. ',
   },
   nextThemes: {
     defaultTheme: 'dark',
