@@ -113,7 +113,7 @@ Runes are equipment that will launch an ability in combat. There are currently 3
 
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
-| Burn | On your first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block. |
+| Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time.  |
 | Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
 | Healing   | Every 3 played turns, restores x% of HP at the start of the turn.|
 
@@ -126,11 +126,12 @@ Some monsters launch abilites called effects. These are additional effects that 
 
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
-| Burn | On their first turn, apply a burn effect of x% of their attack of all elements. The damage is applied each turn and decreases by 10% each time. It is impossible to block. |
+| Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. |
 | Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
 | Healing   | Every 3 played turns, restores x% of HP at the start of the turn.
 | Reconstitution   | At the beginning of the turn x, restores all HP.
-| Poison   | At the start of their first turn, apply a poison of x on one of your opponents. Loses xHP per turn, damage cannot be dodged.
+| Poison   | At the start of its first turn, applies a {value} poison to its opponent. Loses x HP per turn.
+| Corrupted | After every time the bearer of this effect is attacked, their resistance to the attack's element is reduced by x%, and can go negative.
 
 
 ### Equip
@@ -150,6 +151,7 @@ For example, the [Iron Sword](https://www.artifactsmmo.com/encyclopedia/items/ir
     }
   ],
 ....
+}
 ```
 
 To equip an item, you can use this API request.
