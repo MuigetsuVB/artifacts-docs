@@ -23,6 +23,9 @@ var requestOptions = {
 }; 
 
 fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
+
+
+
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
