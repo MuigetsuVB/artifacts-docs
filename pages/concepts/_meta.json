@@ -1,15 +1,15 @@
-{ 
-    "actions": "Actions",
-    "maps_and_movement": "Maps and Movement",
-    "stats_and_fights": "Stats and Fights",
-    "resting_and_using_items": "Resting and using items",
-    "skills": "Skills",
-    "recycling": "Recycling",
-    "inventory_and_bank": "Inventory and Bank",
-    "grand_exchange": "Grand Exchange",
-    "give": "Give items & Gold",
-    "tasks": "Tasks", 
-    "events": "Events",
-    "npcs": "NPCs",
-    "achievements": "Achievements"
-  }
+{
+  "achievements": "Achievements",
+  "actions": "Actions",
+  "events": "Events",
+  "give": "Give items & Gold",
+  "grand_exchange": "Grand Exchange",
+  "inventory_and_bank": "Inventory and Bank",
+  "maps_and_movement": "Maps and Movement",
+  "npcs": "NPCs",
+  "recycling": "Recycling",
+  "resting_and_using_items": "Resting and using items",
+  "skills": "Skills",
+  "stats_and_fights": "Stats and Fights",
+  "tasks": "Tasks"
+}
