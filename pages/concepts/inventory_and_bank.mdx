@@ -85,8 +85,6 @@ To deposit or withdraw items, you must be on a map containing a bank.
 
 - You can deposit or withdraw up to **20 different items at once** per request.
 - The **cooldown** is **3 seconds per different item** deposited or withdrawn.
-- If your bank is full, you will receive an error (code 462).
-- If a transaction is already in progress for some items or gold, you will receive an error (code 461).
 
 You can use this POST request to **withdraw items**:
 
@@ -164,11 +162,15 @@ try {
 ```
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
 
+
 ### Deposit/withdraw gold
 
 To deposit or withdraw gold, you must be on a map containing a bank.
 
-You can use this POST request to withdraw gold:
+- You can deposit or withdraw **any amount of gold** per request, as long as you have the gold available.
+- The **cooldown** is **always 3 seconds** per deposit or withdrawal of gold, regardless of the amount.
+
+You can use this POST request to **withdraw gold**:
 
 ```http filename="cURL" copy
 curl --request POST \
@@ -202,7 +204,7 @@ try {
 ```
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
 
-You can use this POST request to deposit gold:
+You can use this POST request to **deposit gold**:
 
 ```http filename="cURL" copy
 curl --request POST \
