@@ -10,13 +10,13 @@
   "database": {
     "title": "Encyclopedia ↗",
     "type": "page",
-    "href": "https://artifactsmmo.com/encyclopedia",
+    "href": "https://artifactsmmo.com/encyclopedia/items",
     "newWindow": true
   },
   "client": {
     "title": "Client ↗",
     "type": "page",
-    "href": "https://artifactsmmo.com/client",
+    "href": "https://client.artifactsmmo.com",
     "newWindow": true
   },
   "api_ref": {
