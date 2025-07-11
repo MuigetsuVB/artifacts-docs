@@ -5,10 +5,10 @@ import { Callout } from 'nextra/components'
 Here are all the stats a player can have:
 
 *   Hit points (HP)
-*   Elemental attacks (fire, water, earth,air)
-*   Elemental damages (fire, water, earth,air)
+*   Elemental attacks (fire, water, earth, air)
+*   Elemental damages (fire, water, earth, air)
 *   Damage
-*   Elementals resistance (fire, water, earth,air)
+*   Elemental resistance (fire, water, earth, air)
 *   Prospecting
 *   Wisdom
 *   Critical Strike
@@ -22,7 +22,7 @@ Attack is the basic stats. Each attack removes one hit point from its opponent.
 
 ### Elemental damages
 
-Damage increases the attack of an element, it is given by utilies and equipment.
+Damage increases the attack of an element, it is given by utilities and equipment.
 If an equipment or utility gives damages without specifying the element, it applies to all elements.
 
 Here's the formula for calculating the effects of damage:
@@ -30,6 +30,36 @@ Here's the formula for calculating the effects of damage:
 
 For example, if a player has a base attack of 100 and a damage buff of 30, the output damage will be 130.
 1 damage buff = 1% extra base damage (1 extra damage using the example above)
+
+### Damage Calculation and Rounding
+
+Damage is calculated in two steps: calculating your real attack from your stats, and calculating your damage per hit based on your own attack and the opponent's resist.
+
+**Step 1: Calculating Real Attack**
+
+First, getting our real attack. Let's use an example of a weapon with 50 earth attack, and equipment that gives 23% earth damage and 10% all damage.
+
+The real attack formula is: **Round(baseAttack + baseAttack \* damageMultiplier \* 0.01)**
+
+So with the example stats, that's Round(50 + 50 \* 33 \* 0.01) = 67 (it was 66.5 before rounding, and .5 always rounds up)
+
+This real attack is also what burn damage is based on (from the Burn Rune). It does not care about the opponent's resists.
+
+**Step 2: Calculating Final Damage**
+
+Then to calculate the damage dealt to the opponent, the formula is: **Round(attack - attack \* defenderResist \* 0.01)**
+
+Say we are fighting a monster with -20% earth resist. So that's Round(67 - 67 \* -20 \* 0.01) = 80 (was 80.4 before rounding; below .5 rounds down)
+
+So the opponent takes 80 damage from every attack.
+
+**Important Rounding Rules:**
+- .5 always rounds up
+- Below .5 rounds down
+
+**Multi-Element Weapons:**
+
+If your weapon has multiple elements (many of them do), this calculation is done independently for each element. If you look at the fight logs, you'll see that a separate attack instance happens for each element the attacker has.
 
 ### Critical strike
 
@@ -42,11 +72,11 @@ For example, if a player has 10 critical strikes, he has a 10% chance of perform
 
 Resistance reduces the attack damage of its opponent.
 
-Here's the formula for calculating the effects of damage reduction, it is given by utilies and equipment.
-**Round(Attack \* (Resistance \* 0.01))**
+Here's the formula for calculating the effects of damage reduction, it is given by utilities and equipment.
+**Round(attack - attack \* defenderResist \* 0.01)**
 
-For example, if a monster has a resistance buff of 30 and the player has 100 attack, the monster will block 30 damage. 
-1 resistance buff = 1% damage reduction (1 less damage using the example above)
+For example, if a monster has a resistance buff of 30 and the player has 100 attack, the final damage will be Round(100 - 100 \* 30 \* 0.01) = 70. The monster blocks 30 damage. 
+1 resistance buff = 1% damage reduction
 
 
 ### Haste
@@ -122,7 +152,7 @@ Runes are equipment that will launch an ability in combat. There are currently 3
 
 ### Monsters effects/abilites
 
-Some monsters launch abilites called effects. These are additional effects that can be activated during combat in addition to their attacks.
+Some monsters launch abilities called effects. These are additional effects that can be activated during combat in addition to their attacks.
 
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
