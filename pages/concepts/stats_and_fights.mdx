@@ -25,27 +25,19 @@ Attack is the basic stats. Each attack removes one hit point from its opponent.
 Damage increases the attack of an element, it is given by utilities and equipment.
 If an equipment or utility gives damages without specifying the element, it applies to all elements.
 
+Damage is rounded during the calculation process. The damage calculation does not happen all at once.
+
 Here's the formula for calculating the effects of damage:
-**Round(Attack \* (Damage \* 0.01))**
+**Round(Attack \* Round(Damage \* 0.01))**
 
 For example, if a player has a base attack of 100 and a damage buff of 30, the output damage will be 130.
 1 damage buff = 1% extra base damage (1 extra damage using the example above)
-
-### Damage Calculation and Rounding
-
-Damage is also rounded during the calculation process. The damage calculation does not happen all at once.
-
-The formula is: **Round(Attack \* Round(Damage \* 0.01))** for each element.
-
-For example, if a player has a base attack of 100 and damage buffs totaling 35%, the calculation would be:
-Round(100 \* Round(35 \* 0.01)) = Round(100 \* 0.35) = Round(35) = 35 damage
 
 **Important Rounding Rules:**
 - .5 always rounds up
 - Below .5 rounds down
 
 **Multi-Element Weapons:**
-
 If your weapon has multiple elements (many of them do), this calculation is done independently for each element. If you look at the fight logs, you'll see that a separate attack instance happens for each element the attacker has.
 
 ### Critical strike
@@ -59,11 +51,12 @@ For example, if a player has 10 critical strikes, he has a 10% chance of perform
 
 Resistance reduces the attack damage of its opponent.
 
-Here's the formula for calculating the effects of damage reduction, it is given by utilities and equipment.
-**Round(attack - attack \* defenderResist \* 0.01)**
+Resistance is rounded during the calculation process. Resistance uses the same logic as damage.
 
-For example, if a monster has a resistance buff of 30 and the player has 100 attack, the final damage will be Round(100 - 100 \* 30 \* 0.01) = 70. The monster blocks 30 damage. 
-1 resistance buff = 1% damage reduction
+Here's the formula for calculating the effects of damage reduction, it is given by utilities and equipment.
+** Round(Attack * Round(Resistance * 0.01))**
+
+For example, if a monster has a resistance buff of 30 and the player has 100 attack, the monster will block 30 damage. 1 resistance buff = 1% damage reduction (1 less damage using the example above)
 
 
 ### Haste
@@ -91,7 +84,7 @@ If you lose a fight, you return to the spawn (0,0) with 1 HP.
 Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time. The minimum combat cooldown is 5 seconds.
 
 Here's the formula for calculating the cooldown:
-**Turns \* 2 - (Haste \* 0.01) \* (Turns \* 2)**
+**Turns * 2 - (Haste * 0.01) * (Turns * 2)**
 
 For example, if a fight takes 20 turns and a player has 10 haste, the cooldown will be reduced by 4 seconds. 36 instead of 40 seconds. 1 haste = 1% less.
  
