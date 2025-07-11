@@ -33,25 +33,12 @@ For example, if a player has a base attack of 100 and a damage buff of 30, the o
 
 ### Damage Calculation and Rounding
 
-Damage is calculated in two steps: calculating your real attack from your stats, and calculating your damage per hit based on your own attack and the opponent's resist.
+Damage is also rounded during the calculation process. The damage calculation does not happen all at once.
 
-**Step 1: Calculating Real Attack**
+The formula is: **Round(Attack \* Round(Damage \* 0.01))** for each element.
 
-First, getting our real attack. Let's use an example of a weapon with 50 earth attack, and equipment that gives 23% earth damage and 10% all damage.
-
-The real attack formula is: **Round(baseAttack + baseAttack \* damageMultiplier \* 0.01)**
-
-So with the example stats, that's Round(50 + 50 \* 33 \* 0.01) = 67 (it was 66.5 before rounding, and .5 always rounds up)
-
-This real attack is also what burn damage is based on (from the Burn Rune). It does not care about the opponent's resists.
-
-**Step 2: Calculating Final Damage**
-
-Then to calculate the damage dealt to the opponent, the formula is: **Round(attack - attack \* defenderResist \* 0.01)**
-
-Say we are fighting a monster with -20% earth resist. So that's Round(67 - 67 \* -20 \* 0.01) = 80 (was 80.4 before rounding; below .5 rounds down)
-
-So the opponent takes 80 damage from every attack.
+For example, if a player has a base attack of 100 and damage buffs totaling 35%, the calculation would be:
+Round(100 \* Round(35 \* 0.01)) = Round(100 \* 0.35) = Round(35) = 35 damage
 
 **Important Rounding Rules:**
 - .5 always rounds up
