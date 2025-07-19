@@ -1,0 +1,49 @@
+import { Callout } from 'nextra/components' 
+
+# Your first fight 
+
+Now that you're on the map, you're ready to fight the chicken.
+
+![Chicken](https://artifactsmmo.com/images/docs/chicken.png)
+ 
+As you can see, the monster is weak, with only 60 hit points and 4 water attack. If you look at your stats, you have 4 earth damage from the weapon your character equips by default. You can view the weapon in the "Equipment" tab.
+
+![Stats](https://artifactsmmo.com/images/docs/stats_character.png)
+
+With 4 attacks, you'll need 29 turns to kill it. With 120 HP, you'll easily win the fight.
+ 
+Let's attack this monster with this POST request.
+  
+```http filename="cURL" copy
+curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+
+In the response, you can see if you win or lose the fight, complete logs of what happened in each turn, the drops you got and the xp you gain.
+
+To reduce the fight cooldown, your character needs to be more powerful, because the longer the fight, the longer the cooldown.
+
+You can also view fight details in the client logs.
+
+![Log](https://artifactsmmo.com/images/docs/log_example.png)

@@ -1,0 +1,182 @@
+import { Callout } from 'nextra/components'
+ 
+# Grand Exchange
+  
+The Grande Exchange lets you buy and sell items from other players. 
+Please note there is a 3% listing tax, charged at the time of posting, on the total price.
+
+You can see if sell orders exist for an item by using this request:
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
+
+fetch("https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+ 
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get)
+
+## Sales history
+
+To consult an item's sales history over the last 7 days, you can use this request:
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
+
+fetch("https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get)
+
+
+## Buy item
+
+To buy an item, you first need consult [the list of sell orders](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get) for an item to find the sell order id.
+Then you need to be on a map containing a Grand Exchange.
+
+You can use this POST request to purchase an item:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "id": "ORDER_ID",
+  "quantity": 1,
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"id":"ORDER_ID","quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post)
+
+ 
+
+## Create / cancel sell order
+
+To create or cancel a sell order, you must be on a map containing a Grand Exchange.
+
+You can use this POST request to create a sell order:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/sell \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1,
+  "price: 1,
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"code":"string","quantity":1,"price:1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post)
+
+
+To cancel a sell order, you first need consult [the list of your sell orders](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_my_grandexchange_orders_get) to find the order you want to cancel.
+
+You can use this POST request to cancel a sell order:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "id": "string"
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"code":"id"}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post)

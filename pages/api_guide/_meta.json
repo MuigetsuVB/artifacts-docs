@@ -1,0 +1,6 @@
+{ 
+    "openapi_spec": "OpenAPI Spec",
+    "authorization": "Authorization",
+    "response_codes": "Response Codes",
+    "rate_limits": "Rate limits"
+  }

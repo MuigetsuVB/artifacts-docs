@@ -1,0 +1,78 @@
+# Achievements
+
+Achievements are objectives to be met during the season by all your characters. They grant you gold and achievement points, which allow you to earn season badges.
+
+Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
+
+Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements using the [server status endpoint](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get)
+
+## Achievement Types
+
+- `combat_kill` – Defeat monsters
+- `combat_drop` – Obtain item drops from combat
+- `combat_level` – Reach certain combat levels
+- `gathering` – Gather resources
+- `crafting` – Craft items
+- `recycling` – Recycle equipment
+- `task` – Complete tasks
+- `use` – Use consumables
+
+## Account Achievements
+
+You can use this GET request to view your account's list of achievements.
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+
+var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+}; 
+
+fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
+
+You can also view the complete list of possible achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
+
+
+## Season Badges
+
+![Client](https://artifactsmmo.com/images/docs/badges_msg.png)
+
+Each season, accumulating enough achievement points can earn you unique seasonal badges.  
+
+You can view the current badges and requirements using this GET request.
+
+```http filename="cURL" copy
+curl --request GET \
+  --url https://api.artifactsmmo.com/badges \
+  --header 'Accept: application/json'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/badges';
+const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get)
+

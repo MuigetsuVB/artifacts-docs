@@ -1,0 +1,46 @@
+# Recover your hit points
+
+When you finish a fight, you need to recover your hit points when you lose them.
+
+![HP Recovery](https://artifactsmmo.com/images/docs/hp_recovery.png)
+
+The easiest way to do this is to rest.
+
+To do this, you can execute this POST request when your combat cooldown is over.
+ 
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+
+The action rest cooldown is one second per 5h HP recovered. 
+It's quite effective at low levels, but quickly becomes very time-consuming when you have thousands of hit points.
+
+There's a more productive way with fishing and cooking to craft [food](https://artifactsmmo.com/encyclopedia/items?type=consumable) you can use to regenerate your life. This part is not covered in the tutorial, as you won't need it immediately.
+

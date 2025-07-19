@@ -1,0 +1,102 @@
+## Give Items & Gold
+
+Your character can give items or gold to other characters on your account, as long as both characters are on the same map. This feature enables you to specialize some characters as dedicated transporters or traders, making it easier to manage resources within your team.
+
+You can use this to optimize logistics or simply transfer gear, resources, or currency to the character who needs them most.
+
+- Both the sender and receiver must be **your own characters**, and they must be located **on the same map**.
+- Giving multiple items at once applies a cooldown: **3 seconds per different item given**.
+
+---
+
+### Give Items
+
+To give one or more items to another of your characters, use the following POST request:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{sender}/action/give/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "character": "receiverName",
+    "items": [
+      { "code": "iron_ore", "quantity": 10 },
+      { "code": "wood", "quantity": 5 }
+    ]
+  }'
+```
+
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: JSON.stringify({
+    character: "receiverName",
+    items: [
+      { code: "iron_ore", quantity: 10 },
+      { code: "wood", quantity: 5 }
+    ]
+  })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post)
+
+---
+
+### Give Gold
+
+To transfer gold to another of your characters on the same map, use the following POST request:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{sender}/action/give/gold \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "character": "receiverName",
+    "quantity": 500
+  }'
+```
+
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: JSON.stringify({
+    character: "receiverName",
+    quantity: 500
+  })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post)

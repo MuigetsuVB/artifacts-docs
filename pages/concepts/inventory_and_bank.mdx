@@ -1,0 +1,273 @@
+## Inventory
+
+Each character has 20 slots in their inventory, which can hold a maximum of 100 items. So you can have 20 different items, but a maximum of 100 items in total. At each level, the maximum total items increases by 2.
+  
+You can view the contents of your inventory with [this request.](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get)
+ 
+```http filename="JSON" copy
+....
+"inventory": [
+  {
+    "slot": 0,
+    "code": "string",
+    "quantity": 0
+    }
+]
+``` 
+
+## Bank 
+
+At the bank, you can deposit items and gold. The bank is shared with all your characters, it's the best way to trade with your other characters.
+
+The bank is limited to 50 slots, but you can buy expansions at a cost of 4,500 gold, and the price increases (x2) with each expansion purchased.
+
+### View bank items
+
+You can view the contents of your bank at any time using the following request:
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/bank/items';
+const options = {
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get)
+
+### Get bank details
+
+You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using:
+
+```http filename="cURL" copy
+curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/bank';
+const options = {
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get)
+
+### Deposit/withdraw item
+
+To deposit or withdraw items, you must be on a map containing a bank.
+
+- You can deposit or withdraw up to **20 different items at once** per request.
+- The **cooldown** is **3 seconds per different item** deposited or withdrawn.
+
+You can use this POST request to **withdraw items**:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '[
+    { "code": "string", "quantity": 1 },
+    { "code": "another_item", "quantity": 2 }
+]'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: JSON.stringify([
+    { code: "string", quantity: 1 },
+    { code: "another_item", quantity: 2 }
+  ])
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
+
+You can use this POST request to **deposit items**:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '[
+    { "code": "string", "quantity": 1 },
+    { "code": "another_item", "quantity": 2 }
+]'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: JSON.stringify([
+    { code: "string", quantity: 1 },
+    { code: "another_item", quantity: 2 }
+  ])
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
+
+
+### Deposit/withdraw gold
+
+To deposit or withdraw gold, you must be on a map containing a bank.
+
+- You can deposit or withdraw **any amount of gold** per request, as long as you have the gold available.
+- The **cooldown** is **always 3 seconds** per deposit or withdrawal of gold, regardless of the amount.
+
+You can use this POST request to **withdraw gold**:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
+
+You can use this POST request to **deposit gold**:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "quantity": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
+
+### Buy expansion
+
+To buy an expansion, you need to be on a map containing a bank. It costs 4,500 gold for 20 slots, and the price increases (x2) with each expansion purchased.
+
+You can use this POST request to buy an expansion:
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)

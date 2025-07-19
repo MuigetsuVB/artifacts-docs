@@ -1,0 +1,28 @@
+{  
+  "index": "Introduction",
+  "funding": "Funding",
+  "roadmap": "Roadmap",
+  "quickstart": "Quickstart",
+  "concepts": "Game concepts",
+  "api_guide": "API Guide",
+  "resources": "Resources",
+  "others": "Others",
+  "database": {
+    "title": "Encyclopedia ↗",
+    "type": "page",
+    "href": "https://artifactsmmo.com/encyclopedia/items",
+    "newWindow": true
+  },
+  "client": {
+    "title": "Client ↗",
+    "type": "page",
+    "href": "https://client.artifactsmmo.com",
+    "newWindow": true
+  },
+  "api_ref": {
+    "title": "API Reference ↗",
+    "type": "page",
+    "href": "https://api.artifactsmmo.com/docs",
+    "newWindow": true
+  }
+}
