@@ -168,7 +168,7 @@ try {
 You can use this POST request to trade items at a Task Master (Items).
 
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/tasks/trade' \
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/task/trade' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -195,7 +195,7 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/{name}/action/tasks/trade", requestOptions)
+fetch("https://api.artifactsmmo.com/my/{name}/action/task/trade", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
