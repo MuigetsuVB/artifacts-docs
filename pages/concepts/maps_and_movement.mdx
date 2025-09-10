@@ -1,46 +1,71 @@
-## Maps  
+## Maps
 
-The world is in 2D, and each map is identified by an X and Y coordinate.
+The world is made up of several layers (underground, overworld, interior), and each map can be identified by X and Y coordinates within a layer or by a unique Map ID.
 
 ![Characters](https://artifactsmmo.com/images/docs/map.png)
- 
+
 You can also view the list of maps [on our website](https://artifactsmmo.com/encyclopedia/maps) or use [an API request](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps__get).
- 
-Here's an example of an API request response.
- 
+
+Here is an example of an API request response.
+
 ```http filename="JSON" copy
 {
   "data": {
-    "name": "Forest",
-    "code": "forest_1",
-    "x": -1,
-    "y": -1,
-    "content": {
-      "type": "monster",
-      "code": "red_slime"
-    }
+    {
+      "map_id": 1,
+      "name": "Forest",
+      "skin": "forest_3",
+      "x": -5,
+      "y": -5,
+      "layer": "overworld",
+      "access": {
+        "type": "standard",
+        "conditions": []
+      },
+      "interactions": {
+        "content": null,
+        "transition": null
+      }
+    },
   }
 }
-``` 
+```
 
-If there's anything on the map, you'll be able to view it in the "content" section.
+### Access
 
-This is what you can find on a map:
+A map can have several types of access:
+ - standard: Tile accessible normally
+ - blocked: Inaccessible, used for void or obstacles like mountains, rivers, etc.
+ - teleportation: Only accessible via a teleportation potion
+ - conditional: Only accessible if the conditions are met.
+
+Here are the existing operators for conditions:
+
+- has_item: Have a specific item in your inventory or equipped.
+- cost: A cost in item or gold.
+- achievement_completed: Have completed a specific achievement.
+
+### Content
+
+If there is anything on the map, you will be able to view it in the "content" section inside "interactions".
+
+Existing content types:
 * Monster (All monsters: https://artifactsmmo.com/encyclopedia/monsters)
-* Resource (All ressources: https://artifactsmmo.com/encyclopedia/resources)
-* Workshop (All crafts by workshop : https://artifactsmmo.com/encyclopedia/items)
+* Resource (All resources: https://artifactsmmo.com/encyclopedia/resources)
+* Workshop (All crafts by workshop: https://artifactsmmo.com/encyclopedia/items)
 * Bank
 * Grand Exchange
 * Tasks Master
-* NPC
+* NPC (All NPCs: https://www.artifactsmmo.com/encyclopedia/npcs)
 
 
 ## Movement
- 
-To do most of the actions in the game, you'll need to move on the map.
-The move cooldown is currently fixed at 5 seconds per map. In the future, it will be possible to increase movement speed to reduce this cooldown.
 
-Here's an example of an API request to move your character.
+### Move
+To perform most actions in the game, you will need to move on the map.
+The move cooldown is currently fixed at 5 seconds per map. Pathfinding (A*) calculates the shortest route while avoiding blocked tiles.
+
+Here is an example of an API request to move your character.
 
 ```http filename="cURL" copy
 curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
@@ -77,4 +102,90 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
 ```
 
 [View API Request](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
- 
+
+
+### Transition
+
+The other way to move in the game is to use transitions present on a map. A transition represents doors, stairs, boats, and similar features. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
+
+Here is an example of a map with a transition:
+
+```http filename="JSON" copy
+{
+  "data": {
+    "map_id": 1231,
+    "name": "Sandwhisper Isle",
+    "skin": "desertisland_10",
+    "x": -3,
+    "y": 19,
+    "layer": "overworld",
+    "access": {
+      "type": "standard",
+      "conditions": []
+    },
+    "interactions": {
+      "content": {
+        "type": "monster",
+        "code": "sandwarden"
+      },
+      "transition": {
+        "map_id": 1233,
+        "x": -3,
+        "y": 19,
+        "layer": "interior",
+        "conditions": [
+          {
+            "code": "sandwhisper_key",
+            "operator": "cost",
+            "value": "1"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+Here are the existing operators for conditions:
+
+- has_item: Have a specific item in your inventory or equipped.
+- cost: A cost in item or gold.
+- achievement_completed: Have completed a specific achievement.
+
+Here is an example of an API request to use a transition.
+
+```http filename="cURL" copy
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--data-raw '{
+  "x": 4,
+  "y": -1
+}'
+```
+```js filename="Javascript" copy
+var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+
+var raw = JSON.stringify({
+   "x": 4,
+   "y": -1
+});
+
+var requestOptions = {
+   method: 'POST',
+   headers: myHeaders,
+   body: raw,
+   redirect: 'follow'
+};
+
+fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+```
+
+[View API Request](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)
