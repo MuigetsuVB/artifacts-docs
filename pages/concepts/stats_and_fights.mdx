@@ -12,9 +12,12 @@ Here are all the stats a player can have:
 *   Prospecting
 *   Wisdom
 *   Critical Strike
+*   Initiative
+*   Threat
 *   Haste
 
 You can view your character's stats directly [on the site](https://artifactsmmo.com/my/characters) or use [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
+
 
 ### Elemental attacks
 
@@ -58,6 +61,13 @@ Here's the formula for calculating the effects of damage reduction, it is given 
 
 For example, if a monster has a resistance buff of 30 and the player has 100 attack, the monster will block 30 damage. 1 resistance buff = 1% damage reduction (1 less damage using the example above)
 
+### Initative
+
+Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by the others in descending order of initiative.
+
+### Threat
+
+The character with the highest threat in a multi-character fight will be the main target of the monster's attacks.
 
 ### Haste
 
@@ -75,10 +85,10 @@ Your basic drop chance is 100%, if you have 100 prospecting your total drop chan
 
 ## Fights
 
-Combat is based on a turn-by-turn system. The player always attacks first.&#x20;
+Combat is based on a turn-by-turn system. The turn order is determined by initiative.
 
-Fights can take a maximum of 100 turns (i.e. 50 attacks for the player, 50 attacks for the monster), otherwise you've automatically lost the fight.
-If you lose a fight, you return to the spawn (0,0) with 1 HP.
+Fights can take a maximum of 100 turns, otherwise you've automatically lost the fight.
+If you lose a fight, you return to the spawn (0,0 (overworld)) with 1 HP.
 
 Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time. The minimum combat cooldown is 5 seconds.
 
@@ -111,8 +121,10 @@ Here's everything you can equip:
 | Keyword | Condition                                            |
 | ------- | ---------------------------------------------------- |
 | Restore | Heals X HP when the player has lost 50% of their life. |
+| Splash Restore | Restores x HP at the start of the turn to another character who has lost the most health if that character has less than 50% of their health points remaining. |
 | Boost   | Gives X (HP, % damage, % res, prospecting, critical strike) at the start of fight. |
 | Antipoison   | At the beginning of the turn, if the character has at least one poison on him, removes x poison damage.
+
 
 [View all utilities](https://artifactsmmo.com/encyclopedia/items?type=utility)
 
@@ -125,6 +137,11 @@ Runes are equipment that will launch an ability in combat. There are currently 3
 | Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time.  |
 | Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
 | Healing   | Every 3 played turns, restores x% of HP at the start of the turn.|
+| Healing Aura   | Every 2 played turns, they heal all allies for x% of their maximum HP. This effect does not heal the caster. |
+| Vampiric Strike   | After landing a critical hit, they heal the ally with the lowest HP for x% of the damage dealt. Can only trigger once every 3 turns. This effect does not heal the caster. |
+| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
+| Shell  | When they drop below 40% of their HP, they gain x% resistance to all elements for 3 turns. Activates once per combat. This effect is only active during boss fights. |
+| Guard  | If one or more allies have less than 50% of their HP, protects the ally with the lowest HP percentage, redirecting x% of their damage to this character until the start of my next turn. Activates a maximum of 3 times per combat.|
 
 [View all runes](https://artifactsmmo.com/encyclopedia/items?type=rune)
 
@@ -141,6 +158,10 @@ Some monsters launch abilities called effects. These are additional effects that
 | Reconstitution   | At the beginning of the turn x, restores all HP.
 | Poison   | At the start of its first turn, applies a x poison to its opponent. Loses x HP per turn.
 | Corrupted | After every time the bearer of this effect is attacked, their resistance to the attack's element is reduced by x%, and can go negative.
+| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
+| Berserker Rage  | When they drop below 25% HP, they gain x% damage permanently. Applies once per combat. |
+| Void Drain  | Every 4 turns, Drains x% HP from each enemy to heal themselves.|
+| Barrier  | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed.|
 
 
 ### Equip
@@ -241,7 +262,9 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
 
 ### Action
 
-To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement) You can start a fight using this API request.
+
+To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement) 
+You can start a fight using this API request.
 
 ```http filename="cURL" copy
 curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
@@ -250,67 +273,113 @@ curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
 ```
 ```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
- 
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   redirect: 'follow'
+const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_TOKEN_HERE'
+  },
 };
- 
-fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get)
+You can fight with up to 2 other of **YOUR characters** against boss-type monsters.
+To do this, all your characters must be on the boss's map and you must add their names in the payload.
+
+
+```http filename="cURL" copy
+curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
+--data '{
+  "participants": ["Character2","Character3"]
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_TOKEN_HERE'
+  },
+  body: '{"participants":["Character2","Character3"]}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
 
 ## Experience to level
 Here's the table showing the experience required to level up.
 
-| Level | XP Required |
-|-------|-------------|
-| 1     | 150         |
-| 2     | 250         |
-| 3     | 350         |
-| 4     | 450         |
-| 5     | 700         |
-| 6     | 950         |
-| 7     | 1200        |
-| 8     | 1450        |
-| 9     | 1700        |
-| 10    | 2100        |
-| 11    | 2500        |
-| 12    | 2900        |
-| 13    | 3300        |
-| 14    | 3700        |
-| 15    | 4400        |
-| 16    | 5100        |
-| 17    | 5800        |
-| 18    | 6500        |
-| 19    | 7200        |
-| 20    | 8200        |
-| 21    | 9200        |
-| 22    | 10200       |
-| 23    | 11200       |
-| 24    | 12200       |
-| 25    | 13400       |
-| 26    | 14600       |
-| 27    | 15800       |
-| 28    | 17000       |
-| 29    | 18200       |
-| 30    | 19700       |
-| 31    | 21200       |
-| 32    | 22700       |
-| 33    | 24200       |
-| 34    | 25700       |
-| 35    | 27200       |
-| 36    | 28700       |
-| 37    | 30500       |
-| 38    | 32300       |
-| 39    | 34100       |
-| 40    | 35900       |
+| Level | XP Total |
+|-------|----------|
+| 1     | 150      |
+| 2     | 250      |
+| 3     | 350      |
+| 4     | 450      |
+| 5     | 700      |
+| 6     | 950      |
+| 7     | 1200     |
+| 8     | 1450     |
+| 9     | 1850     |
+| 10    | 2250     |
+| 11    | 2650     |
+| 12    | 3050     |
+| 13    | 3450     |
+| 14    | 4150     |
+| 15    | 4850     |
+| 16    | 5550     |
+| 17    | 6250     |
+| 18    | 6950     |
+| 19    | 7950     |
+| 20    | 8950     |
+| 21    | 9950     |
+| 22    | 10950    |
+| 23    | 11950    |
+| 24    | 13150    |
+| 25    | 14350    |
+| 26    | 15550    |
+| 27    | 16750    |
+| 28    | 17950    |
+| 29    | 19450    |
+| 30    | 20950    |
+| 31    | 22450    |
+| 32    | 23950    |
+| 33    | 25450    |
+| 34    | 27250    |
+| 35    | 29050    |
+| 36    | 30850    |
+| 37    | 32650    |
+| 38    | 34450    |
+| 39    | 36550    |
+| 40    | 38650    |
+| 41    | 40750    |
+| 42    | 42850    |
+| 43    | 44950    |
+| 44    | 46750    |
+| 45    | 48550    |
+| 46    | 50350    |
+| 47    | 52150    |
+| 48    | 53950    |
+| 49    | 55750    |
+| 50    | 57550    |
