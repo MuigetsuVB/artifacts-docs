@@ -1,9 +1,62 @@
 import { Callout } from 'nextra/components' 
-
+ 
 # Event Tokens
 
 <Callout type="warning" emoji="⚠️">
 Event Tokens is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
 </Callout>
 
+Event Tokens are a currency reserved for members that allows you to trigger an event of your choice for all players.
+
+This feature is still in development, but currently, each founder account receives 3 tokens per month, for a total of 12 tokens during the season.
+
+**For season 6:**
+
+| Date              | Tokens    |
+|-------------------|-----------|
+| October 4, 2025   | 3 tokens  |
+| November 4, 2025  | 3 tokens  |
+| December 4, 2025  | 3 tokens  |
+| January 4, 2026   | 3 tokens  |
+
+If you become a founder during the season, you will receive all the tokens you should have received.
+
+The number of tokens you have during a season is limited, so use **them only when absolutely necessary.**
+
+
+You can spawn an event using this POST request.
+
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/events/spawn \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string"
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/events/spawn';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+    body: '{"code":"string"}
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/spawn_event_events_spawn_post)
 

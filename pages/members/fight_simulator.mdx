@@ -6,4 +6,64 @@ import { Callout } from 'nextra/components'
 Fight Simulator is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
 </Callout>
 
-This server will be deployed in the coming months.
+The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used [via an interface by clicking here](https://simulator.artifactsmmo.com) or directly with the API.
+
+You can use this POST request to use the simulator.
+ 
+
+```http filename="cURL" copy
+curl --request POST \
+  --url https://api.artifactsmmo.com/simulation/fight_simulation \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "characters": [
+    {
+      "level": 1,
+      "weapon_slot": "string",
+      "rune_slot": "string",
+      "shield_slot": "string",
+      "helmet_slot": "string",
+      "body_armor_slot": "string",
+      "leg_armor_slot": "string",
+      "boots_slot": "string",
+      "ring1_slot": "string",
+      "ring2_slot": "string",
+      "amulet_slot": "string",
+      "artifact1_slot": "string",
+      "artifact2_slot": "string",
+      "artifact3_slot": "string",
+      "utility1_slot": "string",
+      "utility1_slot_quantity": 1,
+      "utility2_slot": "string",
+      "utility2_slot_quantity": 1
+    }
+  ],
+  "monster": "MONSTER_CODE",
+  "iterations": 1
+}'
+```
+```js filename="Javascript" copy
+const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+  },
+  body: '{"characters":[{"level":1,"weapon_slot":"string","rune_slot":"string","shield_slot":"string","helmet_slot":"string","body_armor_slot":"string","leg_armor_slot":"string","boots_slot":"string","ring1_slot":"string","ring2_slot":"string","amulet_slot":"string","artifact1_slot":"string","artifact2_slot":"string","artifact3_slot":"string","utility1_slot":"string","utility1_slot_quantity":1,"utility2_slot":"string","utility2_slot_quantity":1}],"monster":"MONSTER_CODE","iterations":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post)
+
