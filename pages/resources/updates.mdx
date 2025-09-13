@@ -1,3 +1,98 @@
+## Update 04/10/25: Season 6  (Preliminary)
+
+Here's the patch notes for Season 6.
+
+
+**Maps**
+- Maps now have a `map_id` which represents a unique identifier for each map.
+- Maps now have an `access` type: standard, teleportation, conditional or blocked.
+  | Type | Description |
+  | --- | --- |
+  | Standard | Normal access |
+  | Teleportation | Only accessible via a teleportation potion (not currently used) |
+  | Conditional | Only accessible if access conditions are met (not currently used) |
+  | Blocked | Inaccessible map, represents an obstacle |
+- New A* pathfinding system. The cooldown is 5 seconds per map, but obstacles (blocked maps) are now taken into account when calculating the route.
+- New layer system (3 layers currently available: underground, overworld and interior).
+- The `/maps/{x}/{y}` endpoint has been replaced by `/maps/{layer}/{x}/{y}` 
+- New endpoint `/maps/id/{map_id}`
+- New endpoint `/maps/{layer}`
+- Added the `hide_blocked_maps` parameter to remove blocked maps from the search results on the `/maps` and `/maps/layer` endpoints
+- Added the `/my/{name}/action/transition` endpoint which allows moving to another map in the same layer or to a different layer. Primarily used for boats, doors, caves, etc.
+
+
+**Characters**
+- Maximum level increased to 50.
+- New stat: Initiative (affects turn order in combat). Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by the others in descending order of initiative.
+- New stat: Threat (affects monster targeting in multi-characters combat). Threat determines which character a monster will target in combat. The character with the highest threat will be targeted in priority
+
+**Accounts**
+- Added `event_token` to the `MyAccountDetails` schema.
+
+
+**Fights**
+- New multi-character combat system. You can now fight with up to 3 characters at the same time. Only for boss-type monsters.
+- Added optional `participants` payload in the `/my/{name}/action/fight` endpoint. Add the names of your other characters in this array to include them in boss fights.
+- Turn order is now determined by initiative. In case of a tie, the character/monster with the most HP acts first. If they also have the same amount of HP, turn order is determined randomly.
+- New effects:
+  | Effect | Description |
+  | --- | --- |
+  | Healing Aura | Every 2 played turns, they heal all allies for x% of their maximum HP. This effect does not heal the caster. |
+  | Vampiric Strike | After landing a critical hit, they heal the ally with the lowest HP for x% of the damage dealt. Can only trigger once every 3 turns. This effect does not heal the caster. |
+  | Frenzy | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
+  | Shell | When they drop below 40% of their HP, they gain x% resistance to all elements for 3 turns. Activates once per combat. This effect is only active during boss fights. |
+  | Guard | If one or more allies have less than 50% of their HP, protects the ally with the lowest HP percentage, redirecting x% of their damage to this character until the start of my next turn. Activates a maximum of 3 times per combat. |
+  | Void Drain | Every 4 turns, Drains x% HP from each enemy to heal themselves. |
+  | Barrier | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed. |
+
+**Simulation**
+- New Combat Simulator feature for members/founders. Test and optimize your strategies against any monster in the game. Available via the endpoint `/simulation/fight_simulation` or through the interface https://simulator.artifactsmmo.com/.
+
+**Event Tokens**
+- New Event Tokens feature for members/founders. Each founder account receives 3 tokens per month, for a total of 12 tokens during the season. Event Tokens allow you to trigger an event of your choice for all players. Currently only available via the API  `/events/spawn`
+
+**Items**
+- Added 72 new items.
+- Rebalanced numerous items (stats, crafting).
+
+**Monsters**
+- 9 new monsters:
+  - King Slime (Boss) : Level 15
+  - Cultist Alchemist : Level 40
+  - Sand Snake : Level 44
+  - Sea Marauder : Level 45
+  - Dusk Beetle : Level 47
+  - Duskworm (Boss): Level 48
+  - Sandwarden : Level 50
+  - Desert Scorpion : Level 50
+  - Sandwhisper Empress (Boss): Level 55
+- Monsters now have initiative. Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by the others in descending order of initiative.
+
+**Resources**
+- 4 new resources:
+  - Torch Cactus (Alchemy) : Lvl 50
+  - Swordfish Spot (Fishing) : Lvl 50
+  - Palm Tree (Woodcutting) : Lvl 50
+  - Adamantite Rocks (Mining) : Lvl 50
+
+
+**NPC**
+- 1 new NPC:
+  - Sandwshiper Trader: Trades various items for sandwshiper coins.
+
+
+**Missing elements**
+Some elements are missing in this preliminary version, which will be added in the coming weeks.
+
+- Mithril and Adamantite Tools (note: Level 40 Mithril tools will not have task resources, which will make reaching level 50 easier.)
+- Season 6 Achievements
+- Season 6 Badges
+- Icons of the new runes
+- New websockets notifications
+- Interface for multi-characters fights on the web client.
+
+
+
 ## Update 29/06/25: Season 5
 
 Here's the patch notes for Season 5.
