@@ -1,71 +1,334 @@
-## Maps
+# Maps
 
-The world is made up of several layers (underground, overworld, interior), and each map can be identified by X and Y coordinates within a layer or by a unique Map ID.
+The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
 
-![Characters](https://artifactsmmo.com/images/docs/map.png)
+| Layer        | Enum value     | Content                        |
+|--------------|----------------|--------------------------------------|
+| Overworld    | `overworld`    | Main surface maps  |
+| Underground  | `underground`  | Mines, caves     |
+| Interior     | `interior`     | Houses, dungeons |
+
+![Maps](https://artifactsmmo.com/images/docs/map.png)
  
-You can also view the list of maps [on our website](https://artifactsmmo.com/encyclopedia/maps) or use [an API request](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps__get).
+Every map is uniquely identified by:
+- Its tuple: `(layer, x, y)`
+- Or its numeric `map_id` 
 
-Here is an example of an API request response.
+Retrieve maps with:
+- All maps: [GET /maps](https://api-test.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
+- Filter by layer: [GET /maps/{layer}](https://api-test.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
+- By coordinates: [GET /maps/{layer}/{x}/{y}](https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get)
+- By ID: [GET /maps/id/{map_id}](https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get)
+
+
+You can also view the list of maps [on our website](https://artifactsmmo.com/encyclopedia/maps).
+ 
+
+---
+
+## Content 
+
+If something is present on a map tile, it will be listed under `interactions.content`.
+
+
+**Example:**
 
 ```http filename="JSON" copy
 {
-  "data": {
-    {
-      "map_id": 1,
-      "name": "Forest",
-      "skin": "forest_3",
-      "x": -5,
-      "y": -5,
+    "data": {
+        "map_id": 1231,
+        "name": "Forest",
+        "skin": "forest_3",
+        "x": -5,
+        "y": -5,
+        "layer": "overworld",
+        "access": {
+            "type": "standard",
+            "conditions": []
+        },
+        "interactions": {
+            "content": {
+                "type": "monster",
+                "code": "red_slime"
+            },
+            "transition": null
+        }
+    }
+}
+```
+
+A map tile can contain different types of content, indicated by the `content.type` field. Here are the possible types you may encounter:
+
+- `monster`: A monster is present on the tile. [See all monsters](https://artifactsmmo.com/encyclopedia/monsters)
+- `resource`: A resource node is available. [See all resources](https://artifactsmmo.com/encyclopedia/resources)
+- `workshop`: A workshop for crafting items. [See all workshops and crafts](https://artifactsmmo.com/encyclopedia/items)
+- `bank`: Access to a bank.
+- `grand_exchange`: Access to the grand exchange.
+- `tasks_master`: A tasks master NPC is present.
+- `npc`: A trader/seller NPC is present.
+
+
+---
+
+
+## Transition
+
+A transition represents a way to move instantly from one map tile to another, such as through a door, staircase, portal, or similar mechanism. Transitions can connect different locations, including those on separate layers (e.g., from the overworld to an interior or underground area).
+
+A map tile can define a `transition` under `interactions.transition`, specifying the destination and any conditions required to use it.
+
+**Example:**
+```http filename="JSON" copy
+{
+  "map_id": 572,
+  "name": "Underground",
+  "skin": "mine_1",
+  "x": -2,
+  "y": 6,
+  "layer": "underground",
+  "access": {
+    "type": "standard",
+    "conditions": []
+  },
+  "interactions": {
+    "transition": {
+      "map_id": 571,
+      "x": -2,
+      "y": 6,
       "layer": "overworld",
-      "access": {
-        "type": "standard",
-        "conditions": []
-      },
-      "interactions": {
-        "content": null,
-        "transition": null
-      }
-    },
+      "conditions": []
+    }
   }
 }
 ```
 
-### Access
+---
 
-A map can have several types of access:
- - standard: Tile accessible normally
- - blocked: Inaccessible, used for void or obstacles like mountains, rivers, etc.
- - teleportation: Only accessible via a teleportation potion
- - conditional: Only accessible if the conditions are met.
+## Access Types & Conditions
 
-Here are the existing operators for conditions:
+Not every map is freely traversable. The field `access.type` can be:
 
-- has_item: Have a specific item in your inventory or equipped.
-- cost: A cost in item or gold.
-- achievement_completed: Have completed a specific achievement.
+| Type | Description |
+| ---- | ----------- |
+| `standard` | Freely accessible. |
+| `blocked` | Not walkable (void, obstacle, mountain, water, etc.). |
+| `teleportation` | Only reachable via teleport effects (e.g. consumable). |
+| `conditional` | Requires all listed conditions to be satisfied. |
 
-### Content
+Conditions may appear in:
+- `access.conditions` (to step onto / remain on a tile)
+- `interactions.transition.conditions` (to use a portal / door / stairs)
 
-If there is anything on the map, you will be able to view it in the "content" section inside "interactions".
+### Global condition operators
 
-Existing content types:
-* Monster (All monsters: https://artifactsmmo.com/encyclopedia/monsters)
-* Resource (All resources: https://artifactsmmo.com/encyclopedia/resources)
-* Workshop (All crafts by workshop: https://artifactsmmo.com/encyclopedia/items)
-* Bank
-* Grand Exchange
-* Tasks Master
-* NPC (All NPCs: https://www.artifactsmmo.com/encyclopedia/npcs)
+The generic operators used for items also work on maps. It can use any character variable as the `code` in a condition. For example, it may require a minimum level, a specific skill level, or any other attribute available on the character.
+| Operator | Meaning |
+|----------|---------|
+| `eq` | Equal to |
+| `ne` | Not equal |
+| `gt` | Greater than |
+| `lt` | Less than |
 
 
-## Movement
+#### Examples
+
+> The examples use fictional maps created to help illustrate how conditions work.
+
+Here is an example where you must have less than 1000 HP to use a transition.
+
+```http filename="JSON" copy
+
+{
+  "data": {
+    "map_id": 1231,
+    "name": "Sandwhisper Isle",
+    "skin": "desertisland_10",
+    "x": -3,
+    "y": 19,
+    "layer": "overworld",
+    "access": {
+      "type": "standard",
+      "conditions": []
+    },
+    "interactions": {
+      "content": null,
+      "transition": {
+        "map_id": 1233,
+        "x": -3,
+        "y": 19,
+        "layer": "interior",
+        "conditions": [
+          {
+            "code": "hp",
+            "operator": "lt",
+            "value": "1000"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+Here is an example where you must have woodcutting level 30 or higher to enter a map.
+
+```http filename="JSON" copy
+
+{
+  "data": {
+    "map_id": 3012,
+    "name": "Forest",
+    "skin": "forest_3",
+    "x": 10,
+    "y": 10,
+    "layer": "overworld",
+    "access": {
+      "type": "standard",
+      "conditions": [
+        {
+          "code": "woodcutting_level",
+          "operator": "gt",
+          "value": "30"
+        }
+      ]
+    },
+    "interactions": {
+      "content": {
+        "type": "resource",
+        "code": "magic_tree"
+      },
+      "transition": null
+    }
+  }
+}
+
+```
+
+### Maps condition operators
+The following operators are specific to the map system. They can be used on access and transition conditions:
+
+| Operator | Meaning | Consumed? | Notes |
+| -------- | ------- | --------- | ----- |
+| `has_item` | You must possess (inventory or equipped) the specified item `code` | No | |
+| `cost` | You must pay an item or gold | Yes | `code` = item (or `gold`), `value` = quantity. |
+| `achievement_unlocked` | Specific achievement must be completed | N/A | `code` = achievement identifier. |
+
+
+#### Examples
+
+> The examples use fictional maps created to help illustrate how conditions work.
+
+Here is an example of a map where you must pay an item to use the transition. On successful transition, one `lich_tomb_key` is consumed.
+
+```http filename="JSON" copy
+{
+  "map_id": 655,
+  "name": "Graveyard",
+  "skin": "forest_skeleton5",
+  "x": 9,
+  "y": 7,
+  "layer": "overworld",
+  "access": {
+    "type": "standard",
+    "conditions": []
+  },
+  "interactions": {
+    "transition": {
+      "map_id": 656,
+      "x": 9,
+      "y": 7,
+      "layer": "underground",
+      "conditions": [
+        {
+          "code": "lich_tomb_key",
+          "operator": "cost",
+          "value": "1"
+        }
+      ]
+    }
+  }
+}
+```
+
+Here is an example of a map where you must have completed an achievement to access it.
+
+```http filename="JSON" copy
+{
+  "map_id": 1234,
+  "name": "Sandwhisper Isle",
+  "skin": "desertisland_11",
+  "x": -2,
+  "y": 19,
+  "layer": "overworld",
+  "access": {
+    "type": "standard",
+    "conditions": [
+      {
+        "code": "secure_the_island",
+        "operator": "achievement_unlocked",
+        "value": "1"
+      }
+    ]
+  },
+  "interactions": {
+    "content": {
+      "type": "bank",
+      "code": "bank"
+    }
+  }
+}
+```
+
+Here is an example where you must have an item either in your inventory or equipped to use the transition.
+
+```http filename="JSON" copy
+{
+  "map_id": 934,
+  "name": "Forest",
+  "skin": "forest_house1",
+  "x": 0,
+  "y": 13,
+  "layer": "overworld",
+  "access": {
+    "type": "standard",
+    "conditions": []
+  },
+  "interactions": {
+    "content": null,
+    "transition": {
+      "map_id": 935,
+      "x": 0,
+      "y": 13,
+      "layer": "interior",
+      "conditions": [
+        {
+          "code": "cultist_cloak",
+          "operator": "has_item",
+          "value": "1"
+        }
+      ]
+    }
+  }
+}
+```
+---
+
+## Actions
 
 ### Move
-To perform most actions in the game, you will need to move on the map.
-The move cooldown is currently fixed at 5 seconds per map. Pathfinding (A*) calculates the shortest route while avoiding blocked tiles.
 
-Here is an example of an API request to move your character.
+
+To do most of the actions in the game, you'll need to move on the map.
+The move cooldown is currently fixed at 5 seconds per map. 
+
+**Endpoint:** `POST /my/{name}/action/move`
+
+You must supply either:
+- Coordinates: `{ "x": <int>, "y": <int> }`
+- Or a direct `{ "map_id": <int> }`
+
+
+Here's an example of an API request to move your character.
 
 ```http filename="cURL" copy
 curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
@@ -75,6 +338,8 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARAC
 --data-raw '{
   "x": 4,
   "y": -1
+  // OR
+  // "map_id": 101
 }'
 ```
 ```js filename="Javascript" copy
@@ -86,6 +351,8 @@ myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
 var raw = JSON.stringify({
    "x": 4,
    "y": -1
+    // OR
+    // "map_id": 101
 });
 
 var requestOptions = {
@@ -104,84 +371,37 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
 [View API Request](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
 
 
+
 ### Transition
 
-The other way to move in the game is to use transitions present on a map. A transition represents doors, stairs, boats, and similar features. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
+The other way to move in the game is to use transitions present on a map. A transition represents doors, stairs, boats, etc. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
 
-Here is an example of a map with a transition:
+ 
 
-```http filename="JSON" copy
-{
-  "data": {
-    "map_id": 1231,
-    "name": "Sandwhisper Isle",
-    "skin": "desertisland_10",
-    "x": -3,
-    "y": 19,
-    "layer": "overworld",
-    "access": {
-      "type": "standard",
-      "conditions": []
-    },
-    "interactions": {
-      "content": {
-        "type": "monster",
-        "code": "sandwarden"
-      },
-      "transition": {
-        "map_id": 1233,
-        "x": -3,
-        "y": 19,
-        "layer": "interior",
-        "conditions": [
-          {
-            "code": "sandwhisper_key",
-            "operator": "cost",
-            "value": "1"
-          }
-        ]
-      }
-    }
-  }
-}
-```
+**Endpoint:** `POST /my/{name}/action/transition`
 
-Here are the existing operators for conditions:
-
-- has_item: Have a specific item in your inventory or equipped.
-- cost: A cost in item or gold.
-- achievement_completed: Have completed a specific achievement.
 
 Here is an example of an API request to use a transition.
 
+
 ```http filename="cURL" copy
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
+curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE' \
---data-raw '{
-  "x": 4,
-  "y": -1
-}'
+--header 'Authorization: Bearer INSERT_TOKEN_HERE'
 ```
 ```js filename="Javascript" copy
 var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
-
-var raw = JSON.stringify({
-   "x": 4,
-   "y": -1
-});
-
+ 
 var requestOptions = {
    method: 'POST',
    headers: myHeaders,
-   body: raw,
    redirect: 'follow'
 };
-
+ 
 fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
