@@ -315,8 +315,7 @@ Here is an example where you must have an item either in your inventory or equip
 
 ### Move
 
-To do most of the actions in the game, you'll need to move on the map.
-The move cooldown is currently fixed at 5 seconds per map. 
+The movement system uses A* pathfinding to find the shortest path, bypassing blocked maps. The cooldown is 5 seconds per map.
 
 **Endpoint:** `POST /my/{name}/action/move`
 
@@ -369,7 +368,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
 
 ### Transition
 
-The other way to move in the game is to use transitions present on a map. A transition represents doors, stairs, boats, etc. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
+If no path is possible using move, it is very likely that a transition is necessary to reach the map. A transition represents doors, stairs, boats, etc. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
 
 **Endpoint:** `POST /my/{name}/action/transition`
 
