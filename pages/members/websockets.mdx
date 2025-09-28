@@ -16,6 +16,8 @@ WebSockets allow you to receive real-time notifications from the server.
 | Grand Exchange new order |grandexchange_neworder | Grand Exchange|Server| Send `GEOrderSchema` when a sales order is created on the Grand Exchange |
 | Grand Exchange sell |grandexchange_sell | Grand Exchange|Server| Send `GeOrderHistorySchema` when a sale is made on the Grand Exchange. |
 | Achievement unlock |achievement_unlocked | Achievements|Account| Send `AchievementSchema` when an achievement is unlocked on your account. |
+| Online characters |online_characters | Account|Account| Send `array[ActiveCharacterSchema]` every 10 minutes with the list of online characters. |
+| Account log |account_log | Account|Account| Send `LogSchema` every time an action is performed on one of the characters in your account. |
 | Test |test | Test|Test| Send Test message every 60 seconds. |
 
 
