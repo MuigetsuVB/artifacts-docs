@@ -1,0 +1,8 @@
+{ 
+    "event_tokens": "Event Tokens",
+    "fight_simulator": "Fight Simulator",
+    "sandbox_server": "Sandbox Server",
+    "test_server": "Test Server",
+    "websockets": "WebSockets",
+    "webhooks": "Webhooks"
+  }
