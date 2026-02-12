@@ -7,8 +7,30 @@ Tasks coins can be exchanged at all Tasks Masters. For 6 coins, you can get a ra
 
 You can check your objective and its progress directly on your character by using this [request](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get).
 
-  
-## Tasks
+## Task Types
+
+Tasks come in two types:
+
+| Type | Description |
+|------|-------------|
+| `monsters` | Kill a specific number of a monster. |
+| `items` | Gather or craft a specific number of an item. |
+
+### Rewards by level
+
+Completing a task rewards gold and tasks coins based on the task type and level:
+
+| Type | Level | Gold | Tasks Coins |
+|------|-------|------|-------------|
+| `items` | 1–14 | 150 | 2 |
+| `items` | 15–29 | 250 | 3 |
+| `items` | 30–40 | 350 | 4 |
+| `items` | 41+ | 300 | 4 |
+| `monsters` | 1–14 | 200 | 3 |
+| `monsters` | 15–29 | 300 | 4 |
+| `monsters` | 30+ | 500 | 5 |
+
+## Tasks List
 
 You can use this GET request to view the list of all existing tasks.
 

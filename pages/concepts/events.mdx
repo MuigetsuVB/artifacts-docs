@@ -1,77 +1,134 @@
 import { Callout } from 'nextra/components' 
 
 # Events
-Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an npc.
+Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an NPC.
+
+Each event has a **spawn rate** (chance to appear per minute) and a **duration** (how long it stays active).
  
 | Name               | Content                              |
 | ----------------   | ---------------------------------- |
 | Bandit Camp        |[Bandit Lizard (Monster)](https://artifactsmmo.com/encyclopedia/monsters/bandit_lizard) |
 | Portal (Demon)            |[Demon (Monster)](https://artifactsmmo.com/encyclopedia/monsters/demon)|
-| Portal (Efreet Sultan)             |[Demon (Efreet Sultan)](https://artifactsmmo.com/encyclopedia/monsters/efreet_sultan)|
+| Portal (Efreet Sultan)             |[Efreet Sultan (Monster)](https://artifactsmmo.com/encyclopedia/monsters/efreet_sultan)|
 | Cult of Darkness   |[Cultist Emperor (Monster)](https://artifactsmmo.com/encyclopedia/monsters/cultist_emperor)|
 | Strange Apparition |[Strange Rocks (Resource)](https://artifactsmmo.com/encyclopedia/resources/strange_rocks)|
 | Magic Apparition   |[Magic Tree (Resource)](https://artifactsmmo.com/encyclopedia/resources/magic_tree)|
 | Rosenblood         |[Rosenblood (Monster)](https://artifactsmmo.com/encyclopedia/monsters/rosenblood)|
 | Corrupted Owlbear  |[Corrupted Owlbear (Monster)](https://artifactsmmo.com/encyclopedia/monsters/corrupted_owlbear)|
-| Corrupted Ogre  |[Corrupted Owlbear (Monster)](https://artifactsmmo.com/encyclopedia/monsters/corrupted_ogre)|
+| Corrupted Ogre  |[Corrupted Ogre (Monster)](https://artifactsmmo.com/encyclopedia/monsters/corrupted_ogre)|
 | Corrupted Portal |[Grimlet (Monster)](https://artifactsmmo.com/encyclopedia/monsters/grimlet)|
-| Fish Merchant       |[Fish Merchant (NPC)](https://artifactsmmo.com/encyclopedia/monsters/grimlet)|
-| Timber Merchant       |[Timber Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/fish_merchant)
+| Fish Merchant       |[Fish Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/fish_merchant)|
+| Timber Merchant       |[Timber Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/timber_merchant)|
 | Herbal Merchant        |[Herbal Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/herbal_merchant)|
 | Nomadic Merchant        |[Nomadic Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/nomadic_merchant)|
-| Gemstone Merchant         |[Gemstone Merchant (NPC)](https://.artifactsmmo.com/encyclopedia/npcs/gemstone_merchant)|
+| Gemstone Merchant         |[Gemstone Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/gemstone_merchant)|
 
+## All Events
 
-You can view all events using this request :
+You can view the full list of all possible events (including spawn rate, duration, content and maps) using this request:
 
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/events/' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json'
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/events/' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
 ```
 ```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
+const url = 'https://api.artifactsmmo.com/events/';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
 
-var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
-}; 
-
-fetch("https://api.artifactsmmo.com/events/", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
+
+Each event contains:
+
+```http filename="JSON" copy
+{
+  "name": "Bandit Camp",
+  "code": "bandit_camp",
+  "content": {
+    "type": "monster",
+    "code": "bandit_lizard"
+  },
+  "maps": [
+    { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", "skin": "desert_1" }
+  ],
+  "duration": 30,
+  "rate": 6
+}
+```
+
+| Field | Description |
+|---|---|
+| `content.type` | Type of content: `monster`, `resource`, or `npc`. |
+| `content.code` | Code of the monster, resource, or NPC. |
+| `maps` | List of possible maps where the event can appear. |
+| `duration` | Duration in minutes. |
+| `rate` | Spawn rate: the event has a 1/rate chance per minute of appearing. |
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_events_events_get)
 
+## Active Events
 
-
-You can view all active events using this request :
+You can view all currently active events using this request:
 
 ```http filename="cURL" copy
-curl --location --request GET 'https://api.artifactsmmo.com/events/active' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json'
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/events/active' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
 ```
 ```js filename="Javascript" copy
-var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
- 
-var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
-}; 
+const url = 'https://api.artifactsmmo.com/events/active';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
 
-fetch("https://api.artifactsmmo.com/events/active", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
+
+Each active event contains:
+
+```http filename="JSON" copy
+{
+  "name": "Bandit Camp",
+  "code": "bandit_camp",
+  "map": { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", ... },
+  "previous_map": { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", ... },
+  "duration": 30,
+  "expiration": "2025-01-15T13:00:00.000Z",
+  "created_at": "2025-01-15T12:30:00.000Z"
+}
+```
+
+| Field | Description |
+|---|---|
+| `map` | The current map where the event is active (with event content). |
+| `previous_map` | The original map data before the event spawned (previous content/skin). |
+| `duration` | Duration in minutes. |
+| `expiration` | When the event will end. |
+| `created_at` | When the event started. |
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get)

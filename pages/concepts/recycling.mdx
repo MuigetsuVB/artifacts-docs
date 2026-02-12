@@ -2,7 +2,11 @@
 
 Recycling allows you to recycle your weapons and equipment at weaponcrafting, gearcrafting and jewelrycrafting workshops.
 
-This lets you get back some of the item's resources. The minimum is resource  per recycled item, chosen at random from all the items in the craft.
+This lets you get back some of the item's crafting resources. The items returned are chosen at random from the craft recipe. The number of items you get back depends on the complexity of the craft recipe — specifically, `(total_items_in_recipe - 1) / 5 + 1` (rounded down), with a minimum of 1 resource per recycled item.
+
+- No skill level is required to recycle — you can recycle any item regardless of your crafting level.
+- You can recycle **multiple items** at once by specifying the `quantity` field.
+- The cooldown is **3 seconds per item** recycled.
 
 You can recycle an item using this POST request.
 
@@ -14,8 +18,8 @@ curl --request POST \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
   --data '{
-  "code": "string",
-  "quantity": 1
+  "code": "iron_sword",
+  "quantity": 5
 }'
 ```
 ```js filename="Javascript" copy
@@ -27,8 +31,7 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
   },
-    body: '{"code":"string","quantity":1}'
-
+  body: JSON.stringify({ code: "iron_sword", quantity: 5 })
 };
   
 try {

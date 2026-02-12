@@ -1,11 +1,13 @@
+import { Callout } from 'nextra/components'
+
 # Achievements
 
-Achievements are objectives to be met during the season by all your characters. They grant you gold and achievement points, which allow you to earn season badges.
+Achievements are objectives to be met during the season by all your characters. They grant you gold, items, and achievement points, which allow you to earn season badges.
 
 Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
 
-Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements using the [server status endpoint](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get)
- 
+Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements using the [server status endpoint](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get).
+
 ## Achievement Types
 
 - `combat_kill` – Defeat monsters
@@ -16,10 +18,70 @@ Achievement points and the number of achievements required to complete a season 
 - `recycling` – Recycle equipment
 - `task` – Complete tasks
 - `use` – Use consumables
+- `npc_buy` – Buy items from NPCs
+- `npc_sell` – Sell items to NPCs
+
+## Multi-Objectives
+
+Achievements can have **multiple objectives** that must all be completed to unlock the achievement. Each objective tracks progress independently.
+
+For example, an achievement might require you to:
+1. Defeat 50 Wolves (`combat_kill`, target: `wolf`)
+2. Collect 20 Wolf Hides (`combat_drop`, target: `wolf_hide`)
+
+Each objective has:
+| Field | Description |
+|---|---|
+| `type` | The achievement type (e.g., `combat_kill`, `crafting`). |
+| `target` | The specific target (e.g., monster code, item code). Can be `null` for general objectives. |
+| `total` | The total amount required to complete this objective. |
+| `progress` | Your current progress (only in account achievement responses). |
+
+```http filename="JSON" copy
+"objectives": [
+  {
+    "type": "combat_kill",
+    "target": "wolf",
+    "progress": 30,
+    "total": 50
+  },
+  {
+    "type": "combat_drop",
+    "target": "wolf_hide",
+    "progress": 12,
+    "total": 20
+  }
+]
+```
+
+The achievement is completed when **all objectives** reach their required total.
+
+## Rewards
+
+When you complete an achievement, you earn **achievement points** and **rewards**. Rewards can include gold and/or items.
+
+```http filename="JSON" copy
+"rewards": {
+  "gold": 5000,
+  "items": [
+    { "code": "tasks_coin", "quantity": 3 },
+    { "code": "iron_sword", "quantity": 1 }
+  ]
+}
+```
+
+| Field | Description |
+|---|---|
+| `gold` | Gold reward amount. |
+| `items` | List of item rewards, each with a `code` and `quantity`. Can be `null` if there are no item rewards. |
+
+<Callout type="info">
+When an achievement is completed, the rewards are automatically sent to your [**pending items**](/concepts/pending_items). You can then claim them with any character on your account using the claim action. This ensures no rewards are lost even if your inventory is full at the time of completion.
+</Callout>
 
 ## Account Achievements
 
-You can use this GET request to view your account's list of achievements.
+You can use this GET request to view your account's list of achievements, including progress on each objective.
 
 ```http filename="cURL" copy
 curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
@@ -46,7 +108,6 @@ fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOpt
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
 
 You can also view the complete list of possible achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
-
 
 ## Season Badges
 

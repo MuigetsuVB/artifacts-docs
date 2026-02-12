@@ -63,6 +63,8 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
 
 Crafting skills let you make all kinds of items.  You can craft with 7 skills: Weaponcrafting, Gearcrafting, Jewelrycrafting, Cooking, Mining, Woodcutting and Alchemy.
 
+Some crafts produce more than one item per craft. Check the `craft.quantity` field on an item to see how many are produced.
+
 If you want to see all the crafts of a skill, you can use the Get Item request with the craft_skill parameter. Here's an example request:
 
 ```http filename="cURL" copy

@@ -1,6 +1,15 @@
 # NPCs 
 
-NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the event system. 
+NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the [event system](/concepts/events). 
+
+## NPC Types
+
+| Type | Description |
+|------|-------------|
+| `merchant` | Buys and sells items for gold. |
+| `trader` | Trades items for other items (currency is an item code instead of gold). |
+
+When viewing the items on an NPC, if the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
 
 ## List of NPCs
 
@@ -34,9 +43,7 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
 
 ## Buying/selling/trading items
 
-When viewing the items on an NPC, if the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
-
-You can use this GET request to view the list of items that npc sells/buys/trades. 
+You can use this GET request to view the list of items that an NPC sells/buys/trades.
 
 ```http filename="cURL" copy
 curl --request GET \
@@ -55,6 +62,16 @@ try {
   console.error(error);
 }
 ```
+
+Each item entry contains:
+
+| Field | Description |
+|---|---|
+| `code` | Item code. |
+| `npc` | NPC code. |
+| `currency` | Currency used: `gold` or an item code for trades. |
+| `buy_price` | Price to buy from the NPC (null if the NPC doesn't sell this item). |
+| `sell_price` | Price the NPC pays when you sell (null if the NPC doesn't buy this item). |
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs_items__code__get)
 

@@ -93,6 +93,16 @@ If you lose a fight, you return to the spawn (0,0 (overworld)) with 1 HP.
 
 Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time. The minimum combat cooldown is 5 seconds.
 
+### Monster Types
+
+Monsters are classified into three types:
+
+| Type | Description |
+|------|-------------|
+| `normal` | Standard monsters found throughout the world. |
+| `elite` | Stronger monsters with better stats and drops. |
+| `boss` | Powerful monsters that can be fought with up to 3 characters. |
+
 Here's the formula for calculating the cooldown:
 **Turns * 2 - (Haste * 0.01) * (Turns * 2)**
 
@@ -140,14 +150,14 @@ Runes are equipment that will launch an ability in combat. There are currently 3
 | Healing   | Every 3 played turns, restores x% of HP at the start of the turn.|
 | Healing Aura   | Every 2 played turns, they heal all allies for x% of their maximum HP. This effect does not heal the caster. |
 | Vampiric Strike   | After landing a critical hit, they heal the ally with the lowest HP for x% of the damage dealt. Can only trigger once every 3 turns. This effect does not heal the caster. |
-| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
+| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
 | Shell  | When they drop below 40% of their HP, they gain x% resistance to all elements for 3 turns. Activates once per combat. This effect is only active during boss fights. |
 | Guard  | If one or more allies have less than 50% of their HP, protects the ally with the lowest HP percentage, redirecting x% of their damage to this character until the start of my next turn. Activates a maximum of 3 times per combat.|
 
 [View all runes](https://artifactsmmo.com/encyclopedia/items?type=rune)
 
 
-### Monsters effects/abilites
+### Monsters effects/abilities
 
 Some monsters launch abilities called effects. These are additional effects that can be activated during combat in addition to their attacks.
 
@@ -155,14 +165,16 @@ Some monsters launch abilities called effects. These are additional effects that
 | ------- | ---------------------------------------------------- |
 | Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. |
 | Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
-| Healing   | Every 3 played turns, restores x% of HP at the start of the turn.
-| Reconstitution   | At the beginning of the turn x, restores all HP.
-| Poison   | At the start of its first turn, applies a x poison to its opponent. Loses x HP per turn.
-| Corrupted | After every time the bearer of this effect is attacked, their resistance to the attack's element is reduced by x%, and can go negative.
+| Healing   | Every 3 played turns, restores x% of HP at the start of the turn. |
+| Reconstitution   | At the beginning of the turn x, restores all HP. |
+| Poison   | At the start of its first turn, applies a x poison to its opponent. Loses x HP per turn. |
+| Corrupted | After every time the bearer of this effect is attacked, their resistance to the attack's element is reduced by x%, and can go negative. |
 | Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
 | Berserker Rage  | When they drop below 25% HP, they gain x% damage permanently. Applies once per combat. |
-| Void Drain  | Every 4 turns, Drains x% HP from each enemy to heal themselves.|
-| Barrier  | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed.|
+| Void Drain  | Every 4 turns, Drains x% HP from each enemy to heal themselves. |
+| Barrier  | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed. |
+
+You can view monster effects using the [monsters endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get). Each monster's `effects` field lists its abilities with a `code` and `value`.
 
 
 ### Equip
@@ -293,8 +305,9 @@ try {
 }
 ```
 
-You can fight with up to 2 other of **YOUR characters** against boss-type monsters.
+You can fight with up to 2 other of **YOUR characters** against `boss`-type monsters (up to 3 characters total).
 To do this, all your characters must be on the boss's map and you must add their names in the payload.
+All participating characters will receive XP, gold and drops independently.
 
 
 ```http filename="cURL" copy

@@ -15,8 +15,8 @@ Every map is uniquely identified by:
 - Or its numeric `map_id` 
 
 Retrieve maps with:
-- All maps: [GET `/maps`](https://api-test.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
-- Filter by layer: [GET `/maps/{layer}`](https://api-test.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
+- All maps: [GET `/maps`](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
+- Filter by layer: [GET `/maps/{layer}`](https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
 - By coordinates: [GET `/maps/{layer}/{x}/{y}`](https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get)
 - By ID: [GET `/maps/{id}/(map_id}`](https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get)
 
@@ -320,8 +320,8 @@ The movement system uses A* pathfinding to find the shortest path, bypassing blo
 **Endpoint:** `POST /my/{name}/action/move`
 
 You must supply either:
-- Coordinates: `{ "x": <int>, "y": <int> }`
-- Or a direct `{ "map_id": <int> }`
+- Coordinates: `{ "x": <int>, "y": <int> }` (on the current layer, overworld by default)
+- Or a direct `{ "map_id": <int> }` (can target any layer)
 
 Here's an example of an API request to move your character.
 
