@@ -122,6 +122,14 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `code` | The item code to withdraw. |
+| `quantity` | Number of items to withdraw. |
+
+The body is an array of items (1–20 items per request).
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
 
 You can use this POST request to **deposit items**:
@@ -160,6 +168,14 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `code` | The item code to deposit. |
+| `quantity` | Number of items to deposit. |
+
+The body is an array of items (1–20 items per request).
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
 
 
@@ -202,6 +218,11 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `quantity` | Amount of gold to withdraw. |
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
 
 You can use this POST request to **deposit gold**:
@@ -236,6 +257,11 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `quantity` | Amount of gold to deposit. |
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
 
 ### Buy expansion

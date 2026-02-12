@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 ## Gathering  
 
 Gathering skills allow you to gather resources on the map. Currently, 4 gathering skills are available: Woodcutting, Mining, Fishing and Alchemy.
@@ -55,6 +57,10 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
+
+<Callout type="warning">
+If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
+</Callout>
 
 [View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 
@@ -127,6 +133,22 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/crafting", requestOptions)
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
 ```
+
+| Field | Description |
+|---|---|
+| `code` | The item code to craft. |
+| `quantity` | Number of items to craft (optional, default 1). |
+
+<Callout type="warning">
+If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
+</Callout>
+
+<Callout type="info">
+Crafting XP varies by skill:
+- **Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy**: Normal XP (1.0×)
+- **Cooking**: Reduced XP (**0.5×**)
+- **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
+</Callout>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
 

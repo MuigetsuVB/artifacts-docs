@@ -1,6 +1,14 @@
+import { Callout } from 'nextra/components'
+
 ## Rest 
 
-Resting allows you to recover your hit points. The cooldown is 1 second per 5 HP recovered.
+Resting allows you to fully recover your hit points. The cooldown is **1 second per 1% of missing HP** (rounded up), with a minimum of **3 seconds**.
+
+For example, if your character has lost 50% of their HP, the cooldown will be 50 seconds.
+
+<Callout type="info">
+Rest always restores **all your HP** in a single action — there is no partial heal.
+</Callout>
 
 You can rest by using this POST request.
  
@@ -46,6 +54,10 @@ You can see the list of items [on our website](https://artifactsmmo.com/encyclop
 | Teleport   | Teleport to Map ID: x |
 
 To use an item, your character must meet all the item's conditions. An item's conditions can use any character variable and an operator such as gt, lt, or eq.
+
+<Callout type="info">
+Using a consumable has a fixed cooldown of **3 seconds**, regardless of the quantity used. Heal effects are capped at your maximum HP — you cannot overheal.
+</Callout>
 
 For example, the [Cooked Beef](https://www.artifactsmmo.com/encyclopedia/items/cooked_beef/) requires your character to be above level 4.
 
@@ -96,5 +108,11 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `code` | The consumable item code to use. |
+| `quantity` | Number of items to use. |
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
 

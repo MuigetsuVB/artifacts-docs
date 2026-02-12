@@ -363,6 +363,12 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
    .catch(error => console.log('error', error));
 ```
 
+| Field | Description |
+|---|---|
+| `x` | The x coordinate of the destination (used with `y`). |
+| `y` | The y coordinate of the destination (used with `x`). |
+| `map_id` | The map ID of the destination (alternative to `x`/`y`, can target any layer). |
+
 [View API Request](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
 
 

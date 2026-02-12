@@ -92,6 +92,14 @@ fetch("https://api.artifactsmmo.com/tasks/rewards", requestOptions)
 
 To get a new task or to complete it, you need to be on a map with a tasks master.
 
+<Callout type="warning">
+  You must be at a Tasks Master that **matches your task type**. A `monsters` task must be completed/cancelled at a monsters Tasks Master, and an `items` task at an items Tasks Master.
+</Callout>
+
+<Callout type="info">
+  All task actions (new, complete, exchange, trade, cancel) have a **3-second** cooldown. Completing a task or exchanging coins requires at least **1 free inventory slot**.
+</Callout>
+
 You can use this POST request to accept a new task.
 
 ```http filename="cURL" copy
@@ -223,6 +231,15 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/task/trade", requestOptions
    .catch(error => console.log('error', error));
 ```
 
+| Field | Description |
+|---|---|
+| `code` | The item code to trade. |
+| `quantity` | Number of items to trade. |
+
+<Callout type="warning">
+  Trade is only available for `items` type tasks. You cannot deliver more items than the remaining quantity needed to complete the task.
+</Callout>
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
 
 
@@ -254,5 +271,9 @@ try {
   console.error(error);
 }
 ```
+
+<Callout type="warning">
+  Canceling a task costs **1 tasks coin**. You must have at least 1 tasks coin in your inventory.
+</Callout>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post) 

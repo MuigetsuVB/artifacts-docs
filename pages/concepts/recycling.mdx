@@ -1,6 +1,12 @@
+import { Callout } from 'nextra/components'
+
 # Recycling 
 
 Recycling allows you to recycle your weapons and equipment at weaponcrafting, gearcrafting and jewelrycrafting workshops.
+
+<Callout type="warning">
+  Only items that have a **craft recipe** can be recycled. The workshop must match the item's craft skill (e.g. a weapon must be recycled at a **weaponcrafting** workshop). Only `weaponcrafting`, `gearcrafting` and `jewelrycrafting` items are eligible.
+</Callout>
 
 This lets you get back some of the item's crafting resources. The items returned are chosen at random from the craft recipe. The number of items you get back depends on the complexity of the craft recipe — specifically, `(total_items_in_recipe - 1) / 5 + 1` (rounded down), with a minimum of 1 resource per recycled item.
 
@@ -42,5 +48,11 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `code` | The item code to recycle. |
+| `quantity` | Number of items to recycle (optional, default 1). |
+
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
 

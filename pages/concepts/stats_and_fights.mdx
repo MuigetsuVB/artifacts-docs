@@ -103,6 +103,14 @@ Monsters are classified into three types:
 | `elite` | Stronger monsters with better stats and drops. |
 | `boss` | Powerful monsters that can be fought with up to 3 characters. |
 
+<Callout type="warning">
+If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
+</Callout>
+
+<Callout type="info">
+Elite monsters give **1.4×** the base XP, and Boss monsters give **2.0×**. In multi-character fights, the **average level** of all participants is used for the XP calculation.
+</Callout>
+
 Here's the formula for calculating the cooldown:
 **Turns * 2 - (Haste * 0.01) * (Turns * 2)**
 
@@ -173,6 +181,7 @@ Some monsters launch abilities called effects. These are additional effects that
 | Berserker Rage  | When they drop below 25% HP, they gain x% damage permanently. Applies once per combat. |
 | Void Drain  | Every 4 turns, Drains x% HP from each enemy to heal themselves. |
 | Barrier  | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed. |
+| Protective Bubble  | Grants x% resistance to a random element (fire, earth, water, or air). The element changes at the start of each turn and cannot be the same as the previous one. |
 
 You can view monster effects using the [monsters endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get). Each monster's `effects` field lists its abilities with a `code` and `value`.
 
@@ -231,6 +240,12 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
    .catch(error => console.log('error', error));
 ```
 
+| Field | Description |
+|---|---|
+| `code` | The item code to equip. |
+| `slot` | The equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
+| `quantity` | Item quantity (optional, default 1). Applicable to utilities only (1–100). |
+
 [View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
 
 ### Unequip
@@ -271,6 +286,11 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
    .catch(error => console.log('error', error));
 ```
 
+| Field | Description |
+|---|---|
+| `slot` | The equipment slot to unequip: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
+| `quantity` | Item quantity (optional, default 1). Applicable to utilities only (1–100). |
+
 [View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
 
 ### Action
@@ -278,6 +298,10 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
 
 To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement) 
 You can start a fight using this API request.
+
+<Callout type="warning">
+Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a `CharacterInventoryFullException` error.
+</Callout>
 
 ```http filename="cURL" copy
 curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
@@ -339,6 +363,10 @@ try {
   console.error(error);
 }
 ```
+
+| Field | Description |
+|---|---|
+| `participants` | Optional list of additional character names to include in the fight (max 2 additional characters). |
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
 
