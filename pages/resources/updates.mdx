@@ -1,3 +1,64 @@
+## Update 02/21/26: Season 7 (version 7.0.0)
+
+Here's the patch notes for Season 7.
+
+
+**Grand Exchange**
+- The Grand Exchange now supports **buy orders** in addition to sell orders. You can now place an order to buy items at a price you choose, and other players can fill your order by selling directly into it.
+- New endpoint `POST /my/{name}/action/grandexchange/create-buy-order`: Create a buy order by specifying an item, a quantity (1-100) and a price per unit. The total cost (price × quantity) is locked immediately from your character's gold.
+- New endpoint `POST /my/{name}/action/grandexchange/fill`: Sell your items directly into an existing buy order from another player. The gold is credited to you instantly, and the items are delivered to the buyer via the new **pending items** system.
+- The sell endpoint has been renamed from `/sell` to `/create-sell-order` for consistency.
+- Orders now have a `type` field (`sell` or `buy`) and a unified `account` field instead of separate `seller`/`buyer` fields.
+
+**Pending Items**
+- New system for receiving items without needing inventory space right away. Items from various sources (Achievements, Grand Exchange buy orders) are placed in a **pending items queue** tied to your account.
+- New endpoint `GET /my/pending-items`: View all your unclaimed pending items.
+- New endpoint `POST /my/{name}/action/claim_item/{id}`: Claim a pending item with any character on your account. Items are added to the character's inventory.
+
+**Achievements**
+- Achievements now support **multiple objectives**. A single achievement can require you to complete several different tasks (e.g., kill 3 specific monsters AND craft 2 items). Each objective tracks its own progress independently.
+- Achievement rewards can now include **items** in addition to gold. Item rewards are delivered through the pending items system and can be claimed by any character on your account.
+- New achievement types: `npc_buy` and `npc_sell` — achievements can now track NPC buy/sell actions.
+
+**Sandbox/test**
+- New endpoint `POST /sandbox/reset-account`: Reset your account progress on the sandbox server.
+
+**Bank**
+- The price of the first bank expansion has been reduced to 4,000 gold.
+
+**Monsters**
+- 3 new monsters:
+  - Rat: Level 25
+  - Goblin Guard: Level 35
+  - Goblin Priestess (boss): Level 35
+- Resources added to several existing monsters.
+- Lich HP reduced from 7200 to 6600.
+
+**Items**
+- 18 new items.
+- Crafting adjustments to include the new resources.
+- Level 40 runes received a small stat upgrade to make them more appealing.
+
+**Fights**
+- New effect:
+  - Protective Bubble: Grants {value}% resistance to a random element (fire, earth, water, or air). The element changes at the start of each turn and cannot be the same as the previous one.
+
+**Rest**
+Rest healing has been adjusted to feel smoother and less punishing.
+  - Before: 1 second per 5 missing HP (minimum 3 seconds)
+  - After: 1 second per 1% missing HP (minimum 3 seconds)
+
+**Maps**
+ - Small update to the map to add:
+    - A new house interior at coordinates -3,12
+    - A new mine at coordinates 5,-3
+
+**Other Changes**
+- New action types in logs: `create_buy_order_ge`, `fill_buy_order_ge`, `claim`.
+- Real-time WebSocket notifications for new pending items (`pending_item_received`) and buy order creation (`grandexchange_buy_order`).
+
+
+
 ## Update 10/15/25: version 6.1.0
 
 Here's the patch notes for the version 6.1.0
