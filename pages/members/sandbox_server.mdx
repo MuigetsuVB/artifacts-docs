@@ -5,5 +5,20 @@ import { Callout } from 'nextra/components'
 <Callout type="warning" emoji="⚠️">
 Sandbox Server is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
 </Callout>
+
+The sandbox server provides a dedicated environment for testing and developing scripts alongside the official server. It offers additional endpoints to validate any scenario without impacting your main account.
   
-This server will be deployed in the coming months.
+
+| Server         | URL |
+|--------------|-------------------|
+| API server      | https://api.sandbox.artifactsmmo.com/     |
+| Websockets server | wss://realtime.sandbox.artifactsmmo.com     |
+| Site/Client  | https://sandbox.artifactsmmo.com/       |
+
+
+## Sandbox features
+ * [Give Gold](https://api.sandbox.artifactsmmo.com/docs/#/operations/give_gold_sandbox_give_gold_post)
+ * [Give Item](https://api.sandbox.artifactsmmo.com/docs/#/operations/give_item_sandbox_give_item_post)
+ * [Give XP](https://api.sandbox.artifactsmmo.com/docs/#/operations/give_xp_sandbox_give_xp_post)
+ * [Spawn Event](https://api.sandbox.artifactsmmo.com/docs/#/operations/spawn_event_sandbox_spawn_event_post)
+ * [Reset Account](https://api.sandbox.artifactsmmo.com/docs/#/operations/reset_account_sandbox_reset_account_post)
