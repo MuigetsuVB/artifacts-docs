@@ -1,3 +1,30 @@
+## Update 02/28/26: version 7.0.2
+
+Here's the patch notes for version 7.0.2.
+
+**Give items/gold**
+- Fixed a bug that returned the wrong character in the logs.
+
+**Trade items (Tasks)**
+- Fixed the log format, which was inconsistent with other logs.
+
+**Rate limits**
+- Added the headers `X-RateLimit-Limit`, `X-RateLimit-Remaining` et `X-RateLimit-Reset` to all API responses to indicate the current rate limits.
+
+**Fight Simulator**
+- Added missing error codes on OpenAPI.
+
+**WebSockets**
+- Added a `version` notification sent on connection and after each server update.
+
+## Update 02/26/25: version 7.0.1
+
+Here's the patch notes for version 7.0.1.
+
+**Static data**
+- Increased the pagination limit to 10,000 on static data endpoints (items, monsters, maps, etc.) to make it easier to retrieve all data in a single request.
+
+
 ## Update 02/21/26: Season 7 (version 7.0.0)
 
 Here's the patch notes for Season 7.

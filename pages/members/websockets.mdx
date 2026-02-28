@@ -18,7 +18,8 @@ WebSockets allow you to receive real-time notifications from the server.
 | Grand Exchange buy | grandexchange_buy | Grand Exchange | Server | Send `GeOrderHistorySchema` when a buy is completed (buyer purchases from a sell order) |
 | Grand Exchange sell | grandexchange_sell | Grand Exchange | Server | Send `GeOrderHistorySchema` when a sale is completed (seller fills a buy order) |
 | Pending Item Received | pending_item_received | Pending Items | Server | Send `PendingItemSchema` when an item is sent to the player's pending items (from achievements, Grand Exchange purchases, etc.) |
-| Online characters |online_characters | Characters|Server| Send `array[ActiveCharacterSchema]` every 10 minutes with the list of online characters. |
+| Online characters |online_characters | Characters|Server| Send `array[ActiveCharacterSchema]` at the connection and every 10 minutes with the list of online characters. |
+| Version |version | Server|Server| Send the API server version at the connection and at every update. |
 | Announcement |announcement | Announcements|Server| Sends `{"message": "string"}` when a new announcement is published. |
 | Achievement unlock |achievement_unlocked | Achievements|Account| Send `AchievementSchema` when an achievement is unlocked on your account. |
 | Account log |account_log | Logs|Account| Send `LogSchema` every time an action is performed on one of the characters in your account. |
