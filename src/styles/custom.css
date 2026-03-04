@@ -14,8 +14,42 @@
   --background: #050908;
   --sl-color-black: #050908;
   --sl-color-bg: #050908;
-  --accent: #009f6f1b;
-  --accent-foreground: #009f70;
+  --card: #0b1210;
+  --popover: #101915;
+  --muted: #0f1b18;
+  --muted-foreground:#b9bdc3;
+  --accent: #1b2522;
+  --accent-foreground: #00b88a;
+  --border: rgba(0, 159, 112, 0.25);
+  --input: rgba(0, 159, 112, 0.2);
+  --ring: #009f70;
+  --mark-background: rgba(255, 225, 0, 0.18);
+  --sl-color-orange-low: #f997164a;
+  
+  /* Search/Pagefind + neutral surfaces (remove blue-gray cast). */
+  --sl-color-gray-1: #e6f1ed;
+  --sl-color-gray-2: #b5c8c1;
+  --sl-color-gray-3: #809992;
+  --sl-color-gray-4: #58756d;
+  --sl-color-gray-5: #2b433c;
+  --sl-color-gray-6: #162520;
+
+  /* Code blocks + inline code */
+  --code-background: #111d1a;
+  --ec-frm-edActTabBg: #152320;
+  --ec-frm-edTabBarBg: #0d1614;
+  --sl-color-bg-inline-code: #1b2c27;
+
+  /* Replace remaining default blue accents in theme components. */
+  --sl-color-blue: #34d399;
+  --sl-color-blue-low: #134e4a;
+  --sl-color-blue-high: #a7f3d0;
+  --sl-color-purple: #10b981;
+  --sl-color-purple-low: #065f46;
+  --sl-color-purple-high: #6ee7b7;
+  --sl-color-banner-bg: #0e3a2f;
+  --sl-color-banner-border: #1b5b4a;
+  --sl-color-banner-text: #c9f7e8;
 
   /* Six theme primary actions (buttons, key accents). */
   --primary: #009f70;
@@ -38,4 +72,34 @@
   width: auto !important;
   height: auto !important;
   max-height: none !important;
+}
+
+/* Disable theme switch UI (dark-only site). */
+starlight-theme-six-select {
+  display: none !important;
+}
+
+
+.sl-markdown-content .starlight-aside {
+
+  padding: 1.2rem 1.2rem 0.5rem 1.2rem;
+  border:transparent;
+}
+
+
+.sl-markdown-content .starlight-aside p {
+  color:inherit;
+}
+
+.starlight-aside--note p {
+  color:rgb(206, 226, 255)!important;
+}
+
+.starlight-aside--note {
+    background-color: #3a619d7a;
+}
+
+
+.layout__header {
+     border-bottom-width: 0px!important;
 }

@@ -2,6 +2,7 @@
 title: Overview
 ---
 
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
 
 Artifacts is a sandbox MMORPG designed for code lovers, where you control your characters entirely through an HTTP API. Every action your characters can take corresponds to an endpoint you can interact with programmatically. This unique approach lets you automate gameplay, build custom tools, and explore new ways to play.
 
@@ -12,17 +13,37 @@ The game is currently in **beta**, with an official release planned for **summer
 The API is fully documented using OpenAPI ([view the docs here](https://api.artifactsmmo.com/docs/#/)).
 If you want to get started quickly, check out our [Quickstart Guide](/quickstart/introduction).
 
-:::section{.cards}
+ <br/>
+<CardGrid>
+  <LinkCard
+    title="Quickstart"
+    href="/quickstart/introduction"
+    description="Get from zero to your first automated actions in a few minutes."
+  />
+  <LinkCard
+    title="Game Concepts"
+    href="/concepts/actions"
+    description="Understand core systems: combat, skills, tasks, bank, and events."
+  />
+  <LinkCard
+    title="API Docs"
+    href="https://api.artifactsmmo.com/docs/#/"
+    target="_blank"
+    rel="noopener noreferrer"
+    description="Browse the full OpenAPI reference with all endpoints and schemas."
+  />
+  <LinkCard
+    title="Discord"
+    href="https://discord.com/invite/prEBQ8a6Vs"
+    target="_blank"
+    rel="noopener noreferrer"
+    description="Join the community for help, updates, and project sharing."
+  />
 
-  - [**Quickstart**](/quickstart/introduction)
-  - [**Game Concepts**](/concepts/actions)
-  - [**Game Client**](https://client.artifactsmmo.com)
-  - [**API Docs**](https://api.artifactsmmo.com/docs/#/)
-  - [**Discord**](https://discord.com/invite/prEBQ8a6Vs)
-  - [**Support Us**](https://www.paypal.com/donate/?hosted_button_id=H65954RZKKEJW)
+</CardGrid>
 
-:::
 
+ <br/>
 Have questions, want to share your projects, or provide feedback? Join our [Discord community](https://discord.gg/prEBQ8a6Vs)!
 
 ## Season 7 is now available

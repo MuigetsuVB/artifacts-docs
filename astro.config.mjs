@@ -53,7 +53,7 @@ export default defineConfig({
         {
           tag: 'script',
           content:
-            "try { if (localStorage.getItem('starlight-theme') === null) localStorage.setItem('starlight-theme', 'dark'); } catch {}",
+            "try { localStorage.setItem('starlight-theme', 'dark'); } catch {} document.documentElement.dataset.theme = 'dark';",
         },
         {
           tag: 'link',
