@@ -4,8 +4,6 @@ title: Resting and using items
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Resting and using items
-
 ## Rest 
 
 Resting allows you to fully recover your hit points. The cooldown is **1 second per 1% of missing HP** (rounded up), with a minimum of **3 seconds**.
@@ -19,7 +17,7 @@ Rest always restores **all your HP** in a single action — there is no partial 
 You can rest by using this POST request.
  
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/rest \
@@ -28,7 +26,7 @@ You can rest by using this POST request.
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
 const options = {
@@ -89,7 +87,7 @@ For example, the [Cooked Beef](https://www.artifactsmmo.com/encyclopedia/items/c
 You can use an item by using this POST request.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/use \
@@ -102,7 +100,7 @@ You can use an item by using this POST request.
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
 const options = {

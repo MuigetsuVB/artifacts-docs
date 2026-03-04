@@ -4,8 +4,6 @@ title: NPCs
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# NPCs 
-
 NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the [event system](/concepts/events). 
 
 ## NPC Types
@@ -22,14 +20,14 @@ When viewing the items on an NPC, if the `currency` field shows anything other t
 You can use this GET request to view the list of all existing NPCs.
   
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -58,14 +56,14 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
 You can use this GET request to view the list of items that an NPC sells/buys/trades.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
   --header 'Accept: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/npcs/items/{npc_code}';
 const options = {method: 'GET', headers: {Accept: 'application/json'}};
@@ -100,7 +98,7 @@ To buy or sell an item, you must be on a map with an NPC. [To learn more about t
 You can use this POST request to buy an item.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
@@ -113,7 +111,7 @@ You can use this POST request to buy an item.
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
 const options = {
@@ -148,7 +146,7 @@ try {
 You can use this POST request to sell an item.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
@@ -161,7 +159,7 @@ You can use this POST request to sell an item.
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
 const options = {

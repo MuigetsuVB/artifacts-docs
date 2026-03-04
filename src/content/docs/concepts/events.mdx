@@ -4,7 +4,6 @@ title: Events
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Events
 Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an NPC.
 
 Each event has a **spawn rate** (chance to appear per minute) and a **duration** (how long it stays active).
@@ -32,7 +31,7 @@ Each event has a **spawn rate** (chance to appear per minute) and a **duration**
 You can view the full list of all possible events (including spawn rate, duration, content and maps) using this request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/events/' \
@@ -40,7 +39,7 @@ You can view the full list of all possible events (including spawn rate, duratio
   --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/events/';
 const options = {
@@ -95,7 +94,7 @@ Each event contains:
 You can view all currently active events using this request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/events/active' \
@@ -103,7 +102,7 @@ You can view all currently active events using this request:
   --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/events/active';
 const options = {

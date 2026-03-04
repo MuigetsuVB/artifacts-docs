@@ -4,8 +4,6 @@ title: New mission
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# New mission
-
 To kill monsters faster, you'll need a better weapon.
 To do this, we're going to upgrade our current weapon to a more powerful one.
 
@@ -24,7 +22,7 @@ The craft we're going to make is **Wooden Staff.** Most other equipment that use
 Before gathering woods, you'll need to move to the map (-1,0) using the same POST request.
   
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
@@ -36,7 +34,7 @@ Before gathering woods, you'll need to move to the map (-1,0) using the same POS
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -68,7 +66,7 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
 When you're on the map and your cooldown is over, you can make this request to collect resources.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering' \
 --header 'Accept: application/json' \
@@ -76,7 +74,7 @@ When you're on the map and your cooldown is over, you can make this request to c
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");

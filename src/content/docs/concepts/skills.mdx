@@ -4,8 +4,6 @@ title: Skills
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Skills
-
 ## Gathering  
 
 Gathering skills allow you to gather resources on the map. Currently, 4 gathering skills are available: Woodcutting, Mining, Fishing and Alchemy.
@@ -13,14 +11,14 @@ Gathering skills allow you to gather resources on the map. Currently, 4 gatherin
 You can see all the resources that can be gathered with this API request.
  
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/resources/?page=1&size=50' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -47,7 +45,7 @@ You then need to find a map that contains this resource. [To learn more about th
 When you're on a map containing a resource, if you have the necessary skill level, you can harvest it with this API request.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering' \
 --header 'Accept: application/json' \
@@ -55,7 +53,7 @@ When you're on a map containing a resource, if you have the necessary skill leve
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -92,14 +90,14 @@ Some crafts produce more than one item per craft. Check the `craft.quantity` fie
 If you want to see all the crafts of a skill, you can use the Get Item request with the craft_skill parameter. Here's an example request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/items/?craft_skill=weaponcrafting' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -127,7 +125,7 @@ You must then find a map containing a workshop of the skill. [To learn more abou
 When you're on a map containing a workshop, you can use this request to craft an item.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/crafting' \
 --header 'Accept: application/json' \
@@ -138,7 +136,7 @@ When you're on a map containing a workshop, you can use this request to craft an
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");

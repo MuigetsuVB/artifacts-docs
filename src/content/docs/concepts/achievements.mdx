@@ -5,8 +5,6 @@ title: Achievements
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 
-# Achievements
-
 Achievements are objectives to be met during the season by all your characters. They grant you gold, items, and achievement points, which allow you to earn season badges.
 
 Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
@@ -89,14 +87,14 @@ When an achievement is completed, the rewards are automatically sent to your [**
 You can use this GET request to view your account's list of achievements, including progress on each objective.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -129,14 +127,14 @@ Each season, accumulating enough achievement points can earn you unique seasonal
 You can view the current badges and requirements using this GET request.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url https://api.artifactsmmo.com/badges \
   --header 'Accept: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/badges';
 const options = {method: 'GET', headers: {Accept: 'application/json'}};

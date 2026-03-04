@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightThemeSix from '@six-tech/starlight-theme-six';
+import { ion } from 'starlight-ion-theme';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,30 +12,21 @@ export default defineConfig({
   integrations: [
     starlight({
       plugins: [
-        starlightThemeSix({
-          navLinks: [
-            {
-              label: 'Encyclopedia',
-              link: 'https://artifactsmmo.com/encyclopedia/items',
-              attrs: { target: '_blank' },
-            },
-            {
-              label: 'Client',
-              link: 'https://client.artifactsmmo.com',
-              attrs: { target: '_blank' },
-            },
-            {
-              label: 'API Reference',
-              link: 'https://api.artifactsmmo.com/docs',
-              attrs: { target: '_blank' },
-            },
-          ],
+        ion({
+          icons: {},
+          footer: {
+            text: '© Artifacts 2026',
+          },
         }),
       ],
+      components: {
+        Header: './src/components/site/Header.astro',
+        Pagination: './src/components/ion/Pagination.astro',
+      },
       title: 'Artifacts',
       logo: {
         dark: './src/styles/logo.png',
-        light: './src/styles/logo-black.png',
+        light: './src/styles/logo.png',
         alt: 'Artifacts game logo',
         replacesTitle: true,
       },
@@ -46,6 +37,7 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/MuigetsuVB/artifacts-docs/edit/main/',
       },
+      lastUpdated: true,
       customCss: [
         './src/styles/custom.css',
       ],
@@ -79,8 +71,16 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: 'Introduction',
+          label: '[lucide:house] Home',
           link: '/',
+        },
+        {
+          label: '[lucide:list] Getting Started',
+          link: '/getting-started/',
+        },
+        {
+          label: '[fe:loop] Changelog',
+          link: '/changelog/',
         },
         {
           label: 'Funding',
@@ -105,7 +105,13 @@ export default defineConfig({
           label: 'Game concepts',
           items: [
             { label: 'Achievements', link: '/concepts/achievements/' },
-            { label: 'Actions', link: '/concepts/actions/' },
+            {
+              label: 'Actions',
+              items: [
+                { label: 'Overview', link: '/concepts/actions/' },
+                { label: 'Fight', link: '/concepts/actions/fight/' },
+              ],
+            },
             { label: 'Events', link: '/concepts/events/' },
             { label: 'Give items & Gold', link: '/concepts/give/' },
             { label: 'Grand Exchange', link: '/concepts/grand_exchange/' },
@@ -132,7 +138,6 @@ export default defineConfig({
         {
           label: 'Resources',
           items: [
-            { label: 'Updates', link: '/resources/updates/' },
             { label: 'Images', link: '/resources/images/' },
           ],
         },

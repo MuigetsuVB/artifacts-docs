@@ -4,8 +4,6 @@ title: Actions
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Actions
-
 To execute an action with your character, you need to send an API request.
  
 Here's the list of actions currently available:
@@ -69,7 +67,7 @@ If you are in cooldown and try to make an action, you will receive an error 499 
 Every action you take is logged. You can view a character's logs with this request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50' \
 --header 'Accept: application/json' \
@@ -77,7 +75,7 @@ Every action you take is logged. You can view a character's logs with this reque
 --header 'Authorization: Bearer ENTER_YOUR_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");

@@ -4,8 +4,6 @@ title: Stats and Fights
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Stats and Fights
-
 ## Stats 
  
 Here are all the stats a player can have:
@@ -215,7 +213,7 @@ For example, the [Iron Sword](https://www.artifactsmmo.com/encyclopedia/items/ir
 To equip an item, you can use this API request.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
@@ -271,7 +269,7 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -316,7 +314,7 @@ Your inventory must have at least **1 free slot** before starting a fight, other
 :::
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
@@ -324,7 +322,7 @@ Your inventory must have at least **1 free slot** before starting a fight, other
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
 const options = {
@@ -353,7 +351,7 @@ All participating characters will receive XP, gold and drops independently.
 
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
@@ -364,7 +362,7 @@ All participating characters will receive XP, gold and drops independently.
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
 const options = {

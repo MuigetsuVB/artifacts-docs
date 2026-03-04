@@ -4,8 +4,6 @@ title: Inventory and Bank
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Inventory and Bank
-
 ## Inventory
 
 Each character has 20 slots in their inventory, which can hold a maximum of 100 items. So you can have 20 different items, but a maximum of 100 items in total. At each level, the maximum total items increases by 2.
@@ -34,14 +32,14 @@ The bank is limited to 50 slots, but you can buy expansions at a cost of 4000 go
 You can view the contents of your bank at any time using the following request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/bank/items';
 const options = {
@@ -69,14 +67,14 @@ try {
 You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/bank';
 const options = {
@@ -109,7 +107,7 @@ To deposit or withdraw items, you must be on a map containing a bank.
 You can use this POST request to **withdraw items**:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
@@ -122,7 +120,7 @@ You can use this POST request to **withdraw items**:
 ]'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
 const options = {
@@ -161,7 +159,7 @@ The body is an array of items (1–20 items per request).
 You can use this POST request to **deposit items**:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
@@ -174,7 +172,7 @@ You can use this POST request to **deposit items**:
 ]'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
 const options = {
@@ -221,7 +219,7 @@ To deposit or withdraw gold, you must be on a map containing a bank.
 You can use this POST request to **withdraw gold**:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
@@ -233,7 +231,7 @@ You can use this POST request to **withdraw gold**:
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
 const options = {
@@ -266,7 +264,7 @@ try {
 You can use this POST request to **deposit gold**:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
@@ -278,7 +276,7 @@ You can use this POST request to **deposit gold**:
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
 const options = {
@@ -315,7 +313,7 @@ To buy an expansion, you need to be on a map containing a bank. It costs 4,500 g
 You can use this POST request to buy an expansion:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
@@ -324,7 +322,7 @@ You can use this POST request to buy an expansion:
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
 const options = {

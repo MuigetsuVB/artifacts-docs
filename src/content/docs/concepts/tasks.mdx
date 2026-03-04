@@ -4,8 +4,6 @@ title: Tasks
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Tasks  
- 
 Tasks assign you random objectives (such as killing monsters, collecting resources, bringing back items) and when you complete tasks, you get some gold and a currency: tasks coins.
 Tasks coins can be exchanged at all Tasks Masters. For 6 coins, you can get a random reward. You can also trade them for a higher cost at the NPC Tasks Trader to get the item you want.
 
@@ -39,14 +37,14 @@ Completing a task rewards gold and tasks coins based on the task type and level:
 You can use this GET request to view the list of all existing tasks.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/tasks/all' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -74,14 +72,14 @@ fetch("https://api.artifactsmmo.com/tasks/all", requestOptions)
 You can use this GET request to see the list of all the rewards you can get when you exchange 6 coins at a Tasks Master.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/tasks/rewards' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -119,7 +117,7 @@ All task actions (new, complete, exchange, trade, cancel) have a **3-second** co
 You can use this POST request to accept a new task.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/task/new \
@@ -128,7 +126,7 @@ You can use this POST request to accept a new task.
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/task/new';
 const options = {
@@ -156,7 +154,7 @@ try {
 You can use this POST request to complete a task
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/task/complete \
@@ -165,7 +163,7 @@ You can use this POST request to complete a task
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/task/complete';
 const options = {
@@ -194,7 +192,7 @@ try {
 You can use this POST request to exchange 6 coins tasks for a random reward.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/task/exchange \
@@ -203,7 +201,7 @@ You can use this POST request to exchange 6 coins tasks for a random reward.
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/task/exchange';
 const options = {
@@ -232,7 +230,7 @@ try {
 You can use this POST request to trade items at a Task Master (Items).
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/task/trade' \
 --header 'Accept: application/json' \
@@ -244,7 +242,7 @@ You can use this POST request to trade items at a Task Master (Items).
 }' 
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -286,7 +284,7 @@ Trade is only available for `items` type tasks. You cannot deliver more items th
 You can use this POST request to cancel a task at the cost of a task coin.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/task/cancel \
@@ -295,7 +293,7 @@ You can use this POST request to cancel a task at the cost of a task coin.
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/task/cancel';
 const options = {

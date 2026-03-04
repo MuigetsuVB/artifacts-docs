@@ -2,7 +2,7 @@
 title: WebSockets
 ---
 
-# WebSockets 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution
 WebSockets is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
@@ -46,7 +46,9 @@ If you want to receive all notifications, you don't need to include subscription
 
 ### Examples
 
-```python title="Python"
+<Tabs>
+  <TabItem label="Python" icon="seti:python">
+```python
 import asyncio
 import websockets
 import json
@@ -81,7 +83,9 @@ async def receive_messages():
 asyncio.run(receive_messages())
 ```
 
-```js title="Javascript"
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+```js
 const WebSocket = require('ws');
 
 const url = "wss://realtime.artifactsmmo.com";
@@ -118,7 +122,9 @@ async function receiveMessages() {
 receiveMessages();
 ```
 
-```java title="Java"
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+```java
 <dependency>
     <groupId>org.java-websocket</groupId>
     <artifactId>Java-WebSocket</artifactId>
@@ -166,6 +172,8 @@ public class WebSocketHandler extends WebSocketClient {
     }
 }
 ```
+  </TabItem>
+</Tabs>
 
 ## Server responses
 

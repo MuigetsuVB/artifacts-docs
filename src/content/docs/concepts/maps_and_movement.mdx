@@ -4,8 +4,6 @@ title: Maps
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Maps
-
 The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
 
 | Layer        | Enum value     | Content                        |
@@ -332,7 +330,7 @@ You must supply either:
 Here's an example of an API request to move your character.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
@@ -346,7 +344,7 @@ Here's an example of an API request to move your character.
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -393,7 +391,7 @@ If no path is possible using move, it is very likely that a transition is necess
 Here is an example of an API request to use a transition.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
 --header 'Accept: application/json' \
@@ -401,7 +399,7 @@ Here is an example of an API request to use a transition.
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");

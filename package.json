@@ -22,9 +22,11 @@
     "@astrojs/starlight": "^0.37.6",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
-    "@six-tech/starlight-theme-six": "^1.0.16",
+    "@iconify-json/fe": "^1.2.4",
+    "@iconify-json/lucide": "^1.2.95",
     "astro": "^5.18.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "starlight-ion-theme": "^2.3.3"
   },
   "devDependencies": {
     "@types/node": "18.11.10",

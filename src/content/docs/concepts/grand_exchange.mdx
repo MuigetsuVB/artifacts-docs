@@ -5,8 +5,6 @@ title: Grand Exchange
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
  
-# Grand Exchange
-   
 The Grand Exchange lets you buy and sell items with other players through **sell orders** and **buy orders**. To interact with the Grand Exchange, your character must be on a map containing a Grand Exchange.
 
 :::note
@@ -18,7 +16,7 @@ There is a limit of **100 active orders** (sell + buy combined) per account.
 You can browse all active orders (sell and buy) using this request. Use the `type` parameter to filter by order type, and `code` to filter by item.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell' \
@@ -26,7 +24,7 @@ You can browse all active orders (sell and buy) using this request. Use the `typ
   --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell';
 const options = {
@@ -61,7 +59,7 @@ try {
 To consult an item's sales history over the last 7 days, you can use this request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}' \
@@ -69,7 +67,7 @@ To consult an item's sales history over the last 7 days, you can use this reques
   --header 'Content-Type: application/json'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}';
 const options = {
@@ -102,7 +100,7 @@ try {
 To put items up for sale, use this POST request. The items are removed from your inventory when the order is created.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order \
@@ -116,7 +114,7 @@ To put items up for sale, use this POST request. The items are removed from your
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order';
 const options = {
@@ -153,7 +151,7 @@ try {
 To buy items from an existing sell order, first browse the sell orders to find the order ID, then use this POST request:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy \
@@ -166,7 +164,7 @@ To buy items from an existing sell order, first browse the sell orders to find t
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy';
 const options = {
@@ -212,7 +210,7 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 ### Create a buy order
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order \
@@ -226,7 +224,7 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order';
 const options = {
@@ -263,7 +261,7 @@ try {
 To sell your items to an existing buy order, use this POST request. The items are removed from your inventory and you receive the gold immediately.
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill \
@@ -276,7 +274,7 @@ To sell your items to an existing buy order, use this POST request. The items ar
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill';
 const options = {
@@ -318,7 +316,7 @@ You cannot fill your own buy orders. The items purchased through a buy order are
 You can cancel any of your active orders (sell or buy). To find an order to cancel, first check [your orders list](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get).
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel \
@@ -330,7 +328,7 @@ You can cancel any of your active orders (sell or buy). To find an order to canc
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel';
 const options = {

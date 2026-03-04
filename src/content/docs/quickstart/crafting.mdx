@@ -4,8 +4,6 @@ title: Crafting
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Crafting
-
 ## Unequip your weapon
 
 The other item required for crafting is **your current weapon**, the **Wooden Stick**. You can now unequip it and use it for crafting.
@@ -13,7 +11,7 @@ The other item required for crafting is **your current weapon**, the **Wooden St
 To unequip, use this request POST.
   
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
 --header 'Accept: application/json' \
@@ -24,7 +22,7 @@ To unequip, use this request POST.
 }' 
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -64,7 +62,7 @@ To do this, you'll need to go to a craft station. The nearest one is at (2,1)
 
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
@@ -76,7 +74,7 @@ To do this, you'll need to go to a craft station. The nearest one is at (2,1)
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -115,7 +113,7 @@ If you click on "Inspect", you'll be able to see the JSON version of the item. Y
 
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/crafting' \
 --header 'Accept: application/json' \
@@ -126,7 +124,7 @@ If you click on "Inspect", you'll be able to see the JSON version of the item. Y
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
@@ -162,7 +160,7 @@ The response includes the cooldown and xp you gain. **The weapon is now in your 
 To equip your new weapon, use this request POST:
 
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
@@ -174,7 +172,7 @@ To equip your new weapon, use this request POST:
 }'
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");

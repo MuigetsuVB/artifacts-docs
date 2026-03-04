@@ -4,8 +4,6 @@ title: Recover your hit points
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-# Recover your hit points
-
 When you finish a fight, you need to recover your hit points when you lose them.
 
 ![HP Recovery](https://artifactsmmo.com/images/docs/hp_recovery.png)
@@ -15,7 +13,7 @@ The easiest way to do this is to rest.
 To do this, you can execute this POST request when your combat cooldown is over.
  
 <Tabs>
-  <TabItem label="cURL">
+  <TabItem label="cURL" icon="seti:shell">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest \
@@ -24,7 +22,7 @@ To do this, you can execute this POST request when your combat cooldown is over.
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
-  <TabItem label="JavaScript">
+  <TabItem label="JavaScript" icon="seti:javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{INSERT_CHARACTER_NAME_HERE}/action/rest';
 const options = {
