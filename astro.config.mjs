@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightThemeSix from '@six-tech/starlight-theme-six';
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,7 +11,34 @@ export default defineConfig({
   },
   integrations: [
     starlight({
+      plugins: [
+        starlightThemeSix({
+          navLinks: [
+            {
+              label: 'Encyclopedia',
+              link: 'https://artifactsmmo.com/encyclopedia/items',
+              attrs: { target: '_blank' },
+            },
+            {
+              label: 'Client',
+              link: 'https://client.artifactsmmo.com',
+              attrs: { target: '_blank' },
+            },
+            {
+              label: 'API Reference',
+              link: 'https://api.artifactsmmo.com/docs',
+              attrs: { target: '_blank' },
+            },
+          ],
+        }),
+      ],
       title: 'Artifacts',
+      logo: {
+        dark: './src/styles/logo.png',
+        light: './src/styles/logo-black.png',
+        alt: 'Artifacts game logo',
+        replacesTitle: true,
+      },
       social: [
         { icon: 'discord', label: 'Discord', href: 'https://discord.gg/prEBQ8a6Vs' },
         { icon: 'github', label: 'GitHub', href: 'https://github.com/MuigetsuVB/artifacts-docs' },
@@ -22,6 +50,11 @@ export default defineConfig({
         './src/styles/custom.css',
       ],
       head: [
+        {
+          tag: 'script',
+          content:
+            "try { if (localStorage.getItem('starlight-theme') === null) localStorage.setItem('starlight-theme', 'dark'); } catch {}",
+        },
         {
           tag: 'link',
           attrs: {
@@ -112,21 +145,6 @@ export default defineConfig({
             { label: 'Test Server', link: '/members/test_server/' },
             { label: 'WebSockets', link: '/members/websockets/' },
           ],
-        },
-        {
-          label: 'Encyclopedia',
-          link: 'https://artifactsmmo.com/encyclopedia/items',
-          attrs: { target: '_blank' },
-        },
-        {
-          label: 'Client',
-          link: 'https://client.artifactsmmo.com',
-          attrs: { target: '_blank' },
-        },
-        {
-          label: 'API Reference',
-          link: 'https://api.artifactsmmo.com/docs',
-          attrs: { target: '_blank' },
         },
       ],
       defaultLocale: 'root',

@@ -1,20 +1,41 @@
-/* Custom styles for Artifacts documentation */
+/* Theme overrides for Six Starlight theme */
 
 :root {
-  --sl-color-accent-low: #0a3d3a;
-  --sl-color-accent: #2dd4bf;
-  --sl-color-accent-high: #5eead4;
-  --sl-hue-accent: 164;
+  /* Replace the default mauve/purple accent with brand green. */
+  --sl-color-accent-low: #00392a;
+  --sl-color-accent: #009f70;
+  --sl-color-accent-high: #4ec6a0;
+  --sl-hue-accent: 163;
 }
 
-[data-theme='light'] {
-  --sl-color-accent-low: #ccfbf1;
-  --sl-color-accent: #14b8a6;
-  --sl-color-accent-high: #0f766e;
+:root[data-theme='dark'],
+:root:not([data-theme='light']) {
+  /* Dark background requested. */
+  --background: #050908;
+  --sl-color-black: #050908;
+  --sl-color-bg: #050908;
+  --accent: #009f6f1b;
+  --accent-foreground: #009f70;
+
+  /* Six theme primary actions (buttons, key accents). */
+  --primary: #009f70;
+  --primary-foreground: #03130f;
 }
 
-/* Ensure good image display */
-.sl-markdown-content img {
-  border-radius: 0.5rem;
-  margin: 1rem 0;
+:root[data-theme='light'] {
+  /* Keep light theme white. */
+  --background: #ffffff;
+  --sl-color-black: #ffffff;
+  --sl-color-bg: #ffffff;
+
+  /* Same brand accent in light mode. */
+  --primary: #009f70;
+  --primary-foreground: #03130f;
+}
+
+/* Keep the game logo at its intrinsic size (no forced 3.5rem height). */
+.site-title .logo-size {
+  width: auto !important;
+  height: auto !important;
+  max-height: none !important;
 }
