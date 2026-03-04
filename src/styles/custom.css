@@ -1,0 +1,20 @@
+/* Custom styles for Artifacts documentation */
+
+:root {
+  --sl-color-accent-low: #0a3d3a;
+  --sl-color-accent: #2dd4bf;
+  --sl-color-accent-high: #5eead4;
+  --sl-hue-accent: 164;
+}
+
+[data-theme='light'] {
+  --sl-color-accent-low: #ccfbf1;
+  --sl-color-accent: #14b8a6;
+  --sl-color-accent-high: #0f766e;
+}
+
+/* Ensure good image display */
+.sl-markdown-content img {
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}

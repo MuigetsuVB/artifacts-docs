@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "Documentation for Artifacts, an API-based MMORPG",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "astro dev",
+    "build": "astro build",
+    "start": "astro preview",
+    "preview": "astro preview"
   },
   "repository": {
     "type": "git",
@@ -18,11 +19,9 @@
   },
   "homepage": "https://github.com/MuigetsuVB/artifacts-docs#readme",
   "dependencies": {
-    "next": "^13.0.6",
-    "nextra": "2.13.2",
-    "nextra-theme-docs": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@astrojs/starlight": "^0.37.6",
+    "astro": "^5.18.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@types/node": "18.11.10",
