@@ -2,6 +2,8 @@
 title: NPCs
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # NPCs 
 
 NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the [event system](/concepts/events). 
@@ -19,13 +21,17 @@ When viewing the items on an NPC, if the `currency` field shows anything other t
 
 You can use this GET request to view the list of all existing NPCs.
   
-```http title="cURL"
-curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
-```
-```js title="Javascript"
-var myHeaders = new Headers();
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 
@@ -42,20 +48,26 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
 
 ## Buying/selling/trading items
 
 You can use this GET request to view the list of items that an NPC sells/buys/trades.
 
-```http title="cURL"
-curl --request GET \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
   --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
   --header 'Accept: application/json'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/npcs/items/{npc_code}';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/npcs/items/{npc_code}';
 const options = {method: 'GET', headers: {Accept: 'application/json'}};
 
 try {
@@ -65,7 +77,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 Each item entry contains:
 
@@ -85,8 +99,10 @@ To buy or sell an item, you must be on a map with an NPC. [To learn more about t
 
 You can use this POST request to buy an item.
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -95,9 +111,11 @@ curl --request POST \
   "code": "string",
   "quantity": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
 const options = {
   method: 'POST',
   headers: {
@@ -116,7 +134,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -127,8 +147,10 @@ try {
 
 You can use this POST request to sell an item.
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -137,9 +159,11 @@ curl --request POST \
   "code": "string",
   "quantity": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
 const options = {
   method: 'POST',
   headers: {
@@ -158,7 +182,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|

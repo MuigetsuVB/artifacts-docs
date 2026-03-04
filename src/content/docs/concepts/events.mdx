@@ -2,6 +2,8 @@
 title: Events
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Events
 Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an NPC.
 
@@ -29,14 +31,18 @@ Each event has a **spawn rate** (chance to appear per minute) and a **duration**
 
 You can view the full list of all possible events (including spawn rate, duration, content and maps) using this request:
 
-```http title="cURL"
-curl --request GET \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
   --url 'https://api.artifactsmmo.com/events/' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/events/';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/events/';
 const options = {
   method: 'GET',
   headers: {
@@ -52,7 +58,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 Each event contains:
 
@@ -86,14 +94,18 @@ Each event contains:
 
 You can view all currently active events using this request:
 
-```http title="cURL"
-curl --request GET \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
   --url 'https://api.artifactsmmo.com/events/active' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/events/active';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/events/active';
 const options = {
   method: 'GET',
   headers: {
@@ -109,7 +121,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 Each active event contains:
 

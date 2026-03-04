@@ -2,6 +2,8 @@
 title: Recycling
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 
 # Recycling 
 
@@ -20,8 +22,10 @@ This lets you get back some of the item's crafting resources. The items returned
 You can recycle an item using this POST request.
 
   
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/recycling \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -30,9 +34,11 @@ curl --request POST \
   "code": "iron_sword",
   "quantity": 5
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/recycling';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/recycling';
 const options = {
   method: 'POST',
   headers: {
@@ -50,7 +56,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|

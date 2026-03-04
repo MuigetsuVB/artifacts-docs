@@ -2,6 +2,8 @@
 title: Inventory and Bank
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Inventory and Bank
 
 ## Inventory
@@ -31,13 +33,17 @@ The bank is limited to 50 slots, but you can buy expansions at a cost of 4000 go
 
 You can view the contents of your bank at any time using the following request:
 
-```http title="cURL"
-curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/bank/items';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/bank/items';
 const options = {
   method: 'GET',
   headers: {
@@ -53,20 +59,26 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get)
 
 ### Get bank details
 
 You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using:
 
-```http title="cURL"
-curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/bank';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/bank';
 const options = {
   method: 'GET',
   headers: {
@@ -82,7 +94,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get)
 
 ### Deposit/withdraw item
@@ -94,8 +108,10 @@ To deposit or withdraw items, you must be on a map containing a bank.
 
 You can use this POST request to **withdraw items**:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -104,9 +120,11 @@ curl --request POST \
     { "code": "string", "quantity": 1 },
     { "code": "another_item", "quantity": 2 }
 ]'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
 const options = {
   method: 'POST',
   headers: {
@@ -127,7 +145,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -140,8 +160,10 @@ The body is an array of items (1–20 items per request).
 
 You can use this POST request to **deposit items**:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -150,9 +172,11 @@ curl --request POST \
     { "code": "string", "quantity": 1 },
     { "code": "another_item", "quantity": 2 }
 ]'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
 const options = {
   method: 'POST',
   headers: {
@@ -173,7 +197,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -194,8 +220,10 @@ To deposit or withdraw gold, you must be on a map containing a bank.
 
 You can use this POST request to **withdraw gold**:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -203,9 +231,11 @@ curl --request POST \
   --data '{
   "quantity": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
 const options = {
   method: 'POST',
   headers: {
@@ -223,7 +253,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -233,8 +265,10 @@ try {
 
 You can use this POST request to **deposit gold**:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -242,9 +276,11 @@ curl --request POST \
   --data '{
   "quantity": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
 const options = {
   method: 'POST',
   headers: {
@@ -262,7 +298,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -276,15 +314,19 @@ To buy an expansion, you need to be on a map containing a bank. It costs 4,500 g
 
 You can use this POST request to buy an expansion:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
 const options = {
   method: 'POST',
   headers: {
@@ -301,5 +343,7 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)

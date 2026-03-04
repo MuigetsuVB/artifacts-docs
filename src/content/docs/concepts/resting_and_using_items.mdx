@@ -2,6 +2,8 @@
 title: Resting and using items
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Resting and using items
 
 ## Rest 
@@ -16,15 +18,19 @@ Rest always restores **all your HP** in a single action — there is no partial 
 
 You can rest by using this POST request.
  
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/rest \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json' \
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
 const options = {
   method: 'POST',
   headers: {
@@ -42,7 +48,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
 
 ## Using items
@@ -80,8 +88,10 @@ For example, the [Cooked Beef](https://www.artifactsmmo.com/encyclopedia/items/c
 
 You can use an item by using this POST request.
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/use \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -90,9 +100,11 @@ curl --request POST \
   "code": "string",
   "quantity": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
 const options = {
   method: 'POST',
   headers: {
@@ -111,7 +123,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|

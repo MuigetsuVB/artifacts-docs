@@ -2,6 +2,8 @@
 title: Stats and Fights
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Stats and Fights
 
 ## Stats 
@@ -212,8 +214,10 @@ For example, the [Iron Sword](https://www.artifactsmmo.com/encyclopedia/items/ir
 
 To equip an item, you can use this API request.
 
-```http title="cURL"
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -265,9 +269,11 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action
   "code": "ITEM_CODE",
   "slot": "SLOT_NAME"
 }'
-```
-```js title="Javascript"
-var myHeaders = new Headers();
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
@@ -288,7 +294,9 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -307,14 +315,18 @@ You can start a fight using this API request.
 Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a `CharacterInventoryFullException` error.
 :::
 
-```http title="cURL"
-curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
 const options = {
   method: 'POST',
   headers: {
@@ -331,24 +343,30 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 You can fight with up to 2 other of **YOUR characters** against `boss`-type monsters (up to 3 characters total).
 To do this, all your characters must be on the boss's map and you must add their names in the payload.
 All participating characters will receive XP, gold and drops independently.
 
 
-```http title="cURL"
-curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
 --data '{
   "participants": ["Character2","Character3"]
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
 const options = {
   method: 'POST',
   headers: {
@@ -366,7 +384,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|

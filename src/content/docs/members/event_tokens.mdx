@@ -2,6 +2,8 @@
 title: Event Tokens
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Event Tokens
  
 :::caution
@@ -25,8 +27,10 @@ The number of tokens you have during a season is limited, so use **them only whe
 You can spawn an event using this POST request.
 
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/events/spawn \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -34,9 +38,11 @@ curl --request POST \
   --data '{
   "code": "string"
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/events/spawn';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/events/spawn';
 const options = {
   method: 'POST',
   headers: {
@@ -55,6 +61,8 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/spawn_event_events_spawn_post)
 

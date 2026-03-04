@@ -2,6 +2,8 @@
 title: Fight Simulator
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Fight Simulator
 
 :::caution
@@ -13,8 +15,10 @@ The Fight Simulator allows you to simulate solo or group battles against a monst
 You can use this POST request to use the simulator.
   
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/simulation/fight_simulation \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -45,9 +49,11 @@ curl --request POST \
   "monster": "MONSTER_CODE",
   "iterations": 1
 }'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
 const options = {
   method: 'POST',
   headers: {
@@ -66,6 +72,8 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post)
 

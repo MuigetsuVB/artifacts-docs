@@ -2,6 +2,8 @@
 title: Maps
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Maps
 
 The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
@@ -329,8 +331,10 @@ You must supply either:
 
 Here's an example of an API request to move your character.
 
-```http title="cURL"
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE' \
@@ -340,9 +344,11 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARAC
   // OR
   // "map_id": 101
 }'
-```
-```js title="Javascript"
-var myHeaders = new Headers();
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
@@ -365,7 +371,9 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", reque
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -384,14 +392,18 @@ If no path is possible using move, it is very likely that a transition is necess
 
 Here is an example of an API request to use a transition.
 
-```http title="cURL"
-curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer INSERT_TOKEN_HERE'
-```
-```js title="Javascript"
-var myHeaders = new Headers();
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
@@ -406,6 +418,8 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition",
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
-```
+  ```
+  </TabItem>
+</Tabs>
 
 [View API Request](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)

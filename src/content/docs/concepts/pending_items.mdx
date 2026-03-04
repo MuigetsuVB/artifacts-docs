@@ -2,6 +2,8 @@
 title: Pending Items
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 
 # Pending Items
 
@@ -25,14 +27,18 @@ Pending items can come from several sources:
 
 You can view all your unclaimed pending items using the following GET request:
 
-```http title="cURL"
-curl --request GET \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
   --url https://api.artifactsmmo.com/my/pending-items \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/pending-items';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/pending-items';
 const options = {
   method: 'GET',
   headers: {
@@ -48,7 +54,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 Each pending item contains the following information:
 
@@ -80,15 +88,19 @@ Each pending item contains the following information:
 
 To claim a pending item, use any character on your account with the following POST request:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/claim_item/{id} \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
   --header 'Content-Type: application/json'
-```
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{name}/action/claim_item/{id}';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/claim_item/{id}';
 const options = {
   method: 'POST',
   headers: {
@@ -105,7 +117,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 Replace `{name}` with your character's name and `{id}` with the pending item ID.
 

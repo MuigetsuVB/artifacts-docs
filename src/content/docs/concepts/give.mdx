@@ -2,6 +2,8 @@
 title: Give items & Gold
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 # Give Items & Gold
 
 Your character can give items or gold to other characters on your account, as long as both characters are on the same map. This feature enables you to specialize some characters as dedicated transporters or traders, making it easier to manage resources within your team.
@@ -17,8 +19,10 @@ You can use this to optimize logistics or simply transfer gear, resources, or cu
 
 To give one or more items to another of your characters, use the following POST request:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/item \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -30,10 +34,11 @@ curl --request POST \
       { "code": "wood", "quantity": 5 }
     ]
   }'
-```
-
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/item';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/item';
 const options = {
   method: 'POST',
   headers: {
@@ -57,7 +62,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -72,8 +79,10 @@ try {
 
 To transfer gold to another of your characters on the same map, use the following POST request:
 
-```http title="cURL"
-curl --request POST \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/gold \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
@@ -82,10 +91,11 @@ curl --request POST \
     "character": "receiverName",
     "quantity": 500
   }'
-```
-
-```js title="Javascript"
-const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/gold';
+  ```
+  </TabItem>
+  <TabItem label="JavaScript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/gold';
 const options = {
   method: 'POST',
   headers: {
@@ -106,7 +116,9 @@ try {
 } catch (error) {
   console.error(error);
 }
-```
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
