@@ -123,45 +123,40 @@ export default defineConfig({
           link: '/getting-started/',
         },
         {
-          label: '[fe:loop] Changelog',
-          link: '/changelog/',
-        },
-        {
-          label: '[lucide:heart] Funding',
-          link: '/funding/',
-        },
-        {
-          label: '[lucide:map] Roadmap',
-          link: '/roadmap/',
-        },
-        {
-          label: 'Game concepts',
+          label: 'Game Concepts',
           items: [
-            { label: 'Achievements', link: '/concepts/achievements/' },
-     
-            { label: 'Actions', link: '/concepts/actions/' },
-
-            { label: 'Events', link: '/concepts/events/' },
-            { label: 'Give items & Gold', link: '/concepts/give/' },
-            { label: 'Grand Exchange', link: '/concepts/grand_exchange/' },
-            { label: 'Inventory and Bank', link: '/concepts/inventory_and_bank/' },
-            { label: 'Maps and Movement', link: '/concepts/maps_and_movement/' },
-            { label: 'NPCs', link: '/concepts/npcs/' },
-            { label: 'Pending Items', link: '/concepts/pending_items/' },
-            { label: 'Recycling', link: '/concepts/recycling/' },
-            { label: 'Resting and using items', link: '/concepts/resting_and_using_items/' },
+            { label: 'Characters & Account', link: '/concepts/characters_and_account/' },
+            { label: 'Maps & Movement', link: '/concepts/maps_and_movement/' },
             { label: 'Skills', link: '/concepts/skills/' },
-            { label: 'Stats and Fights', link: '/concepts/stats_and_fights/' },
+            { label: 'Combat & Stats', link: '/concepts/stats_and_fights/' },
+            { label: 'Equipment & Items', link: '/concepts/equipment_and_items/' },
+            { label: 'Inventory & Bank', link: '/concepts/inventory_and_bank/' },
+            { label: 'Grand Exchange', link: '/concepts/grand_exchange/' },
+            { label: 'NPCs & Trading', link: '/concepts/npcs/' },
             { label: 'Tasks', link: '/concepts/tasks/' },
+            { label: 'Achievements', link: '/concepts/achievements/' },
+            { label: 'Events', link: '/concepts/events/' },
+            { label: 'Recycling', link: '/concepts/recycling/' },
+            { label: 'Give Items & Gold', link: '/concepts/give/' },
+            { label: 'Pending Items', link: '/concepts/pending_items/' },
+            { label: 'Resting & Consumables', link: '/concepts/resting_and_using_items/' },
+            { label: 'Actions & Cooldowns', link: '/concepts/actions/' },
           ],
         },
         {
           label: 'API Guide',
           items: [
+            { label: 'API Overview', link: '/api_guide/api_overview/' },
             { label: 'OpenAPI Spec', link: '/api_guide/openapi_spec/' },
             { label: 'Authorization', link: '/api_guide/authorization/' },
             { label: 'Response Codes', link: '/api_guide/response_codes/' },
-            { label: 'Rate limits', link: '/api_guide/rate_limits/' },
+            { label: 'Rate Limits', link: '/api_guide/rate_limits/' },
+          ],
+        },
+        {
+          label: 'Data Reference',
+          items: [
+            { label: 'Game Data', link: '/data/game_data/' },
           ],
         },
         {
@@ -197,6 +192,18 @@ export default defineConfig({
             { label: 'Test Server', link: '/members/test_server/' },
             { label: 'WebSockets', link: '/members/websockets/' },
           ],
+        },
+        {
+          label: '[fe:loop] Changelog',
+          link: '/changelog/',
+        },
+        {
+          label: '[lucide:map] Roadmap',
+          link: '/roadmap/',
+        },
+        {
+          label: '[lucide:heart] Funding',
+          link: '/funding/',
         },
       ],
       defaultLocale: 'root',

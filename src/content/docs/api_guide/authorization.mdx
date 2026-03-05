@@ -1,5 +1,6 @@
 ---
 title: Authorization
+description: "Token-based authentication, generating API tokens, and securing requests to the Artifacts MMO API."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -21,21 +22,23 @@ Once you have a JWT bearer token, you can use it to authenticate with the API by
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  var myHeaders = new Headers();
-  myHeaders.append("Accept", "application/json");
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
+  const url = 'https://api.artifactsmmo.com/my/characters?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
 
-  var requestOptions = {
-     method: 'GET',
-     headers: myHeaders,
-     redirect: 'follow'
-  };
-
-  fetch("https://api.artifactsmmo.com/my/characters?page=1&size=50", requestOptions)
-     .then(response => response.text())
-     .then(result => console.log(result))
-     .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
   ```
   </TabItem>
   <TabItem label="Python" icon="seti:python">
@@ -68,4 +71,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 The API will return a 452 error if you attempt to access an endpoint without a valid JWT bearer token.
 
 One common mistake is to forget to include the Bearer prefix in the Authorization header. For example, a proper Authorization header contains the value Bearer .
+
+## Related
+
+- [API Overview](/api_guide/api_overview/) — API structure and endpoint categories
+- [Response Codes](/api_guide/response_codes/) — HTTP status codes and error handling
+- [Rate Limits](/api_guide/rate_limits/) — Request limits and throttling
 

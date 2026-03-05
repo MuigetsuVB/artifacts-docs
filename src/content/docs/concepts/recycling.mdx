@@ -1,23 +1,58 @@
 ---
 title: Recycling
+description: "How to recycle equipment to recover crafting materials in Artifacts MMO."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
+Recycling lets you break down crafted equipment to recover some of the original crafting materials. It's useful for clearing unwanted gear or recovering resources.
 
-Recycling allows you to recycle your weapons and equipment at weaponcrafting, gearcrafting and jewelrycrafting workshops.
+## Overview
+
+Recycling is available at **weaponcrafting**, **gearcrafting**, and **jewelrycrafting** workshops. Only items that have a craft recipe tied to one of these skills can be recycled.
+
+## How It Works
+
+1. **Move** your character to the appropriate workshop (matching the item's craft skill).
+2. **Send** the recycling action with the item code.
+3. **Receive** random materials from the item's original craft recipe.
+
+### Requirements
+
+- The item must have a **craft recipe** using `weaponcrafting`, `gearcrafting`, or `jewelrycrafting`.
+- Your character must be standing at a **workshop** matching the item's craft skill.
+- The item must be in your **inventory** (not equipped).
 
 :::caution
-Only items that have a **craft recipe** can be recycled. The workshop must match the item's craft skill (e.g. a weapon must be recycled at a **weaponcrafting** workshop). Only `weaponcrafting`, `gearcrafting` and `jewelrycrafting` items are eligible.
+Only `weaponcrafting`, `gearcrafting`, and `jewelrycrafting` items are eligible for recycling. Items crafted with `cooking`, `mining`, `woodcutting`, or `alchemy` cannot be recycled.
 :::
 
-This lets you get back some of the item's crafting resources. The items returned are chosen at random from the craft recipe. The number of items you get back depends on the complexity of the craft recipe — specifically, `(total_items_in_recipe - 1) / 5 + 1` (rounded down), with a minimum of 1 resource per recycled item.
+### Resources Returned
 
-- No skill level is required to recycle — you can recycle any item regardless of your crafting level.
-- You can recycle **multiple items** at once by specifying the `quantity` field.
-- The cooldown is **3 seconds per item** recycled.
+The materials you receive are chosen **randomly** from the item's craft recipe. The number of resources returned depends on recipe complexity:
 
-You can recycle an item using this POST request.
+```
+resources returned = floor((total items in recipe - 1) / 5) + 1
+```
+
+With a **minimum of 1 resource** per recycled item.
+
+**Example:** An item with a recipe requiring 8 total materials returns `floor((8 - 1) / 5) + 1 = 2` random resources per item recycled.
+
+### Recycling Details
+
+| Property | Value |
+|---|---|
+| Skill level required | **None** — any character can recycle |
+| Cooldown | 3 seconds per item |
+| Multiple at once | Yes, via the `quantity` field |
+| Location | Must be at a matching workshop |
+
+## API Endpoints
+
+### Recycle Item
+
+`POST /my/{name}/action/recycling` — Recycle items from your inventory at a workshop.
 
   
 <Tabs>
@@ -88,5 +123,12 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `code` | The item code to recycle. |
 | `quantity` | Number of items to recycle (optional, default 1). |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
+
+## Related
+
+- [Skills](/concepts/skills/) — Crafting skills and workshops
+- [Equipment & Items](/concepts/equipment_and_items/) — Item types and equipment
+- [Maps & Movement](/concepts/maps_and_movement/) — Finding workshop locations
+- [Actions & Cooldowns](/concepts/actions/) — Cooldown mechanics
 

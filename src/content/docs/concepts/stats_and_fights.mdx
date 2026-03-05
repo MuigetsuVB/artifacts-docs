@@ -1,368 +1,135 @@
 ---
-title: Stats and Fights
+title: Combat & Stats
+description: "Character stats, damage formulas, combat mechanics, monster types, effects, and fight actions in Artifacts MMO."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-## Stats 
- 
-Here are all the stats a player can have:
+Combat in Artifacts is a turn-based system where stats determine damage output, defense, and turn order. This page covers all character stats, how combat works, and the fight action.
 
-*   Hit points (HP)
-*   Elemental attacks (fire, water, earth, air)
-*   Elemental damages (fire, water, earth, air)
-*   Damage
-*   Elemental resistance (fire, water, earth, air)
-*   Prospecting
-*   Wisdom
-*   Critical Strike
-*   Initiative
-*   Threat
-*   Haste
+## Stats
 
-You can view your character's stats using [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
+Here are all the stats a character can have. You can view your character's stats using [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
 
+| Stat | Description |
+|---|---|
+| **Hit Points (HP)** | Your character's health pool. |
+| **Elemental Attacks** | Base attack values for fire, water, earth, and air. |
+| **Elemental Damages** | Percentage bonus to elemental attack damage. |
+| **Elemental Resistances** | Percentage reduction of incoming elemental damage. |
+| **Critical Strike** | Chance to deal 1.5× damage (1 point = 1% chance). |
+| **Initiative** | Determines turn order — higher acts first. |
+| **Threat** | Determines monster targeting priority in multi-character fights. |
+| **Haste** | Reduces fight cooldown duration (1 point = 1% reduction). |
+| **Wisdom** | Increases XP earned (1 point = 0.1% more XP). |
+| **Prospecting** | Increases drop chance (1 point = 0.1% more drops). |
 
-### Elemental attacks
+### Damage Formula
 
-Attack is the basic stats. Each attack removes one hit point from its opponent.
+Damage is calculated per element using rounding. The formula is:
 
-### Elemental damages
+```
+Output = Round(Attack × Round(Damage × 0.01))
+```
 
-Damage increases the attack of an element, it is given by utilities and equipment.
-If an equipment or utility gives damages without specifying the element, it applies to all elements.
+**Example:** 100 base attack + 30% damage = `Round(100 × Round(30 × 0.01)) = 130` total damage.
 
-Damage is rounded during the calculation process. The damage calculation does not happen all at once.
+- 1 damage = 1% extra base damage
+- `.5` always rounds **up**, below `.5` rounds **down**
+- Multi-element weapons calculate each element independently (separate attack instances in fight logs)
 
-Here's the formula for calculating the effects of damage:
-**Round(Attack \* Round(Damage \* 0.01))**
+### Resistance Formula
 
-For example, if a player has a base attack of 100 and a damage buff of 30, the output damage will be 130.
-1 damage buff = 1% extra base damage (1 extra damage using the example above)
+Resistance uses the same logic:
 
-**Important rounding rules:**
-- .5 always rounds up
-- Below .5 rounds down
+```
+Blocked = Round(Attack × Round(Resistance × 0.01))
+```
 
-**Multi-element weapons:**
-If your weapon has multiple elements (many of them do), this calculation is done independently for each element. If you look at the fight logs, you'll see that a separate attack instance happens for each element the attacker has.
+**Example:** Player attacks with 100, monster has 30 resistance → blocks 30 damage.
 
-### Critical strike
+### Critical Strike
 
-Critical strike gives you a chance to perform a strike that will perform 1.5x the total attack.
+Critical strike gives you a chance to deal **1.5× total attack damage**.
 
-For example, if a player has 10 critical strikes, he has a 10% chance of performing a critical strike.
-1 critical strike = 1% critical strike. If he hits 100 without a critical hit, then he'll hit 150 if he performs a critical hit.
+- 1 critical strike = 1% chance
+- Example: 10 critical strike → 10% chance. A hit of 100 becomes 150 on critical.
 
-### Elemental resistances
+### Initiative
 
-Resistance reduces the attack damage of its opponent.
+Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by others in descending order.
 
-Resistance is rounded during the calculation process. Resistance uses the same logic as damage.
-
-Here's the formula for calculating the effects of damage reduction, it is given by utilities and equipment:
-**Round(Attack * Round(Resistance * 0.01))**
-
-For example, if a monster has a resistance buff of 30 and the player has 100 attack, the monster will block 30 damage. 1 resistance buff = 1% damage reduction (1 less damage using the example above)
-
-### Initative
-
-Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by the others in descending order of initiative.
-If two characters or monsters have the same initiative, the one with the higher HP will act first. If they also have the same HP, the turn order is determined randomly.
+- **Tied initiative**: the one with higher HP acts first.
+- **Tied HP**: random order.
 
 ### Threat
 
-In a multi-character fight, the monster's MAIN target is the character with the highest threat (90% of the time). 10% of the time, it will target the character with the lowest HP. If multiple characters share the same threat, it will attack the one with the lowest HP. If there’s still a tie, the target is chosen at random among them.
+In a multi-character fight, the monster targets the character with the **highest threat** 90% of the time. 10% of the time, it targets the character with the **lowest HP**. Ties are broken by lowest HP, then random.
 
 ### Haste
 
-The haste reduces the cooldown of a fight. You'll find more info in the Fights section below.
+Haste reduces the cooldown of a fight. See the cooldown formula in Combat Mechanics below.
 
-### Wisdom and Prospecting
+### Wisdom & Prospecting
 
-Wisdom and prospecting are stats that provide bonuses during fights and gathering. Wisdom also provides bonuses during crafting.
+- **Wisdom** increases XP earned: base rate is 100%, with 100 wisdom → 110% XP rate.
+- **Prospecting** increases drop chance: base rate is 100%, with 100 prospecting → 110% drop rate.
 
-Wisdom increases the XP you'll earn (1 wisdom = 0.1% more xp).
-Your xp rate is 100%, if you have 100 wisdom your total xp rate is 110%. 
+Both apply to fights, gathering, and wisdom also applies to crafting.
 
-Prospecting increases your chance of dropping items. (1 prospecting = 0.1% more chance of dropping).
-Your basic drop chance is 100%, if you have 100 prospecting your total drop chance is 110%. 
+## Combat Mechanics
 
-## Fights
+Combat is turn-based. Turn order is determined by initiative.
 
-Combat is based on a turn-by-turn system. The turn order is determined by initiative.
+- Fights can last a **maximum of 100 turns** — if not over by then, you **lose**.
+- If you lose, your character returns to **spawn (0,0)** with **1 HP**.
+- Your inventory must have at least **1 free slot** before starting a fight (otherwise error 497).
 
-Fights can take a maximum of 100 turns, otherwise you've automatically lost the fight.
-If you lose a fight, you return to the spawn (0,0 (overworld)) with 1 HP.
+### Cooldown Formula
 
-Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces cooldown time. The minimum combat cooldown is 5 seconds.
+```
+Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
+```
+
+**Example:** 20 turns + 10 haste → `20 × 2 - (0.1 × 40) = 36` seconds (instead of 40). Minimum cooldown is **5 seconds**.
 
 ### Monster Types
 
-Monsters are classified into three types:
-
 | Type | Description | XP Rate |
-|------|-------------|---------|
-| `normal` | Standard monsters found throughout the world. | x1 |
-| `elite` | Stronger monsters with better stats and drops. | x1.4 |
-| `boss` | Powerful monsters that can be fought with up to 3 characters. | x2 |
+|---|---|---|
+| `normal` | Standard monsters found throughout the world. | ×1 |
+| `elite` | Stronger monsters with better stats and drops. | ×1.4 |
+| `boss` | Powerful monsters that can be fought with up to 3 characters. | ×2 |
 
 :::caution
-If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**. 
+If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
 :::
 
-### Cooldown
+### Monster Effects & Abilities
 
-Cooldown is calculated with the following formula:
-**Turns * 2 - (Haste * 0.01) * (Turns * 2)**
+Some monsters have special abilities called effects that activate during combat in addition to their normal attacks.
 
-For example, if a fight lasts 20 turns and a player has 10 haste, the cooldown is reduced by 4 seconds (36 seconds instead of 40). 1 haste = 1% cooldown reduction.
- 
-### Equipments and utilities&#x20;
-
-To help you in fight, you can equip equipment and utilities. A utility is consumed automatically when it meets a specific condition.
-
-Here's everything you can equip:
-
-*   Helmet (helmet)
-*   Body armor
-*   Leg armor
-*   Boots
-*   Weapon
-*   Shield&#x20;
-*   Ring (2 slots)
-*   Amulet
-*   Artifact (3 slots, each slot must contain a different artifact)
-*   Utilities (2 slots, each slot must contain a different utility)
-*   Bag
-*   Rune
-
-#### Utilities keywords 
-
-| Keyword | Condition                                            |
-| ------- | ---------------------------------------------------- |
-| Restore | Heals X HP when the player has lost 50% of their life. |
-| Splash Restore | Restores x HP at the start of the turn to another character who has lost the most health if that character has less than 50% of their health points remaining. |
-| Boost   | Gives X (HP, % damage, % res, prospecting, critical strike) at the start of fight. |
-| Antipoison   | At the beginning of the turn, if the character has at least one poison on him, removes x poison damage.
-
-
-[View all utilities](https://artifactsmmo.com/encyclopedia/items?type=utility)
-
-#### Runes keywords
-
-Runes are equipment that will launch an ability in combat. There are currently 3 that you can obtain for gold by visiting the NPC in 6,13.
-
-| Keyword | Condition                                            |
-| ------- | ---------------------------------------------------- |
-| Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time.  |
-| Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
-| Healing   | Every 3 played turns, restores x% of HP at the start of the turn.|
-| Healing Aura   | Every 2 played turns, they heal all allies for x% of their maximum HP. This effect does not heal the caster. |
-| Vampiric Strike   | After landing a critical hit, they heal the ally with the lowest HP for x% of the damage dealt. Can only trigger once every 3 turns. This effect does not heal the caster. |
-| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
-| Shell  | When they drop below 40% of their HP, they gain x% resistance to all elements for 3 turns. Activates once per combat. This effect is only active during boss fights. |
-| Guard  | If one or more allies have less than 50% of their HP, protects the ally with the lowest HP percentage, redirecting x% of their damage to this character until the start of my next turn. Activates a maximum of 3 times per combat.|
-
-[View all runes](https://artifactsmmo.com/encyclopedia/items?type=rune)
-
-
-### Monsters effects/abilities
-
-Some monsters launch abilities called effects. These are additional effects that can be activated during combat in addition to their attacks.
-
-| Keyword | Condition                                            |
-| ------- | ---------------------------------------------------- |
-| Burn | On his first turn, apply a burn effect of x% of your attack of all elements. The damage is applied each turn and decreases by 10% each time. |
-| Lifesteal   | Restores x% of the total attack of all elements in HP after a critical strike. |
-| Healing   | Every 3 played turns, restores x% of HP at the start of the turn. |
-| Reconstitution   | At the beginning of the turn x, restores all HP. |
-| Poison   | At the start of its first turn, applies a x poison to its opponent. Loses x HP per turn. |
-| Corrupted | After every time the bearer of this effect is attacked, their resistance to the attack's element is reduced by x%, and can go negative. |
-| Frenzy  | Each time they land a critical hit, they give x% damage to themselves and their allies until the end of their next turn. |
-| Berserker Rage  | When they drop below 25% HP, they gain x% damage permanently. Applies once per combat. |
-| Void Drain  | Every 4 turns, Drains x% HP from each enemy to heal themselves. |
-| Barrier  | At the start of the fight and every 5 played turns, gain a protective barrier of xHP. All attacks are redirected to this barrier until it is destroyed. |
-| Protective Bubble  | Grants x% resistance to a random element (fire, earth, water, or air). The element changes at the start of each turn and cannot be the same as the previous one. |
+| Keyword | Effect |
+|---|---|
+| Burn | On first turn, applies a burn effect of X% of total attack (all elements). Damage applied each turn, decreasing by 10% per turn. |
+| Lifesteal | Restores X% of total attack (all elements) in HP after a critical strike. |
+| Healing | Every 3 played turns, restores X% of HP at the start of the turn. |
+| Reconstitution | At the beginning of turn X, restores all HP. |
+| Poison | At the start of its first turn, applies X poison to its opponent. Target loses X HP per turn. |
+| Corrupted | After every time the bearer is attacked, their resistance to the attack's element is reduced by X% (can go negative). |
+| Frenzy | On critical hit, grants X% damage to self and allies until end of next turn. |
+| Berserker Rage | Below 25% HP, gains X% damage permanently. Activates once per combat. |
+| Void Drain | Every 4 turns, drains X% HP from each enemy to heal self. |
+| Barrier | At fight start and every 5 played turns, gains a protective barrier of X HP. All attacks go to the barrier until destroyed. |
+| Protective Bubble | Grants X% resistance to a random element. Element changes each turn (cannot repeat). |
 
 You can view monster effects using the [monsters endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get). Each monster's `effects` field lists its abilities with a `code` and `value`.
 
+## API Endpoints
 
-### Equip
+### Fight
 
-To equip an item, your character must meet all the item's conditions. An item's conditions can use any character variable and an operator such as gt, lt, or eq.
-
-For example, the [Iron Sword](https://www.artifactsmmo.com/encyclopedia/items/iron_sword/) requires your character to be above level 9.
-
-```http title="JSON"
-{
-...
-  "conditions": [
-    {
-      "code": "level",
-      "operator": "gt",
-      "value": 9
-    }
-  ],
-....
-}
-```
-
-To equip an item, you can use this API request.
-
-<Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer YOUR_TOKEN' \
---data-raw '{
-  "slot": "SLOT_NAME"
-}'
-  ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-  ```js
-  var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
-
-var raw = JSON.stringify({
-   "slot": "SLOT_NAME"
-});
-
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
-};
-
-fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
-
-url = "https://api.artifactsmmo.com/my/{name}/action/equip"
-headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
-}
-data = {"slot": "SLOT_NAME"}
-
-response = requests.post(url, json=data, headers=headers)
-print(response.json())
-  ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
-  ```python
-  from artifacts import ArtifactsClient
-from artifacts.models.enums import ItemSlot
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.equipment.equip(code="iron_sword", slot="weapon")
-  ```
-  </TabItem>
-</Tabs>
-
-| Field | Description |
-|---|---|
-| `code` | The item code to equip. |
-| `slot` | The equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
-| `quantity` | Item quantity (optional, default 1). Applicable to utilities only (1–100). |
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
-
-### Unequip
-
-To unequip an item, you can use this API request.
-
-<Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer YOUR_TOKEN' \
---data-raw '{
-  "code": "ITEM_CODE",
-  "slot": "SLOT_NAME"
-}'
-  ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-  ```js
-  var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
-
-var raw = JSON.stringify({
-   "code": "ITEM_CODE",
-   "slot": "SLOT_NAME"
-});
-
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
-};
- 
-fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
-
-url = "https://api.artifactsmmo.com/my/{name}/action/unequip"
-headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
-}
-data = {"code": "ITEM_CODE", "slot": "SLOT_NAME"}
-
-response = requests.post(url, json=data, headers=headers)
-print(response.json())
-  ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
-  ```python
-  from artifacts import ArtifactsClient
-from artifacts.models.enums import ItemSlot
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.equipment.unequip(slot="weapon")
-  ```
-  </TabItem>
-</Tabs>
-
-| Field | Description |
-|---|---|
-| `slot` | The equipment slot to unequip: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
-| `quantity` | Item quantity (optional, default 1). Applicable to utilities only (1–100). |
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
-
-### Action
-
-
-To start a fight, you must be on a map with a monster. You can start a fight using this API request.
+`POST /my/{name}/action/fight` — Start a fight with the monster at your current location.
 
 :::caution
 Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a 497 error.
@@ -371,22 +138,23 @@ Your inventory must have at least **1 free slot** before starting a fight, other
 <Tabs>
   <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer YOUR_TOKEN'
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/fight \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight';
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/fight';
 const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: 'Bearer YOUR_TOKEN'
-  },
+  }
 };
 
 try {
@@ -402,7 +170,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight"
+url = "https://api.artifactsmmo.com/my/{name}/action/fight"
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
@@ -418,37 +186,36 @@ print(response.json())
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("YOUR_CHARACTER_NAME")
+    char = client.character("{name}")
     result = char.fight()
     fight = result.fight
     print(f"{fight.result.value} in {fight.turns} turns")
   ```
   </TabItem>
 </Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
 
-#### Multi-character fights
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
 
-You can fight with up to 2 other of **YOUR characters** against `boss`-type monsters (up to 3 characters total).
-To do this, all your characters must be on the boss's map and you must add their names in the payload.
-All participating characters will receive XP, gold and drops independently.
+### Multi-Character Fights
 
+You can fight with up to 2 other of **your own characters** against `boss`-type monsters (up to 3 characters total). All participating characters must be on the boss's map. Each character receives XP, gold, and drops independently.
 
 <Tabs>
   <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer YOUR_TOKEN'
---data '{
-  "participants": ["Character2","Character3"]
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/fight \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "participants": ["Character2", "Character3"]
 }'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight';
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/fight';
 const options = {
   method: 'POST',
   headers: {
@@ -456,7 +223,7 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer YOUR_TOKEN'
   },
-  body: '{"participants":["Character2","Character3"]}'
+  body: JSON.stringify({ participants: ["Character2", "Character3"] })
 };
 
 try {
@@ -472,7 +239,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight"
+url = "https://api.artifactsmmo.com/my/{name}/action/fight"
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
@@ -489,7 +256,7 @@ print(response.json())
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("YOUR_CHARACTER_NAME")
+    char = client.character("{name}")
     result = char.fight(participants=["Character2", "Character3"])
     print(f"{result.fight.result.value} in {result.fight.turns} turns")
   ```
@@ -498,62 +265,15 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 | Field | Description |
 |---|---|
-| `participants` | Optional list of additional character names to include in the fight (max 2 additional characters). |
+| `participants` | Optional list of additional character names (max 2). All must be on the same map. Boss fights only. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+## Experience to Level
 
-## Experience to level
-Here's the table showing the experience required to level up.
+The XP table is the same for combat and all skills. See the full [Experience to Level table](/concepts/skills/#experience-to-level) on the Skills page.
 
-| Level | XP required to level up |
-|------:|------------------------:|
-| 1 | 150 |
-| 2 | 250 |
-| 3 | 350 |
-| 4 | 450 |
-| 5 | 700 |
-| 6 | 950 |
-| 7 | 1,200 |
-| 8 | 1,450 |
-| 9 | 1,700 |
-| 10 | 2,100 |
-| 11 | 2,500 |
-| 12 | 2,900 |
-| 13 | 3,300 |
-| 14 | 3,700 |
-| 15 | 4,400 |
-| 16 | 5,100 |
-| 17 | 5,800 |
-| 18 | 6,500 |
-| 19 | 7,200 |
-| 20 | 8,200 |
-| 21 | 9,200 |
-| 22 | 10,200 |
-| 23 | 11,200 |
-| 24 | 12,200 |
-| 25 | 13,400 |
-| 26 | 14,600 |
-| 27 | 15,800 |
-| 28 | 17,000 |
-| 29 | 18,200 |
-| 30 | 19,700 |
-| 31 | 21,200 |
-| 32 | 22,700 |
-| 33 | 24,200 |
-| 34 | 25,700 |
-| 35 | 27,500 |
-| 36 | 29,300 |
-| 37 | 31,100 |
-| 38 | 32,900 |
-| 39 | 34,700 |
-| 40 | 36,500 |
-| 41 | 38,600 |
-| 42 | 40,700 |
-| 43 | 42,800 |
-| 44 | 44,900 |
-| 45 | 47,000 |
-| 46 | 48,800 |
-| 47 | 50,600 |
-| 48 | 52,400 |
-| 49 | 54,200 |
-| 50 | — (max level) |
+## Related
+
+- [Equipment & Items](/concepts/equipment_and_items/) — Equip weapons, armor, utilities, and runes
+- [Skills](/concepts/skills/) — XP table and skill leveling
+- [Actions & Cooldowns](/concepts/actions/) — All actions and cooldown mechanics
+- [Data Reference: Game Data](/data/game_data/) — Browse all monsters, effects, and items

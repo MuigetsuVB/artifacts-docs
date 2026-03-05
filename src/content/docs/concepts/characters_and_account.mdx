@@ -1,0 +1,377 @@
+---
+title: Characters & Account
+description: "Create and manage your account and up to 5 characters in Artifacts MMO. Covers character creation, skins, stats, and account endpoints."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Your account can have up to **5 characters**, each with their own level, inventory, equipment, and position on the map. All characters share a single **bank** and contribute to **account-level achievements**.
+
+## Overview
+
+When you create an account, you start with no characters. You create them via the API, choosing a unique name and a skin. Characters begin at level 1 at position (0, 0) on the overworld.
+
+### Account Details
+
+Your account stores global information like your username, member status, gems, event tokens, and achievement points.
+
+```http title="AccountDetails"
+{
+  "username": "my_account",
+  "member": false,
+  "status": "standard",
+  "badges": [],
+  "skins": ["men1", "men2", "men3", "women1", "women2", "women3"],
+  "gems": 0,
+  "event_token": 0,
+  "achievements_points": 0,
+  "banned": false
+}
+```
+
+| Field | Description |
+|---|---|
+| `username` | Your unique account name. |
+| `member` | Whether you have an active membership. |
+| `status` | Account status: `standard`, `founder`, `gold_founder`, or `vip_founder`. |
+| `skins` | List of skins you've unlocked. Default skins: `men1`, `men2`, `men3`, `women1`, `women2`, `women3`. |
+| `gems` | Premium currency balance. |
+| `event_token` | Tokens for spawning events (members only). |
+| `achievements_points` | Total achievement points earned this season. |
+
+## Characters
+
+Each character has combat stats, skill levels, equipment slots, inventory, cooldown state, and a current position.
+
+### Character Schema
+
+```http title="CharacterSchema (key fields)"
+{
+  "name": "MyCharacter",
+  "account": "my_account",
+  "skin": "men1",
+  "level": 15,
+  "xp": 3200,
+  "max_xp": 4400,
+  "hp": 230,
+  "max_hp": 230,
+  "mining_level": 10,
+  "woodcutting_level": 8,
+  "fishing_level": 5,
+  "weaponcrafting_level": 7,
+  "gearcrafting_level": 6,
+  "jewelrycrafting_level": 4,
+  "cooking_level": 9,
+  "alchemy_level": 3,
+  "x": 2,
+  "y": 1,
+  "layer": "overworld",
+  "inventory_max_items": 50,
+  "task": "",
+  "task_type": "",
+  "task_progress": 0,
+  "task_total": 0
+}
+```
+
+:::note
+A character's `max_hp` is calculated as `115 + (5 × combat level)`. At level 1 you have 120 HP; at level 50 you have 365 HP.
+:::
+
+### Default Skins
+
+All accounts start with 6 default skins. Additional skins can be unlocked through seasonal achievements.
+
+| Skin Code | Description |
+|---|---|
+| `men1` | Male character variant 1 |
+| `men2` | Male character variant 2 |
+| `men3` | Male character variant 3 |
+| `women1` | Female character variant 1 |
+| `women2` | Female character variant 2 |
+| `women3` | Female character variant 3 |
+
+## API Endpoints
+
+### Create a Character
+
+`POST /characters/create` — Create a new character (max 5 per account).
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/characters/create \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "MyHero",
+  "skin": "men1"
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/create';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ name: "MyHero", skin: "men1" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/create"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"name": "MyHero", "skin": "men1"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.enums import CharacterSkin
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    new_char = client.characters.create("MyHero", CharacterSkin.MEN1)
+    print(f"Created {new_char.name} with skin {new_char.skin}")
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `name` | Character name (3–12 chars, alphanumeric + `-` `_`). Must be unique server-wide. |
+| `skin` | Skin code. Must be one you own. |
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/create_character_characters_create_post)
+
+### Delete a Character
+
+`POST /characters/delete` — Permanently delete a character.
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/characters/delete \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "MyHero"
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/delete';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ name: "MyHero" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/delete"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"name": "MyHero"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    deleted = client.characters.delete("MyHero")
+    print(f"Deleted {deleted.name}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/delete_character_characters_delete_post)
+
+### Get Character Details
+
+`GET /characters/{name}` — View any character's public info (no auth required).
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url https://api.artifactsmmo.com/characters/MyHero \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/MyHero';
+const options = { method: 'GET', headers: { Accept: 'application/json' } };
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/MyHero"
+headers = { "Accept": "application/json" }
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    info = client.characters.get("MyHero")
+    print(f"{info.name} lv{info.level} HP={info.hp}/{info.max_hp}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
+### Change Skin
+
+`POST /my/{name}/action/change_skin` — Change your character's appearance.
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/MyHero/action/change_skin \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "skin": "women1"
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/MyHero/action/change_skin';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ skin: "women1" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/MyHero/action/change_skin"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"skin": "women1"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.enums import CharacterSkin
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyHero")
+    char.change_skin(skin=CharacterSkin.WOMEN1)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `skin` | Skin code. Must be one you own (error 550 if not). |
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post)
+
+### Other Useful Endpoints
+
+| Endpoint | Description |
+|---|---|
+| `GET /my/characters` | List all your characters (auth required). |
+| `GET /my/details` | Get your account details (auth required). |
+| `GET /characters/active` | List all currently active characters on the server. |
+| `GET /accounts/{account}` | View another account's public info. |
+| `GET /accounts/{account}/characters` | View another account's character list. |
+
+## Related
+
+- [Equipment & Items](/concepts/equipment_and_items/) — Equip your characters
+- [Combat & Stats](/concepts/stats_and_fights/) — Understand character stats and combat
+- [Skills](/concepts/skills/) — Level up gathering and crafting skills
+- [Getting Started](/getting-started/) — Create your account and first character

@@ -1,5 +1,6 @@
 ---
-title: Maps
+title: Maps & Movement
+description: "World map structure, layers, content types, access conditions, transitions, and movement actions in Artifacts MMO."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -346,29 +347,25 @@ Here's an example of an API request to move your character.
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
-
-var raw = JSON.stringify({
-   "x": 4,
-   "y": -1
-    // OR
-    // "map_id": 101
-});
-
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/move';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ x: 4, y: -1 })
+  // OR body: JSON.stringify({ map_id: 101 })
 };
 
-fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
   ```
   </TabItem>
   <TabItem label="Python" icon="seti:python">
@@ -427,21 +424,23 @@ Here is an example of an API request to use a transition.
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
- 
-var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   redirect: 'follow'
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/transition';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
 };
- 
-fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
   ```
   </TabItem>
   <TabItem label="Python" icon="seti:python">
@@ -471,3 +470,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 </Tabs>
 
 [View API Request](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)
+
+## Related
+
+- [Skills](/concepts/skills/) — Gathering and crafting on resource and workshop maps
+- [Equipment & Items](/concepts/equipment_and_items/) — Items and gear used across the world
+- [Actions & Cooldowns](/concepts/actions/) — All available character actions
+- [Game Data](/data/game_data/) — Browse all maps, resources, and monsters

@@ -1,0 +1,258 @@
+---
+title: API Overview
+description: "Introduction to the Artifacts MMO REST API: base URL, authentication, request format, response structure, and endpoint categories."
+---
+
+import { Tabs, TabItem, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+The Artifacts API is a RESTful HTTP API that lets you control your characters, browse game data, and interact with the game world using any programming language.
+
+## Base URL
+
+All API requests are made to:
+
+```
+https://api.artifactsmmo.com
+```
+
+The API uses JSON for all request and response bodies.
+
+## Authentication
+
+Most endpoints require a **Bearer token** in the `Authorization` header. You can get your token from [your account page](https://artifactsmmo.com/account).
+
+```http
+Authorization: Bearer YOUR_TOKEN
+```
+
+**Public endpoints** (game data, leaderboards, public characters) do not require authentication. **Action and account endpoints** require a valid token.
+
+See [Authorization](/api_guide/authorization/) for full details and code examples.
+
+## Request Format
+
+- **Content-Type**: `application/json` for POST requests with a body
+- **Accept**: `application/json`
+- **Method**: `GET` for reading data, `POST` for actions and mutations
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/move \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "x": 1,
+  "y": 0
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/move';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ x: 1, y: 0 })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/move"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, json={"x": 1, "y": 0}, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.move(x=1, y=0)
+  ```
+  </TabItem>
+</Tabs>
+
+## Response Structure
+
+### Success Response
+
+All successful responses return a `data` key:
+
+```json title="Single object"
+{
+  "data": {
+    "name": "MyHero",
+    "level": 10,
+    ...
+  }
+}
+```
+
+### Paginated Response
+
+List endpoints return paginated results:
+
+```json title="DataPage[T]"
+{
+  "data": [ ... ],
+  "total": 184,
+  "page": 1,
+  "size": 50,
+  "pages": 4
+}
+```
+
+Use `?page=2&size=100` to control pagination (max 100 items per page).
+
+### Action Response
+
+Action endpoints return the updated character state plus action-specific data inside a `data` key:
+
+```json title="Action response"
+{
+  "data": {
+    "cooldown": {
+      "total_seconds": 5,
+      "remaining_seconds": 5,
+      "started_at": "2025-01-15T12:00:00Z",
+      "expiration": "2025-01-15T12:00:05Z",
+      "reason": "fight"
+    },
+    "fight": { ... },
+    "character": { ... }
+  }
+}
+```
+
+Every action triggers a **cooldown** — you must wait before sending the next action for that character.
+
+### Error Response
+
+Errors include a code and message:
+
+```json title="Error response"
+{
+  "error": {
+    "code": 499,
+    "message": "Character in cooldown."
+  }
+}
+```
+
+See [Response Codes](/api_guide/response_codes/) for the full list of error codes.
+
+## Endpoint Categories
+
+The API is organized into three rate-limit categories:
+
+| Category | Rate Limit | Description |
+|---|---|---|
+| **Account** | 10/s, 500/h | Account creation, auth, character creation/deletion |
+| **Data** | 20/s, 500/min, 10k/h | Reading game data, character info, bank, logs |
+| **Action** | 20/2s, 500/min, 10k/h | All character actions (move, fight, craft, etc.) |
+
+See [Rate Limits](/api_guide/rate_limits/) for the complete endpoint-to-category mapping.
+
+### Public Data (no auth required)
+
+| Tag | Endpoints | Description |
+|---|---|---|
+| Server | `GET /` | Server status and version |
+| Items | `GET /items`, `GET /items/{code}` | All game items |
+| Monsters | `GET /monsters`, `GET /monsters/{code}` | All monsters |
+| Resources | `GET /resources`, `GET /resources/{code}` | All gatherable resources |
+| Maps | `GET /maps`, `GET /maps/{x}/{y}` | World map tiles |
+| NPCs | `GET /npcs`, `GET /npcs/{code}`, `GET /npcs/{code}/items` | NPCs and shops |
+| Events | `GET /events`, `GET /events/active` | Events and active spawns |
+| Achievements | `GET /achievements`, `GET /achievements/{code}` | All achievements |
+| Badges | `GET /badges`, `GET /badges/{code}` | Season badges |
+| Effects | `GET /effects`, `GET /effects/{code}` | Status effects |
+| Tasks | `GET /tasks/list`, `GET /tasks/rewards` | Task definitions |
+| Grand Exchange | `GET /grandexchange`, `GET /grandexchange/history` | Market data |
+| Leaderboard | `GET /leaderboard`, `GET /leaderboard/accounts` | Rankings |
+| Characters | `GET /characters`, `GET /characters/{name}` | Public profiles |
+| Accounts | `GET /accounts`, `GET /accounts/{account}` | Public accounts |
+
+### Authenticated — My Account
+
+| Endpoint | Description |
+|---|---|
+| `GET /my/details` | Your account details |
+| `GET /my/characters` | Your characters |
+| `GET /my/bank` | Bank details (gold, slots) |
+| `GET /my/bank/items` | Items in your bank |
+| `GET /my/grandexchange/orders` | Your active GE orders |
+| `GET /my/logs` | Action logs |
+| `GET /my/pending-items` | Unclaimed items |
+| `POST /my/change_password` | Change password |
+
+### Authenticated — Character Actions
+
+All actions use `POST /my/{name}/action/...` and return a cooldown.
+
+| Action | Endpoint | Description |
+|---|---|---|
+| Move | `.../move` | Move to coordinates |
+| Fight | `.../fight` | Fight monster at current location |
+| Gather | `.../gathering` | Gather resource at current location |
+| Craft | `.../crafting` | Craft items at a workshop |
+| Recycle | `.../recycling` | Recycle items at a workshop |
+| Equip | `.../equip` | Equip item from inventory |
+| Unequip | `.../unequip` | Remove equipped item |
+| Use | `.../use` | Use a consumable item |
+| Rest | `.../rest` | Restore HP |
+| Give | `.../give` | Give items/gold to another character at same location |
+| Delete | `.../delete` | Delete item from inventory |
+| Bank Deposit | `.../bank/deposit/item`, `.../bank/deposit/gold` | Deposit to bank |
+| Bank Withdraw | `.../bank/withdraw/item`, `.../bank/withdraw/gold` | Withdraw from bank |
+| Buy Expansion | `.../bank/buy_expansion` | Expand bank storage |
+| Task New | `.../task/new` | Accept a new task |
+| Task Complete | `.../task/complete` | Complete current task |
+| Task Cancel | `.../task/cancel` | Cancel current task |
+| Task Exchange | `.../task/exchange` | Exchange task coins for rewards |
+| NPC Buy | `.../npc/buy` | Buy from NPC |
+| NPC Sell | `.../npc/sell` | Sell to NPC |
+| GE Sell | `.../grandexchange/sell` | Create sell order |
+| GE Buy | `.../grandexchange/buy` | Buy from Grand Exchange |
+| GE Cancel | `.../grandexchange/cancel` | Cancel your order |
+| Claim | `.../claim/{id}` | Claim pending items |
+| Change Skin | `.../change_skin` | Change character skin |
+| Transition | `.../transition` | Floor/area transition |
+
+## Interactive API Documentation
+
+The best way to explore and test every endpoint is the hosted **Swagger UI**:
+
+**[Open Interactive API Docs →](https://api.artifactsmmo.com/docs/#/)**
+
+You can authenticate with your token and send requests directly from your browser. See [OpenAPI Spec](/api_guide/openapi_spec/) for import instructions for Postman and Insomnia.
+
+## Related
+
+- [Authorization](/api_guide/authorization/) — Token creation and usage
+- [Response Codes](/api_guide/response_codes/) — Full error code reference
+- [Rate Limits](/api_guide/rate_limits/) — Rate limits and endpoint mapping
+- [OpenAPI Spec](/api_guide/openapi_spec/) — Swagger UI, Postman, Insomnia
+- [Game Data](/data/game_data/) — All data endpoints with examples
+- [Python SDK](/sdks/python/) — Official Python SDK

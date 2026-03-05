@@ -1,5 +1,6 @@
 ---
-title: Inventory and Bank
+title: Inventory & Bank
+description: "Character inventory management, bank storage, gold deposit and withdrawal, and bank expansion in Artifacts MMO."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -25,7 +26,7 @@ You can view the contents of your inventory with [this request.](https://api.art
 
 At the bank, you can deposit items and gold. The bank is shared with all your characters, it's the best way to trade with your other characters.
 
-The bank is limited to 50 slots, but you can buy expansions at a cost of 4000 gold, and the price increases (x2) with each expansion purchased.
+The bank is limited to 50 slots, but you can buy expansions at a cost of 4,500 gold for 20 slots, and the price doubles (×2) with each expansion purchased.
 
 ### View bank items
 
@@ -532,3 +533,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
   </TabItem>
 </Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
+
+## Related
+
+- [Equipment & Items](/concepts/equipment_and_items/) — Equipping and managing items
+- [Grand Exchange](/concepts/grand_exchange/) — Buying and selling items on the market
+- [Maps & Movement](/concepts/maps_and_movement/) — Navigating to bank locations

@@ -1,0 +1,938 @@
+---
+title: Game Data
+description: "Complete reference for all data endpoints in Artifacts MMO: items, monsters, maps, resources, NPCs, events, achievements, tasks, effects, Grand Exchange, and more."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+All game data is publicly accessible without authentication. This page is your single reference for every data endpoint, including available filters, response schemas, and examples.
+
+## Pagination
+
+All "Get All" endpoints return paginated results using `DataPage[T]`:
+
+```json title="DataPage[T]"
+{
+  "data": [ ... ],
+  "total": 184,
+  "page": 1,
+  "size": 50,
+  "pages": 4
+}
+```
+
+| Parameter | Default | Description |
+|---|---|---|
+| `page` | `1` | Page number (1-indexed). |
+| `size` | `50` | Items per page (max 100). |
+
+Use `?page=2&size=100` query parameters to navigate pages.
+
+---
+
+## Items
+
+Browse all items in the game, filterable by type, subtype, craft skill, name, and more.
+
+**Endpoints:**
+- `GET /items` — List all items
+- `GET /items/{code}` — Get a single item by code
+
+**Filters (`GET /items`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `type` | string | Item type: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring`, `amulet`, `artifact`, `utility`, `rune`, `bag`, `resource`, `consumable`, `currency`. |
+| `craft_skill` | string | Filter by crafting skill: `weaponcrafting`, `gearcrafting`, `jewelrycrafting`, `cooking`, `woodcutting`, `mining`, `alchemy`. |
+| `craft_material` | string | Filter by craft material code. |
+| `min_level` | int | Minimum item level. |
+| `max_level` | int | Maximum item level. |
+| `name` | string | Search by item name (partial match). |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # Get all weapons
+curl -s 'https://api.artifactsmmo.com/items?type=weapon&size=5' \
+  -H 'Accept: application/json'
+
+# Get a specific item
+curl -s 'https://api.artifactsmmo.com/items/iron_sword' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  // Get all weapons
+const res = await fetch('https://api.artifactsmmo.com/items?type=weapon&size=5');
+const data = await res.json();
+console.log(data);
+
+// Get a specific item
+const item = await fetch('https://api.artifactsmmo.com/items/iron_sword');
+console.log(await item.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+  # Get all weapons
+  resp = requests.get("https://api.artifactsmmo.com/items", params={"type": "weapon", "size": 5})
+  print(resp.json())
+
+  # Get a specific item
+  resp = requests.get("https://api.artifactsmmo.com/items/iron_sword")
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+  client = ArtifactsClient()
+  # Get all weapons
+  weapons = client.items.get_all(type="weapon", size=5)
+  print(weapons)
+
+  # Get a specific item
+  item = client.items.get("iron_sword")
+  print(item)
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (single item):**
+```json
+{
+  "data": {
+    "name": "Iron Sword",
+    "code": "iron_sword",
+    "level": 10,
+    "type": "weapon",
+    "subtype": "weapon",
+    "description": "A sturdy iron sword.",
+    "tradeable": true,
+    "conditions": [
+      { "code": "level", "operator": "gt", "value": 9 }
+    ],
+    "effects": [
+      { "code": "attack_fire", "value": 24 },
+      { "code": "attack_earth", "value": 24 }
+    ],
+    "craft": {
+      "skill": "weaponcrafting",
+      "level": 10,
+      "items": [{ "code": "iron", "quantity": 6 }],
+      "quantity": 1
+    }
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
+
+---
+
+## Monsters
+
+All monsters in the game, with stats and drop tables.
+
+**Endpoints:**
+- `GET /monsters` — List all monsters
+- `GET /monsters/{code}` — Get a single monster
+
+**Filters (`GET /monsters`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `min_level` | int | Minimum monster level. |
+| `max_level` | int | Maximum monster level. |
+| `drop` | string | Filter by drop item code. |
+| `name` | string | Search by name (partial match). |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/monsters?min_level=5&max_level=15&size=5' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/monsters?min_level=5&max_level=15&size=5');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  resp = requests.get("https://api.artifactsmmo.com/monsters", params={"min_level": 5, "max_level": 15, "size": 5})
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  monsters = client.monsters.get_all(min_level=5, max_level=15, size=5)
+  print(monsters)
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (single monster):**
+```json
+{
+  "data": {
+    "name": "Chicken",
+    "code": "chicken",
+    "level": 1,
+    "hp": 60,
+    "attack_fire": 0,
+    "attack_earth": 10,
+    "attack_water": 0,
+    "attack_air": 0,
+    "res_fire": 0,
+    "res_earth": 0,
+    "res_water": 0,
+    "res_air": 0,
+    "critical_strike": 0,
+    "effects": [],
+    "drops": [
+      { "code": "raw_chicken", "rate": 50, "min_quantity": 1, "max_quantity": 1 },
+      { "code": "feather", "rate": 50, "min_quantity": 1, "max_quantity": 1 },
+      { "code": "egg", "rate": 10, "min_quantity": 1, "max_quantity": 1 }
+    ]
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get)
+
+---
+
+## Maps
+
+All map tiles (cells) in the game world, including content information.
+
+**Endpoints:**
+- `GET /maps` — List all map cells
+- `GET /maps/{x}/{y}` — Get a specific map cell
+
+**Filters (`GET /maps`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `content_type` | string | Filter by content type: `monster`, `resource`, `workshop`, `bank`, `grand_exchange`, `tasks_master`, `npc`. |
+| `content_code` | string | Filter by content code (e.g., `chicken`, `copper_rocks`). |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # Find all bank locations
+curl -s 'https://api.artifactsmmo.com/maps?content_type=bank' \
+  -H 'Accept: application/json'
+
+# Get a specific tile
+curl -s 'https://api.artifactsmmo.com/maps/0/1' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/maps?content_type=bank');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  resp = requests.get("https://api.artifactsmmo.com/maps", params={"content_type": "bank"})
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  banks = client.maps.get_all(content_type="bank")
+  print(banks)
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (single cell):**
+```json
+{
+  "data": {
+    "x": 0,
+    "y": 1,
+    "name": "Spawn",
+    "skin": "forest1",
+    "content": {
+      "type": "bank",
+      "code": "bank"
+    }
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
+
+---
+
+## Resources
+
+All gatherable resource nodes (mining, woodcutting, fishing, etc.).
+
+**Endpoints:**
+- `GET /resources` — List all resources
+- `GET /resources/{code}` — Get a single resource
+
+**Filters (`GET /resources`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `skill` | string | Gathering skill: `mining`, `woodcutting`, `fishing`, `alchemy`. |
+| `min_level` | int | Minimum level. |
+| `max_level` | int | Maximum level. |
+| `drop` | string | Filter by drop item code. |
+| `name` | string | Search by name. |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/resources?skill=mining&size=5' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/resources?skill=mining&size=5');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  resp = requests.get("https://api.artifactsmmo.com/resources", params={"skill": "mining", "size": 5})
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  resources = client.resources.get_all(skill="mining", size=5)
+  print(resources)
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (single resource):**
+```json
+{
+  "data": {
+    "name": "Copper Rocks",
+    "code": "copper_rocks",
+    "skill": "mining",
+    "level": 1,
+    "drops": [
+      { "code": "copper_ore", "rate": 100, "min_quantity": 1, "max_quantity": 1 }
+    ]
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get)
+
+---
+
+## NPCs
+
+All non-player characters (shopkeepers, quest givers, etc.).
+
+**Endpoints:**
+- `GET /npcs` — List all NPCs
+- `GET /npcs/{code}` — Get a single NPC
+- `GET /npcs/{code}/items` — Get NPC's item catalog (buy/sell prices)
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # List all NPCs
+curl -s 'https://api.artifactsmmo.com/npcs' \
+  -H 'Accept: application/json'
+
+# Get NPC shop items
+curl -s 'https://api.artifactsmmo.com/npcs/merchant/items' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const npcs = await fetch('https://api.artifactsmmo.com/npcs');
+  console.log(await npcs.json());
+
+  const shop = await fetch('https://api.artifactsmmo.com/npcs/merchant/items');
+  console.log(await shop.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  npcs = requests.get("https://api.artifactsmmo.com/npcs").json()
+  print(npcs)
+
+  items = requests.get("https://api.artifactsmmo.com/npcs/merchant/items").json()
+  print(items)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  npcs = client.npcs.get_all()
+  npc_items = client.npcs.get_items("merchant")
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_get)
+
+---
+
+## Events
+
+Events are time-limited occurrences on the map. Active events are currently spawned; all possible events are listed separately.
+
+**Endpoints:**
+- `GET /events` — List all possible event definitions
+- `GET /events/active` — List currently active events on the map
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # Active events right now
+curl -s 'https://api.artifactsmmo.com/events/active' \
+  -H 'Accept: application/json'
+
+# All event definitions
+curl -s 'https://api.artifactsmmo.com/events' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const active = await fetch('https://api.artifactsmmo.com/events/active');
+  console.log(await active.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  active = requests.get("https://api.artifactsmmo.com/events/active").json()
+  print(active)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  active_events = client.events.get_active()
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (active event):**
+```json
+{
+  "data": {
+    "name": "Portal",
+    "code": "portal",
+    "map": { "x": 3, "y": -2 },
+    "content": { "type": "monster", "code": "demon" },
+    "duration": 60,
+    "rate": 80,
+    "expiration": "2025-01-15T12:00:00Z",
+    "created_at": "2025-01-15T11:00:00Z"
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get)
+
+---
+
+## Achievements
+
+All achievements and their progression types.
+
+**Endpoints:**
+- `GET /achievements` — List all achievements
+- `GET /achievements/{code}` — Get a single achievement
+
+**Filters (`GET /achievements`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `type` | string | Achievement type: `combat_kill`, `combat_drop`, `combat_level`, `gathering`, `crafting`, `recycling`, `task`, `other`. |
+| `name` | string | Search by name. |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/achievements?type=combat_kill&size=5' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/achievements?type=combat_kill&size=5');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  resp = requests.get("https://api.artifactsmmo.com/achievements", params={"type": "combat_kill", "size": 5})
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  achievements = client.achievements.get_all(type="combat_kill", size=5)
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example:**
+```json
+{
+  "data": {
+    "name": "Chicken Hunter",
+    "code": "chicken_hunter",
+    "description": "Kill 100 chickens.",
+    "type": "combat_kill",
+    "target": "chicken",
+    "total": 100,
+    "rewards": {
+      "gold": 500
+    },
+    "current": 42,
+    "completed_at": null
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get)
+
+---
+
+## Badges
+
+Season badges earned through gameplay.
+
+**Endpoints:**
+- `GET /badges` — List all badges
+- `GET /badges/{code}` — Get a single badge
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/badges' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/badges');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  print(requests.get("https://api.artifactsmmo.com/badges").json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  badges = client.badges.get_all()
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get)
+
+---
+
+## Effects
+
+All status effects available in the game (combat effects, buffs, etc.).
+
+**Endpoints:**
+- `GET /effects` — List all effects
+- `GET /effects/{code}` — Get a single effect
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/effects' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const res = await fetch('https://api.artifactsmmo.com/effects');
+  console.log(await res.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  print(requests.get("https://api.artifactsmmo.com/effects").json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  effects = client.effects.get_all()
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_effects_effects_get)
+
+---
+
+## Tasks
+
+Task definitions. Tasks are repeatable objectives from tasks masters.
+
+**Endpoints:**
+- `GET /tasks/list` — List all task definitions
+- `GET /tasks/list/{code}` — Get a single task
+- `GET /tasks/rewards` — List all task reward items
+
+**Filters (`GET /tasks/list`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `type` | string | Task type: `monsters`, `items`. |
+| `skill` | string | Related skill. |
+| `min_level` | int | Minimum level. |
+| `max_level` | int | Maximum level. |
+| `name` | string | Search by name. |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # Get all task definitions
+curl -s 'https://api.artifactsmmo.com/tasks/list?type=monsters&size=5' \
+  -H 'Accept: application/json'
+
+# Get task rewards
+curl -s 'https://api.artifactsmmo.com/tasks/rewards' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const tasks = await fetch('https://api.artifactsmmo.com/tasks/list?type=monsters&size=5');
+  console.log(await tasks.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  resp = requests.get("https://api.artifactsmmo.com/tasks/list", params={"type": "monsters", "size": 5})
+  print(resp.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  tasks = client.tasks.get_all(type="monsters", size=5)
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get)
+
+---
+
+## Grand Exchange
+
+The player-driven marketplace. Browse current orders and trade history.
+
+**Endpoints:**
+- `GET /grandexchange` — List current sell orders
+- `GET /grandexchange/{id}` — Get a specific order
+- `GET /grandexchange/history` — List completed trade history
+
+**Filters (`GET /grandexchange`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `code` | string | Item code. |
+| `seller` | string | Seller account name. |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  # Browse current orders for iron_sword
+curl -s 'https://api.artifactsmmo.com/grandexchange?code=iron_sword' \
+  -H 'Accept: application/json'
+
+# Trade history
+curl -s 'https://api.artifactsmmo.com/grandexchange/history?code=iron_sword' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const orders = await fetch('https://api.artifactsmmo.com/grandexchange?code=iron_sword');
+  console.log(await orders.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  orders = requests.get("https://api.artifactsmmo.com/grandexchange", params={"code": "iron_sword"}).json()
+  print(orders)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  orders = client.grand_exchange.get_all(code="iron_sword")
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example (order):**
+```json
+{
+  "data": {
+    "id": "abc123",
+    "code": "iron_sword",
+    "quantity": 1,
+    "price": 500,
+    "seller": "player1",
+    "created_at": "2025-01-15T10:00:00Z"
+  }
+}
+```
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_ge_items_grandexchange_get)
+
+---
+
+## Leaderboard
+
+Public leaderboards for characters and accounts.
+
+**Endpoints:**
+- `GET /leaderboard` — Character leaderboard (by total level, combat level, skill levels, gold, etc.)
+- `GET /leaderboard/accounts` — Account leaderboard
+
+**Filters (`GET /leaderboard`):**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `sort` | string | Sort by: `combat`, `woodcutting`, `mining`, `fishing`, `alchemy`, `weaponcrafting`, `gearcrafting`, `jewelrycrafting`, `cooking`, `gold`. |
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/leaderboard?sort=combat&size=10' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const lb = await fetch('https://api.artifactsmmo.com/leaderboard?sort=combat&size=10');
+  console.log(await lb.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  lb = requests.get("https://api.artifactsmmo.com/leaderboard", params={"sort": "combat", "size": 10}).json()
+  print(lb)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  lb = client.leaderboard.get_all(sort="combat", size=10)
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_leaderboard_leaderboard_get)
+
+---
+
+## Characters (Public)
+
+Browse all public character profiles.
+
+**Endpoints:**
+- `GET /characters` — List all characters
+- `GET /characters/{name}` — Get a specific character
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/characters?size=5' \
+  -H 'Accept: application/json'
+
+  curl -s 'https://api.artifactsmmo.com/characters/MyHero' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const chars = await fetch('https://api.artifactsmmo.com/characters?size=5');
+  console.log(await chars.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  chars = requests.get("https://api.artifactsmmo.com/characters", params={"size": 5}).json()
+  print(chars)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  characters = client.characters.get_all(size=5)
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_characters_characters_get)
+
+---
+
+## Accounts (Public)
+
+Browse all public account profiles.
+
+**Endpoints:**
+- `GET /accounts` — List all accounts
+- `GET /accounts/{account}` — Get a specific account
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/accounts?size=5' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const accounts = await fetch('https://api.artifactsmmo.com/accounts?size=5');
+  console.log(await accounts.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  accounts = requests.get("https://api.artifactsmmo.com/accounts", params={"size": 5}).json()
+  print(accounts)
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  accounts = client.accounts.get_all(size=5)
+  ```
+  </TabItem>
+</Tabs>
+
+[Full API docs](https://api.artifactsmmo.com/docs/#/operations/get_all_accounts_accounts_get)
+
+---
+
+## Server Status
+
+Check current server status and version.
+
+**Endpoint:**
+- `GET /` — Server status
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl -s 'https://api.artifactsmmo.com/' \
+  -H 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const status = await fetch('https://api.artifactsmmo.com/');
+  console.log(await status.json());
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+  print(requests.get("https://api.artifactsmmo.com/").json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+  client = ArtifactsClient()
+  status = client.get_status()
+  ```
+  </TabItem>
+</Tabs>
+
+**Response Example:**
+```json
+{
+  "data": {
+    "status": "online",
+    "version": "7.0.2",
+    "characters_online": 1234,
+    "server_time": "2025-01-15T12:00:00Z",
+    "announcements": []
+  }
+}
+```
+
+---
+
+## Simulation (Members)
+
+Simulate fights between characters and monsters. Requires membership.
+
+**Endpoint:**
+- `POST /simulate/fight` — Run a fight simulation
+
+See [Fight Simulator](/members/fight_simulator/) for details.
+
+---
+
+## Related
+
+- [API Overview](/api_guide/api_overview/) — Base URL, authentication, rate limits
+- [OpenAPI Spec](/api_guide/openapi_spec/) — Full interactive API documentation
+- [Equipment & Items](/concepts/equipment_and_items/) — How items and equipment work in-game
+- [Python SDK: Game Data](/sdks/python/game-data/) — Browse data using the Python SDK

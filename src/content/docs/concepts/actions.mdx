@@ -1,111 +1,146 @@
 ---
-title: Actions
+title: Actions & Cooldowns
+description: "Complete list of character actions, cooldown mechanics, the CooldownSchema, and action logs in Artifacts MMO."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-To execute an action with your character, you need to send an API request.
- 
-Here's the list of actions currently available:
-   
-*   [Move](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
-*   [Fight](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
-*   [Transition](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)
-*   [Rest](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
-*   [Gathering](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
-*   [Crafting](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
-*   [Recycling](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
-*   [Use item](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
-*   [Equip item](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip__post)
-*   [Unequip item](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip__post)
-*   [Delete item](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
-*   [Deposit item (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
-*   [Deposit gold (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
-*   [Withdraw item (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
-*   [Withdraw gold (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
-*   [Buy expansion (Bank)](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
-*   [Buy item (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post)
-*   [Create sell order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post)
-*   [Create buy order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post)
-*   [Fill buy order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post)
-*   [Cancel order (Grand Exchange)](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post)
-*   [Buy item (NPC)](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
-*   [Sell item (NPC)](https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post)
-*   [Give items](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post)
-*   [Give gold](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post)
-*   [Accept task](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
-*   [Complete task](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
-*   [Trade (task)](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
-*   [Exchange (task)](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
-*   [Cancel task](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post)
-*   [Claim pending item](https://api.artifactsmmo.com/docs/#/operations/action_claim_item_my__name__action_claim_item__id__post)
-*   [Change skin](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post)
+Every interaction your character makes with the game world is an **action** — moving, fighting, crafting, trading, and more. Each action is a `POST` request to `/my/{name}/action/...` and returns the result immediately along with a cooldown.
 
+## Overview
 
-## Cooldown
+### How Actions Work
 
-When you make an action, you instantly receive the result, but your character will be in a cooldown period for some time after you've made the majority of the game's actions.
+1. Send a `POST` request to the appropriate action endpoint.
+2. The API returns the action result and a `CooldownSchema` in the response.
+3. Your character enters a cooldown period — you must wait before sending another action for that character.
+4. If you send an action while in cooldown, you receive error **499** with the remaining time.
 
-| Name               | Content                              |
-| ----------------   | ---------------------------------- |
-| Movement        |5s per map |
-| Fight             |2s per turn (reduce with haste)|
-| Rest             |1s per 5 HP (minimum 3 seconds)|
-| Gathering   |30s (+ resource level/2) (reduce with tools)|
-| Crafting  |5s per item|
-| Recycling |3s per item|
-| Deposit/withdrawal item  |3s per different item|
-| Give item  |3s per different item|
-| Others   |3s|
+### CooldownSchema
 
+Every action response includes a `cooldown` object:
 
-If you are in cooldown and try to make an action, you will receive an error 499 showing the remaining cooldown time.
+```json title="CooldownSchema"
+{
+  "cooldown": {
+    "total_seconds": 5,
+    "remaining_seconds": 5,
+    "started_at": "2025-01-15T12:00:00Z",
+    "expiration": "2025-01-15T12:00:05Z",
+    "reason": "movement"
+  }
+}
+```
 
+| Field | Description |
+|---|---|
+| `total_seconds` | Total cooldown duration in seconds. |
+| `remaining_seconds` | Seconds remaining until the cooldown expires. |
+| `started_at` | When the cooldown started (ISO 8601). |
+| `expiration` | When the cooldown expires (ISO 8601). |
+| `reason` | What caused the cooldown (e.g., `movement`, `fight`, `crafting`). |
 
-## Logs
+:::tip
+You can use the `expiration` field to schedule your next action precisely. Simply wait until the current time reaches the expiration timestamp.
+:::
 
-Every action you take is logged. You can view a character's logs with this request:
+## Cooldown Durations
+
+| Action | Duration | Notes |
+|---|---|---|
+| Movement | 5s per tile | — |
+| Fight | 2s per turn | Reduced with haste |
+| Rest | 1s per 5 HP (min 3s) | See [Resting](/concepts/resting_and_using_items/) |
+| Gathering | 30s + resource level/2 | Reduced with tools |
+| Crafting | 5s per item | — |
+| Recycling | 3s per item | — |
+| Deposit/Withdraw | 3s per different item | — |
+| Give item | 3s per different item | — |
+| Others | 3s | Default cooldown |
+
+## All Available Actions
+
+| Action | Endpoint | Documentation |
+|---|---|---|
+| Move | `/my/{name}/action/move` | [Maps & Movement](/concepts/maps_and_movement/) |
+| Transition | `/my/{name}/action/transition` | [Maps & Movement](/concepts/maps_and_movement/) |
+| Fight | `/my/{name}/action/fight` | [Combat & Stats](/concepts/stats_and_fights/) |
+| Rest | `/my/{name}/action/rest` | [Resting & Consumables](/concepts/resting_and_using_items/) |
+| Use item | `/my/{name}/action/use` | [Resting & Consumables](/concepts/resting_and_using_items/) |
+| Gathering | `/my/{name}/action/gathering` | [Skills](/concepts/skills/) |
+| Crafting | `/my/{name}/action/crafting` | [Skills](/concepts/skills/) |
+| Recycling | `/my/{name}/action/recycling` | [Recycling](/concepts/recycling/) |
+| Equip item | `/my/{name}/action/equip` | [Equipment & Items](/concepts/equipment_and_items/) |
+| Unequip item | `/my/{name}/action/unequip` | [Equipment & Items](/concepts/equipment_and_items/) |
+| Delete item | `/my/{name}/action/delete` | [Equipment & Items](/concepts/equipment_and_items/) |
+| Deposit item | `/my/{name}/action/bank/deposit/item` | [Inventory & Bank](/concepts/inventory_and_bank/) |
+| Deposit gold | `/my/{name}/action/bank/deposit/gold` | [Inventory & Bank](/concepts/inventory_and_bank/) |
+| Withdraw item | `/my/{name}/action/bank/withdraw/item` | [Inventory & Bank](/concepts/inventory_and_bank/) |
+| Withdraw gold | `/my/{name}/action/bank/withdraw/gold` | [Inventory & Bank](/concepts/inventory_and_bank/) |
+| Buy expansion | `/my/{name}/action/bank/buy_expansion` | [Inventory & Bank](/concepts/inventory_and_bank/) |
+| Buy item (GE) | `/my/{name}/action/grandexchange/buy` | [Grand Exchange](/concepts/grand_exchange/) |
+| Sell order (GE) | `/my/{name}/action/grandexchange/sell` | [Grand Exchange](/concepts/grand_exchange/) |
+| Buy order (GE) | `/my/{name}/action/grandexchange/create_buy_order` | [Grand Exchange](/concepts/grand_exchange/) |
+| Fill order (GE) | `/my/{name}/action/grandexchange/fill` | [Grand Exchange](/concepts/grand_exchange/) |
+| Cancel order (GE) | `/my/{name}/action/grandexchange/cancel` | [Grand Exchange](/concepts/grand_exchange/) |
+| Buy item (NPC) | `/my/{name}/action/npc/buy` | [NPCs & Trading](/concepts/npcs/) |
+| Sell item (NPC) | `/my/{name}/action/npc/sell` | [NPCs & Trading](/concepts/npcs/) |
+| Give items | `/my/{name}/action/give` | [Give Items & Gold](/concepts/give/) |
+| Accept task | `/my/{name}/action/task/new` | [Tasks](/concepts/tasks/) |
+| Complete task | `/my/{name}/action/task/complete` | [Tasks](/concepts/tasks/) |
+| Exchange (task) | `/my/{name}/action/task/exchange` | [Tasks](/concepts/tasks/) |
+| Cancel task | `/my/{name}/action/task/cancel` | [Tasks](/concepts/tasks/) |
+| Claim pending item | `/my/{name}/action/claim/{id}` | [Pending Items](/concepts/pending_items/) |
+| Change skin | `/my/{name}/action/change_skin` | [Characters & Account](/concepts/characters_and_account/) |
+
+## API Endpoints
+
+### Action Logs
+
+`GET /my/logs/{name}` — View all logged actions for a character.
+
+Every action your character performs is recorded. Logs are paginated and include the action type, description, timestamp, and result.
 
 <Tabs>
   <TabItem label="cURL">
   ```http
-  curl --location --request GET 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50' \
---header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer YOUR_TOKEN'
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/logs/{name}?page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
-
-var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+  const url = 'https://api.artifactsmmo.com/my/logs/{name}?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
 };
 
-fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
   ```
   </TabItem>
   <TabItem label="Python" icon="seti:python">
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME_HERE/logs?page=1&size=50"
+url = "https://api.artifactsmmo.com/my/logs/{name}"
 headers = {
     "Accept": "application/json",
-    "Content-Type": "application/json",
     "Authorization": "Bearer YOUR_TOKEN"
 }
 
-response = requests.get(url, headers=headers)
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </TabItem>
@@ -114,12 +149,25 @@ print(response.json())
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("YOUR_CHARACTER_NAME_HERE")
+    char = client.character("{name}")
     logs = char.get_logs(page=1, size=50)
     for log in logs.data:
         print(f"[{log.type.value}] {log.description}")
   ```
   </TabItem>
 </Tabs>
- 
-[View API Request](https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my__name__logs_get)
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my__name__logs_get)
+
+### All Logs
+
+`GET /my/logs` — View action logs for all your characters.
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_characters_logs_my_logs_get)
+
+## Related
+
+- [API Overview](/api_guide/api_overview/) — Full list of all endpoints
+- [Rate Limits](/api_guide/rate_limits/) — Cooldown and rate limit details
+- [Characters & Account](/concepts/characters_and_account/) — Character management
+- [Response Codes](/api_guide/response_codes/) — Error 499 (cooldown) and others
