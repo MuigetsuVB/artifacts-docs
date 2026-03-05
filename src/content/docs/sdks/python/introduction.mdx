@@ -1,0 +1,119 @@
+---
+title: Introduction & Installation
+description: Install the Artifacts MMO Python SDK and make your first API call.
+---
+
+import { Tabs, TabItem, Steps, Aside } from '@astrojs/starlight/components';
+
+The `artifacts-mmo` Python SDK wraps all 65 API endpoints with:
+
+- **Auto-cooldown** — the SDK sleeps automatically after each action; you never call `time.sleep()` yourself
+- **Auto-retry** — exponential backoff on rate limits (429), cooldown conflicts (499), and server errors (5xx)
+- **Type safety** — every response is a Pydantic model with full IDE autocompletion
+- **Sync + async** — beginners use `ArtifactsClient`, advanced users use `AsyncArtifactsClient` with `asyncio`
+- **65 / 65 endpoints** — compatible with Artifacts MMO API v7
+
+## Requirements
+
+- Python **3.10** or higher
+- An Artifacts account and JWT token ([how to get one](/getting-started))
+
+## Installation
+
+```bash
+pip install artifacts-mmo
+```
+
+## Your first script
+
+### Sync (blocking)
+
+The sync client is the simplest way to start. Every call blocks until the server responds (and the cooldown expires if auto-wait is enabled).
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+
+    # Get character info
+    info = char.get()
+    print(f"{info.name}  lv{info.level}  HP={info.hp}/{info.max_hp}")
+
+    # Move to coordinates (0, 1) — waits for the move cooldown automatically
+    char.move(x=0, y=1)
+
+    # Fight whatever is on this tile — waits for the fight cooldown automatically
+    result = char.fight()
+    print(f"Fight result: {result.fight.result.value}")
+```
+
+### Async
+
+Use the async client when you want to run multiple characters in parallel with `asyncio`.
+
+```python
+import asyncio
+from artifacts import AsyncArtifactsClient
+
+async def main():
+    async with AsyncArtifactsClient(token="YOUR_TOKEN") as client:
+        char = client.character("MyCharacter")
+
+        info = await char.get()
+        print(f"{info.name}  lv{info.level}  HP={info.hp}/{info.max_hp}")
+
+        await char.move(x=0, y=1)
+        result = await char.fight()
+        print(f"Fight result: {result.fight.result.value}")
+
+asyncio.run(main())
+```
+
+:::tip[Sync vs async — which to choose?]
+If you're just learning or controlling a single character, use `ArtifactsClient` (sync). If you want to run all 5 characters at the same time, use `AsyncArtifactsClient` — see [Multiple Characters](/sdks/python/multiple-characters).
+:::
+
+## Getting a token
+
+You can retrieve your token from [your account page](https://artifactsmmo.com/my), or generate one programmatically:
+
+```python
+async with AsyncArtifactsClient() as client:
+    token = await client.token.generate("your_username", "your_password")
+    print(token)  # save this — use it in all subsequent calls
+```
+
+:::caution[Keep your token secret]
+Never commit your token to version control. Use environment variables or a secrets manager.
+
+```python
+import os
+client = ArtifactsClient(token=os.environ["ARTIFACTS_TOKEN"])
+```
+:::
+
+## Using the sandbox server
+
+The [sandbox server](/members/sandbox_server) lets you test freely without affecting your main account. Pass a different `base_url`:
+
+```python
+client = ArtifactsClient(
+    token="YOUR_TOKEN",
+    base_url="https://api.sandbox.artifactsmmo.com",
+)
+```
+
+When using the sandbox you also get access to helper endpoints that let you give your characters gold, items, and XP instantly — see [Sandbox (SDK reference)](/sdks/python/api-reference#sandbox-sandbox-server-only).
+
+## Enabling logging
+
+The SDK can log every request and response for debugging:
+
+```python
+import logging
+import artifacts
+
+artifacts.setup_logging()            # INFO level — shows actions and results
+artifacts.setup_logging(logging.DEBUG)  # DEBUG level — shows full request/response bodies
+```

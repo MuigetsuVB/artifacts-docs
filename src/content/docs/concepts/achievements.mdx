@@ -5,11 +5,10 @@ title: Achievements
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 
-Achievements are objectives to be met during the season by all your characters. They grant you gold, items, and achievement points, which allow you to earn season badges.
+Achievements are objectives to be met during the season by all your characters. They grant you gold, items, and achievement points, which allow you to earn seasonal rewards.
 
 Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
 
-Achievement points and the number of achievements required to complete a season may change. You can always check the current requirements using the [server status endpoint](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get).
 
 ## Achievement Types
 
@@ -24,13 +23,10 @@ Achievement points and the number of achievements required to complete a season 
 - `npc_buy` – Buy items from NPCs
 - `npc_sell` – Sell items to NPCs
 
-## Multi-Objectives
+## Objectives
 
 Achievements can have **multiple objectives** that must all be completed to unlock the achievement. Each objective tracks progress independently.
 
-For example, an achievement might require you to:
-1. Defeat 50 Wolves (`combat_kill`, target: `wolf`)
-2. Collect 20 Wolf Hides (`combat_drop`, target: `wolf_hide`)
 
 Each objective has:
 | Field | Description |
@@ -61,7 +57,7 @@ The achievement is completed when **all objectives** reach their required total.
 
 ## Rewards
 
-When you complete an achievement, you earn **achievement points** and **rewards**. Rewards can include gold and/or items.
+When you complete an achievement, you earn rewards that are sent to your [pending items](/concepts/pending_items/). You can claim them with any character on your account.
 
 ```http title="JSON"
 "rewards": {
@@ -78,16 +74,13 @@ When you complete an achievement, you earn **achievement points** and **rewards*
 | `gold` | Gold reward amount. |
 | `items` | List of item rewards, each with a `code` and `quantity`. Can be `null` if there are no item rewards. |
 
-:::note
-When an achievement is completed, the rewards are automatically sent to your [**pending items**](/concepts/pending_items). You can then claim them with any character on your account using the claim action. This ensures no rewards are lost even if your inventory is full at the time of completion.
-:::
 
 ## Account Achievements
 
 You can use this GET request to view your account's list of achievements, including progress on each objective.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
 --header 'Accept: application/json' \
@@ -112,11 +105,35 @@ fetch("https://api.artifactsmmo.com/accounts/{account}/achievements", requestOpt
    .catch(error => console.log('error', error));
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/accounts/{account}/achievements"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    achievements = client.accounts.get_achievements("{account}")
+    for a in achievements.data:
+        print(f"{a.code}: {a.current}/{a.total}")
+  ```
+  </TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
 
-You can also view the complete list of possible achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
+You can also view the complete list ofachievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get) or on our [website](https://www.artifactsmmo.com/encyclopedia/achievements).
 
 ## Season Badges
 
@@ -127,7 +144,7 @@ Each season, accumulating enough achievement points can earn you unique seasonal
 You can view the current badges and requirements using this GET request.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request GET \
   --url https://api.artifactsmmo.com/badges \
@@ -146,6 +163,27 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/badges"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    badges = client.badges.get_all()
+    for badge in badges.data:
+        print(badge)
   ```
   </TabItem>
 </Tabs>

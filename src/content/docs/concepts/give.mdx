@@ -18,12 +18,12 @@ You can use this to optimize logistics or simply transfer gear, resources, or cu
 To give one or more items to another of your characters, use the following POST request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/item \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
     "character": "receiverName",
@@ -42,7 +42,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: JSON.stringify({
     character: "receiverName",
@@ -62,6 +62,42 @@ try {
 }
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{sender}/action/give/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {
+    "character": "receiverName",
+    "items": [
+        {"code": "iron_ore", "quantity": 10},
+        {"code": "wood", "quantity": 5}
+    ]
+}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.common import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{sender}")
+    items = [
+        SimpleItemSchema(code="iron_ore", quantity=10),
+        SimpleItemSchema(code="wood", quantity=5)
+    ]
+    char.trading.give_items(items=items, character="receiverName")
+  ```
+  </TabItem>
 </Tabs>
 
 | Field | Description |
@@ -78,12 +114,12 @@ try {
 To transfer gold to another of your characters on the same map, use the following POST request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/gold \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
     "character": "receiverName",
@@ -99,7 +135,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: JSON.stringify({
     character: "receiverName",
@@ -114,6 +150,31 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{sender}/action/give/gold"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"character": "receiverName", "quantity": 500}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{sender}")
+    char.trading.give_gold(quantity=500, character="receiverName")
   ```
   </TabItem>
 </Tabs>

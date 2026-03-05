@@ -1,0 +1,128 @@
+---
+---
+
+<div class="server-status loading not-content" id="server-status-container">
+  Loading server status...
+</div>
+
+<script>
+  interface Badge {
+    code: string;
+    description: string;
+    required_points: number;
+  }
+
+  interface Season {
+    name: string;
+    number: number;
+    start_date: string;
+    badges: Badge[];
+    skins: { code: string; description: string; required_points: number }[];
+  }
+
+  interface ServerData {
+    version: string;
+    characters_online: number;
+    season: Season;
+  }
+
+  const container = document.getElementById('server-status-container');
+
+  async function fetchServerStatus() {
+    try {
+      const response = await fetch('https://api.artifactsmmo.com/');
+      const json = await response.json();
+      const data: ServerData = json.data;
+
+      const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+      };
+
+      // Calculate approximate season end (4 months from start)
+      const startDate = new Date(data.season.start_date);
+      const endDate = new Date(startDate);
+      endDate.setMonth(endDate.getMonth() + 4);
+
+      // Build badges HTML
+      const badgesHtml = data.season.badges
+        .map(badge => {
+          const badgeName = badge.code.split('_')[1].charAt(0).toUpperCase() + badge.code.split('_')[1].slice(1);
+          return `
+            <div class="badge-item">
+              <img src="http://artifactsmmo.com/images/badges/${badge.code}.png" alt="${badge.code}" class="badge-image sprite" />
+              <div class="badge-info">
+                <div class="badge-name">${badgeName}</div>
+                <div class="badge-description">${badge.description}</div>
+                <div class="badge-points">${badge.required_points} points required</div>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+
+      // Build skins HTML
+      const skinsHtml = data.season.skins
+        .map(skin => `
+          <div class="badge-item">
+            <img src="http://artifactsmmo.com/images/characters/${skin.code}.png" alt="${skin.code}" class="badge-image sprite" />
+            <div class="badge-info">
+              <div class="badge-name">${skin.code}</div>
+              <div class="badge-description">${skin.description}</div>
+              <div class="badge-points">${skin.required_points} points required</div>
+            </div>
+          </div>
+        `)
+        .join('');
+
+      const html = `
+        <h3>Current Server Status</h3>
+        <div class="status-grid">
+          <div class="status-item">
+            <span class="label">Season:</span>
+            <span class="value">${data.season.number} - ${data.season.name}</span>
+          </div>
+          <div class="status-item">
+            <span class="label">Players Online:</span>
+            <span class="value">${data.characters_online}</span>
+          </div>
+          <div class="status-item">
+            <span class="label">Season Start:</span>
+            <span class="value">${formatDate(data.season.start_date)}</span>
+          </div>
+          <div class="status-item">
+            <span class="label">Season End:</span>
+            <span class="value">${formatDate(endDate.toISOString())}</span>
+          </div>
+        </div>
+        <h4>Season Badges</h4>
+        <div class="badges-container">
+          ${badgesHtml}
+        </div>
+        <h4>Season Skins</h4>
+        <div class="badges-container">
+          ${skinsHtml}
+        </div>
+        <p class="status-footer">Last updated: ${new Date().toLocaleTimeString()}</p>
+      `;
+
+      if (container) {
+        container.innerHTML = html;
+        container.classList.remove('loading');
+      }
+    } catch (error) {
+      console.error('Failed to fetch server status:', error);
+      if (container) {
+        container.innerHTML = '<div class="error">Failed to load server status</div>';
+        container.classList.remove('loading');
+      }
+    }
+  }
+
+  fetchServerStatus();
+  // Refresh every 30 seconds
+  setInterval(fetchServerStatus, 30000);
+</script>

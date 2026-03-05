@@ -1,0 +1,38 @@
+---
+title: Python SDK
+description: Official Python SDK for the Artifacts MMO API — sync & async, game-oriented.
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The `artifacts-mmo` Python SDK covers all **65 API endpoints**, supports both sync and async usage, and is designed for people building bots and automation scripts.
+
+- **Auto-cooldown** — waits automatically after each action; no manual `time.sleep()` needed
+- **Auto-retry** — exponential backoff on rate limits, cooldown conflicts, and server errors
+- **Type safety** — every response is a Pydantic model with full IDE autocompletion
+- **Sync + async** — beginners use `ArtifactsClient`, advanced users use `AsyncArtifactsClient`
+- **65 / 65 endpoints** — compatible with Artifacts MMO API v7
+
+| | Raw API | Python SDK |
+|---|---|---|
+| Cooldown handling | Manual `time.sleep()` | **Automatic** |
+| Error handling | Parse status codes | **Typed exceptions** |
+| Type safety | None | **Pydantic models** |
+| Multi-character | Manual `asyncio` juggling | **Built-in helpers** |
+| Best for | Prototyping, one-off scripts | Bots, long-running programs |
+
+```bash
+pip install artifacts-mmo
+```
+
+Requires **Python 3.10+**. See [Installation](/sdks/python/introduction/) for full setup instructions.
+
+<CardGrid>
+  <LinkCard title="Installation" href="/sdks/python/introduction/" description="pip install, first steps, and how to get a token." />
+  <LinkCard title="Character Actions" href="/sdks/python/character-actions/" description="Move, fight, gather, craft, bank, GE, tasks, and more." />
+  <LinkCard title="Game Data" href="/sdks/python/game-data/" description="Read-only endpoints: items, monsters, maps, resources." />
+  <LinkCard title="Cooldowns & Retry" href="/sdks/python/cooldowns-and-retry/" description="Auto-wait behaviour and retry configuration." />
+  <LinkCard title="Error Handling" href="/sdks/python/error-handling/" description="Typed exceptions and what to catch for each situation." />
+  <LinkCard title="Multiple Characters" href="/sdks/python/multiple-characters/" description="Run 5 characters in parallel with asyncio." />
+  <LinkCard title="Full API Reference" href="/sdks/python/api-reference/" description="Complete table of every method available in the SDK." />
+</CardGrid>

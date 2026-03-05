@@ -1,6 +1,51 @@
 ---
 title: Getting Started
-description: Getting started guide.
+description: Everything you need to start controlling your Artifacts characters via the API.
 ---
+import { Image } from 'astro:assets';
+import tutorial from '/src/assets/images/tutorial.png';
+import tutorial2 from '/src/assets/images/tutorial2.png';
 
-Coming soon.
+
+import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+
+Artifacts is an API-based MMORPG. Every action your characters can take — moving, fighting, gathering, crafting — corresponds to an HTTP endpoint.
+
+You can play directly using the API by sending HTTP requests from your favorite programming language, or use our official [Python SDK](/sdks/python/introduction) which automatically handles cooldowns, provides typed models, and offers async support.
+
+## Before You Start
+
+The first step is to [create your account](https://www.artifactsmmo.com/account/register) and your first character by logging in. After that you'll need your token, which you can find on [your account page](https://www.artifactsmmo.com/my).
+
+:::caution 
+The token is used by the server to identify you when you make requests. It is important to keep it secret. It refreshes when you change your password.
+:::
+
+## Quickstart Tutorial
+
+To get started, open our **game client** here: [https://play.artifactsmmo.com](https://play.artifactsmmo.com), and click the **Tutorial** button in the top right corner.
+
+<Image src={tutorial} alt="Tutorial"  />
+
+The tutorial guides you **step by step** through your first movements, combat against your first monster, recovering your hit points, and crafting your first weapon.
+
+It's available in **Python** and **JavaScript** directly in your browser, but you can use any language to follow the tutorial steps by sending the corresponding HTTP requests. You can find examples in other languages in the [API documentation](https://api.artifactsmmo.com/docs/#/).
+
+<Image src={tutorial2} alt="Tutorial 2" width={1000}  />
+
+## What's Next?
+
+<CardGrid>
+  <Card title="API Guide" icon="open-book">
+    Learn about **authentication**, **rate limits**, **response codes**, and how to read the OpenAPI spec. [Explore the API Guide →](/api_guide/openapi_spec/)
+  </Card>
+  <Card title="Python SDK" icon="puzzle">
+    Use the official **Python SDK** for automatic cooldown handling, typed models, and async support. [View the SDK docs →](/sdks/python/)
+  </Card>
+  <Card title="Game Concepts" icon="information">
+    Understand core systems: *combat*, *skills*, *crafting*, *Grand Exchange*, *tasks*, and *events*. [Browse Concepts →](/concepts/actions)
+  </Card>
+  <Card title="Join Discord" icon="external">
+    Connect with the community, get help, share projects, and stay updated on the latest news. [Join our server →](https://discord.gg/prEBQ8a6Vs)
+  </Card>
+</CardGrid>

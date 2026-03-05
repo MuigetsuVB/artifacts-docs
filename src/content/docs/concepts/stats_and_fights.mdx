@@ -20,7 +20,7 @@ Here are all the stats a player can have:
 *   Threat
 *   Haste
 
-You can view your character's stats directly [on the site](https://artifactsmmo.com/my/characters) or use [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
+You can view your character's stats using [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
 
 
 ### Elemental attacks
@@ -80,7 +80,7 @@ The haste reduces the cooldown of a fight. You'll find more info in the Fights s
 
 ### Wisdom and Prospecting
 
-Wisdom and prospecting are stats that provide bonuses during fights, gathering, and crafting.
+Wisdom and prospecting are stats that provide bonuses during fights and gathering. Wisdom also provides bonuses during crafting.
 
 Wisdom increases the XP you'll earn (1 wisdom = 0.1% more xp).
 Your xp rate is 100%, if you have 100 wisdom your total xp rate is 110%. 
@@ -101,24 +101,22 @@ Each round of combat adds 2 seconds of cooldown. Haste (equipment stats) reduces
 
 Monsters are classified into three types:
 
-| Type | Description |
-|------|-------------|
-| `normal` | Standard monsters found throughout the world. |
-| `elite` | Stronger monsters with better stats and drops. |
-| `boss` | Powerful monsters that can be fought with up to 3 characters. |
+| Type | Description | XP Rate |
+|------|-------------|---------|
+| `normal` | Standard monsters found throughout the world. | x1 |
+| `elite` | Stronger monsters with better stats and drops. | x1.4 |
+| `boss` | Powerful monsters that can be fought with up to 3 characters. | x2 |
 
 :::caution
-If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
+If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**. 
 :::
 
-:::note
-Elite monsters give **1.4×** the base XP, and Boss monsters give **2.0×**. In multi-character fights, the **average level** of all participants is used for the XP calculation.
-:::
+### Cooldown
 
-Here's the formula for calculating the cooldown:
+Cooldown is calculated with the following formula:
 **Turns * 2 - (Haste * 0.01) * (Turns * 2)**
 
-For example, if a fight takes 20 turns and a player has 10 haste, the cooldown will be reduced by 4 seconds. 36 instead of 40 seconds. 1 haste = 1% less.
+For example, if a fight lasts 20 turns and a player has 10 haste, the cooldown is reduced by 4 seconds (36 seconds instead of 40). 1 haste = 1% cooldown reduction.
  
 ### Equipments and utilities&#x20;
 
@@ -134,8 +132,8 @@ Here's everything you can equip:
 *   Shield&#x20;
 *   Ring (2 slots)
 *   Amulet
-*   Artifact (3 slots)
-*   Utilities (2 slots)
+*   Artifact (3 slots, each slot must contain a different artifact)
+*   Utilities (2 slots, each slot must contain a different utility)
 *   Bag
 *   Rune
 
@@ -213,21 +211,23 @@ For example, the [Iron Sword](https://www.artifactsmmo.com/encyclopedia/items/ir
 To equip an item, you can use this API request.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/equip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
 --data-raw '{
   "slot": "SLOT_NAME"
 }'
-``` 
-```js title="Javascript"
-var myHeaders = new Headers();
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
 
 var raw = JSON.stringify({
    "slot": "SLOT_NAME"
@@ -244,7 +244,35 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
-```
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/equip"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"slot": "SLOT_NAME"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.enums import ItemSlot
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.equipment.equip(code="iron_sword", slot="weapon")
+  ```
+  </TabItem>
+</Tabs>
 
 | Field | Description |
 |---|---|
@@ -258,11 +286,13 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/equip", requestOptions)
 
 To unequip an item, you can use this API request.
 
-```http title="cURL"
-curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/unequip' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
 --data-raw '{
   "code": "ITEM_CODE",
   "slot": "SLOT_NAME"
@@ -274,7 +304,7 @@ curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
 
 var raw = JSON.stringify({
    "code": "ITEM_CODE",
@@ -294,6 +324,32 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
    .catch(error => console.log('error', error));
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/unequip"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "ITEM_CODE", "slot": "SLOT_NAME"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.enums import ItemSlot
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.equipment.unequip(slot="weapon")
+  ```
+  </TabItem>
 </Tabs>
 
 | Field | Description |
@@ -306,31 +362,30 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/unequip", requestOptions)
 ### Action
 
 
-To start a fight, you must be on a map with a monster. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement) 
-You can start a fight using this API request.
+To start a fight, you must be on a map with a monster. You can start a fight using this API request.
 
 :::caution
-Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a `CharacterInventoryFullException` error.
+Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a 497 error.
 :::
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight';
 const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
 };
 
@@ -343,7 +398,36 @@ try {
 }
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.fight()
+    fight = result.fight
+    print(f"{fight.result.value} in {fight.turns} turns")
+  ```
+  </TabItem>
 </Tabs>
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+
+#### Multi-character fights
 
 You can fight with up to 2 other of **YOUR characters** against `boss`-type monsters (up to 3 characters total).
 To do this, all your characters must be on the boss's map and you must add their names in the payload.
@@ -351,12 +435,12 @@ All participating characters will receive XP, gold and drops independently.
 
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight' \
+  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
 --data '{
   "participants": ["Character2","Character3"]
 }'
@@ -364,13 +448,13 @@ All participating characters will receive XP, gold and drops independently.
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/fight';
+  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight';
 const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: '{"participants":["Character2","Character3"]}'
 };
@@ -382,6 +466,32 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"participants": ["Character2", "Character3"]}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.fight(participants=["Character2", "Character3"])
+    print(f"{result.fight.result.value} in {result.fight.turns} turns")
   ```
   </TabItem>
 </Tabs>

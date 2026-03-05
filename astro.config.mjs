@@ -6,6 +6,10 @@ import { ion } from 'starlight-ion-theme';
 export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'tap',
+  },
   build: {
     format: 'directory',
   },
@@ -42,6 +46,46 @@ export default defineConfig({
         './src/styles/custom.css',
       ],
       head: [
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            href: '/fonts/inter-latin-400-normal.woff2',
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: 'anonymous',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            href: '/fonts/inter-latin-500-normal.woff2',
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: 'anonymous',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            href: '/fonts/inter-latin-600-normal.woff2',
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: 'anonymous',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            href: '/fonts/inter-latin-700-normal.woff2',
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: 'anonymous',
+          },
+        },
         {
           tag: 'script',
           content:
@@ -83,35 +127,20 @@ export default defineConfig({
           link: '/changelog/',
         },
         {
-          label: 'Funding',
+          label: '[lucide:heart] Funding',
           link: '/funding/',
         },
         {
-          label: 'Roadmap',
+          label: '[lucide:map] Roadmap',
           link: '/roadmap/',
-        },
-        {
-          label: 'Quickstart',
-          items: [
-            { label: 'Introduction', link: '/quickstart/introduction/' },
-            { label: 'Your first fight', link: '/quickstart/first_fight/' },
-            { label: 'Recover your hit points', link: '/quickstart/hp_recovery/' },
-            { label: 'New mission', link: '/quickstart/new_mission/' },
-            { label: 'Crafting', link: '/quickstart/crafting/' },
-            { label: 'The end', link: '/quickstart/the_end/' },
-          ],
         },
         {
           label: 'Game concepts',
           items: [
             { label: 'Achievements', link: '/concepts/achievements/' },
-            {
-              label: 'Actions',
-              items: [
-                { label: 'Overview', link: '/concepts/actions/' },
-                { label: 'Fight', link: '/concepts/actions/fight/' },
-              ],
-            },
+     
+            { label: 'Actions', link: '/concepts/actions/' },
+
             { label: 'Events', link: '/concepts/events/' },
             { label: 'Give items & Gold', link: '/concepts/give/' },
             { label: 'Grand Exchange', link: '/concepts/grand_exchange/' },
@@ -133,6 +162,24 @@ export default defineConfig({
             { label: 'Authorization', link: '/api_guide/authorization/' },
             { label: 'Response Codes', link: '/api_guide/response_codes/' },
             { label: 'Rate limits', link: '/api_guide/rate_limits/' },
+          ],
+        },
+        {
+          label: '[lucide:code-2] SDKs',
+          items: [
+            {
+              label: 'Python',
+              items: [
+                { label: 'Python SDK', link: '/sdks/python/' },
+                { label: 'Installation', link: '/sdks/python/introduction/' },
+                { label: 'Character Actions', link: '/sdks/python/character-actions/' },
+                { label: 'Game Data', link: '/sdks/python/game-data/' },
+                { label: 'Cooldowns & Retry', link: '/sdks/python/cooldowns-and-retry/' },
+                { label: 'Error Handling', link: '/sdks/python/error-handling/' },
+                { label: 'Multiple Characters', link: '/sdks/python/multiple-characters/' },
+                { label: 'Full API Reference', link: '/sdks/python/api-reference/' },
+              ],
+            },
           ],
         },
         {

@@ -11,7 +11,7 @@ WebSockets is a feature reserved for members. If you are a founder, you have acc
 WebSockets allow you to receive real-time notifications from the server.
 
 **Notifications supported:**
-|Name|Subscription code|Category|Type|Descripiton
+|Name|Subscription code|Category|Type|Description
 |--|--|--|--|--|
 | Event spawn|event_spawn | Events|Server|Send `ActiveEventSchema` when an event spawn. |
 | Event removed|event_removed| Events |Server| Send `ActiveEventSchema` when an event expires and is removed. |
@@ -54,7 +54,7 @@ import websockets
 import json
 
 url = "wss://realtime.artifactsmmo.com"
-token ="YOUR_TOKEN" # Replace with your  token
+token = "YOUR_TOKEN"  # Replace with your token
 
 message = {
         "token": token,

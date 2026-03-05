@@ -26,12 +26,12 @@ You can spawn an event using this POST request.
 
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/events/spawn \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
   "code": "string"
@@ -46,10 +46,9 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
-    body: '{"code":"string"}
-
+    body: '{"code":"string"}'
 };
   
 try {
@@ -59,6 +58,30 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/events/spawn"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "event_code"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    client.events.spawn(code="event_code")
   ```
   </TabItem>
 </Tabs>

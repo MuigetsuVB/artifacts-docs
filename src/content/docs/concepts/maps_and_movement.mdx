@@ -330,12 +330,12 @@ You must supply either:
 Here's an example of an API request to move your character.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
-  curl --location -g --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move' \
+  curl --location -g --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
 --data-raw '{
   "x": 4,
   "y": -1
@@ -349,7 +349,7 @@ Here's an example of an API request to move your character.
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
 
 var raw = JSON.stringify({
    "x": 4,
@@ -365,10 +365,36 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/move", requestOptions)
+fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"x": 4, "y": -1}  # OR {"map_id": 101}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    char.move(x=4, y=-1)
+    # OR char.move(map_id=101)
   ```
   </TabItem>
 </Tabs>
@@ -391,12 +417,12 @@ If no path is possible using move, it is very likely that a transition is necess
 Here is an example of an API request to use a transition.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition' \
+  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
@@ -404,7 +430,7 @@ Here is an example of an API request to use a transition.
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
  
 var requestOptions = {
    method: 'POST',
@@ -412,10 +438,34 @@ var requestOptions = {
    redirect: 'follow'
 };
  
-fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/transition", requestOptions)
+fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    char.transition()
   ```
   </TabItem>
 </Tabs>

@@ -26,12 +26,12 @@ Pending items can come from several sources:
 You can view all your unclaimed pending items using the following GET request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request GET \
   --url https://api.artifactsmmo.com/my/pending-items \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
+  --header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
@@ -41,7 +41,7 @@ const options = {
   method: 'GET',
   headers: {
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   }
 };
 
@@ -52,6 +52,30 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/pending-items"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    pending = client.my_account.get_pending_items()
+    for item in pending.data:
+        print(f"[{item.source}] {item.description}")
   ```
   </TabItem>
 </Tabs>
@@ -87,12 +111,12 @@ Each pending item contains the following information:
 To claim a pending item, use any character on your account with the following POST request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/claim_item/{id} \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json'
   ```
   </TabItem>
@@ -104,7 +128,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   }
 };
 
@@ -115,6 +139,30 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/claim_item/{id}"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.claim_item(id=123)
   ```
   </TabItem>
 </Tabs>

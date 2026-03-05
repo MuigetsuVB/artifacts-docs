@@ -32,11 +32,11 @@ The bank is limited to 50 slots, but you can buy expansions at a cost of 4000 go
 You can view the contents of your bank at any time using the following request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
 --header 'Accept: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
@@ -46,7 +46,7 @@ const options = {
   method: 'GET',
   headers: {
     'Accept': 'application/json',
-    'Authorization': 'Bearer INSERT_YOUR_TOKEN_HERE'
+    'Authorization': 'Bearer YOUR_TOKEN'
   }
 };
 
@@ -57,6 +57,30 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/bank/items"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    bank_items = client.my_account.get_bank_items()
+    for item in bank_items.data:
+        print(f"{item.code} x{item.quantity}")
   ```
   </TabItem>
 </Tabs>
@@ -67,11 +91,11 @@ try {
 You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
 --header 'Accept: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
@@ -81,7 +105,7 @@ const options = {
   method: 'GET',
   headers: {
     'Accept': 'application/json',
-    'Authorization': 'Bearer INSERT_YOUR_TOKEN_HERE'
+    'Authorization': 'Bearer YOUR_TOKEN'
   }
 };
 
@@ -92,6 +116,29 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/bank"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    bank = client.my_account.get_bank()
+    print(f"Gold: {bank.gold}")
   ```
   </TabItem>
 </Tabs>
@@ -107,12 +154,12 @@ To deposit or withdraw items, you must be on a map containing a bank.
 You can use this POST request to **withdraw items**:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '[
     { "code": "string", "quantity": 1 },
@@ -128,7 +175,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: JSON.stringify([
     { code: "string", quantity: 1 },
@@ -143,6 +190,39 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = [
+    {"code": "string", "quantity": 1},
+    {"code": "another_item", "quantity": 2}
+]
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.common import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    items = [
+        SimpleItemSchema(code="string", quantity=1),
+        SimpleItemSchema(code="another_item", quantity=2)
+    ]
+    char.bank.withdraw_items(items)
   ```
   </TabItem>
 </Tabs>
@@ -159,12 +239,12 @@ The body is an array of items (1–20 items per request).
 You can use this POST request to **deposit items**:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '[
     { "code": "string", "quantity": 1 },
@@ -180,7 +260,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: JSON.stringify([
     { code: "string", quantity: 1 },
@@ -195,6 +275,39 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = [
+    {"code": "string", "quantity": 1},
+    {"code": "another_item", "quantity": 2}
+]
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.common import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    items = [
+        SimpleItemSchema(code="string", quantity=1),
+        SimpleItemSchema(code="another_item", quantity=2)
+    ]
+    char.bank.deposit_items(items)
   ```
   </TabItem>
 </Tabs>
@@ -219,12 +332,12 @@ To deposit or withdraw gold, you must be on a map containing a bank.
 You can use this POST request to **withdraw gold**:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
   "quantity": 1
@@ -239,7 +352,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: '{"quantity":1}'
 };
@@ -253,6 +366,31 @@ try {
 }
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.bank.withdraw_gold(quantity=1)
+  ```
+  </TabItem>
 </Tabs>
 
 | Field | Description |
@@ -264,12 +402,12 @@ try {
 You can use this POST request to **deposit gold**:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
   "quantity": 1
@@ -284,7 +422,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
   body: '{"quantity":1}'
 };
@@ -296,6 +434,31 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.bank.deposit_gold(quantity=1)
   ```
   </TabItem>
 </Tabs>
@@ -313,12 +476,12 @@ To buy an expansion, you need to be on a map containing a bank. It costs 4,500 g
 You can use this POST request to buy an expansion:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   ```
   </TabItem>
@@ -330,7 +493,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   }
 };
 
@@ -341,6 +504,30 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.bank.buy_expansion()
   ```
   </TabItem>
 </Tabs>

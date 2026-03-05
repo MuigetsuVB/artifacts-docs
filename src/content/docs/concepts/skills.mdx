@@ -11,7 +11,7 @@ Gathering skills allow you to gather resources on the map. Currently, 4 gatherin
 You can see all the resources that can be gathered with this API request.
  
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/resources/?page=1&size=50' \
 --header 'Accept: application/json' \
@@ -36,6 +36,30 @@ fetch("https://api.artifactsmmo.com/resources/?page=1&size=50", requestOptions)
    .catch(error => console.log('error', error));
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/resources/?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    page = client.resources.get_all(page=1, size=50)
+    for r in page.data:
+        print(f"{r.code} (lv{r.level}) drops: {[d.code for d in r.drops]}")
+  ```
+  </TabItem>
 </Tabs>
 
 [View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources__get)
@@ -45,12 +69,12 @@ You then need to find a map that contains this resource. [To learn more about th
 When you're on a map containing a resource, if you have the necessary skill level, you can harvest it with this API request.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
-  curl --location --request POST 'https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering' \
+  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_TOKEN_HERE'
+--header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
@@ -58,7 +82,7 @@ When you're on a map containing a resource, if you have the necessary skill leve
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
 
 var requestOptions = {
    method: 'POST',
@@ -66,10 +90,35 @@ var requestOptions = {
    redirect: 'follow'
 };
 
-fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", requestOptions)
+fetch("https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.skills.gather()
+    print(f"+{result.details.xp}xp, got: {[d.code for d in result.details.items]}")
   ```
   </TabItem>
 </Tabs>
@@ -90,7 +139,7 @@ Some crafts produce more than one item per craft. Check the `craft.quantity` fie
 If you want to see all the crafts of a skill, you can use the Get Item request with the craft_skill parameter. Here's an example request:
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/items/?craft_skill=weaponcrafting' \
 --header 'Accept: application/json' \
@@ -115,6 +164,30 @@ fetch("https://api.artifactsmmo.com/items/?craft_skill=weaponcrafting", requestO
    .catch(error => console.log('error', error));
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/items/?craft_skill=weaponcrafting"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    page = client.items.get_all(craft_skill="weaponcrafting")
+    for item in page.data:
+        print(f"{item.code}: {item.name} (lv{item.level})")
+  ```
+  </TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items__get)
@@ -125,12 +198,12 @@ You must then find a map containing a workshop of the skill. [To learn more abou
 When you're on a map containing a workshop, you can use this request to craft an item.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/crafting' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
 --data-raw '{
   "code": "INSERT_ITEM_CODE"
 }'
@@ -141,7 +214,7 @@ When you're on a map containing a workshop, you can use this request to craft an
   var myHeaders = new Headers();
 myHeaders.append("Accept", "application/json");
 myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer INSERT_YOUR_TOKEN_HERE");
+myHeaders.append("Authorization", "Bearer YOUR_TOKEN");
 
 var raw = JSON.stringify({
    "code": "INSERT_ITEM_CODE"
@@ -158,6 +231,31 @@ fetch("https://api.artifactsmmo.com/my/{name}/action/crafting", requestOptions)
    .then(response => response.text())
    .then(result => console.log(result))
    .catch(error => console.log('error', error));
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/crafting"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "INSERT_ITEM_CODE"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.skills.craft(code="INSERT_ITEM_CODE", quantity=1)
   ```
   </TabItem>
 </Tabs>

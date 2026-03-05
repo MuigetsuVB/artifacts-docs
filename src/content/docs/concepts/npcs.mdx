@@ -20,7 +20,7 @@ When viewing the items on an NPC, if the `currency` field shows anything other t
 You can use this GET request to view the list of all existing NPCs.
   
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
 --header 'Accept: application/json' \
@@ -48,6 +48,30 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
    .catch(error => console.log('error', error));
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/npcs/details"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    npcs = client.npcs.get_all()
+    for npc in npcs.data:
+        print(f"{npc.code} ({npc.type.value})")
+  ```
+  </TabItem>
 </Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
 
@@ -56,7 +80,7 @@ fetch("https://api.artifactsmmo.com/npcs/details", requestOptions)
 You can use this GET request to view the list of items that an NPC sells/buys/trades.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request GET \
   --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
@@ -75,6 +99,27 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/npcs/items/{npc_code}"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    items = client.npcs.get_items("{npc_code}")
+    for item in items.data:
+        print(f"{item.code} buy={item.buy_price} sell={item.sell_price}")
   ```
   </TabItem>
 </Tabs>
@@ -98,12 +143,12 @@ To buy or sell an item, you must be on a map with an NPC. [To learn more about t
 You can use this POST request to buy an item.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
   "code": "string",
@@ -119,7 +164,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
     body: '{"code":"string","quantity":1}'
 
@@ -134,6 +179,31 @@ try {
 }
   ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/buy"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.trading.npc_buy(code="wooden_staff", quantity=1)
+  ```
+  </TabItem>
 </Tabs>
 
 | Field | Description |
@@ -146,12 +216,12 @@ try {
 You can use this POST request to sell an item.
 
 <Tabs>
-  <TabItem label="cURL" icon="seti:shell">
+  <TabItem label="cURL">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer INSERT_YOUR_TOKEN_HERE' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
   "code": "string",
@@ -167,7 +237,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer INSERT_YOUR_TOKEN_HERE'
+    Authorization: 'Bearer YOUR_TOKEN'
   },
     body: '{"code":"string","quantity":1}'
 
@@ -180,6 +250,31 @@ try {
 } catch (error) {
   console.error(error);
 }
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/sell"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.trading.npc_sell(code="wooden_staff", quantity=1)
   ```
   </TabItem>
 </Tabs>
