@@ -1,0 +1,71 @@
+---
+title: Server details API Reference
+description: Complete endpoint reference for the Server details category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Get Server Details
+
+**Endpoint:** `GET /`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| None | - | - | - | This endpoint has no parameters. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.server.get_status()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get)
+
+---

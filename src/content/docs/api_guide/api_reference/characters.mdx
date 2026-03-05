@@ -1,0 +1,306 @@
+---
+title: Characters API Reference
+description: Complete endpoint reference for the Characters category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Get Character
+
+**Endpoint:** `GET /characters/{name}`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | The name of the character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.characters.get("YOUR_CHARACTER_NAME")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
+---
+
+### Get Active Characters
+
+**Endpoint:** `GET /characters/active`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/active?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/characters/active?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/characters/active?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.characters.get_active()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_active_characters_characters_active_get)
+
+---
+
+### Create Character
+
+**Endpoint:** `POST /characters/create`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.name | body | string | Yes | Your desired character name. It's unique and all players can see it. |
+| body.skin | body | enum(men1, men2, men3, women1, ...) | Yes | Your desired skin. Skins unlocked by default: 'men1', 'men2', 'men3', 'women1', 'women2', 'women3'. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/characters/create' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "name": "YOUR_CHARACTER_NAME",
+    "skin": "men1"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/characters/create';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: "YOUR_CHARACTER_NAME",
+    skin: "men1"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/characters/create"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "name": "YOUR_CHARACTER_NAME",
+    "skin": "men1"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import CharacterSkin
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.characters.create(name="YOUR_CHARACTER_NAME", skin=CharacterSkin.MEN1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/create_character_characters_create_post)
+
+---
+
+### Delete Character
+
+**Endpoint:** `POST /characters/delete`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.name | body | string | Yes | Character name. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/characters/delete' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "name": "YOUR_CHARACTER_NAME"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/characters/delete';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: "YOUR_CHARACTER_NAME"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/characters/delete"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "name": "YOUR_CHARACTER_NAME"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.characters.delete(name="YOUR_CHARACTER_NAME")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/delete_character_characters_delete_post)
+
+---

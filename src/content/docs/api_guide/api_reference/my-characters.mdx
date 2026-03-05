@@ -1,0 +1,2879 @@
+---
+title: My characters API Reference
+description: Complete endpoint reference for the My characters category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Action Buy Bank Expansion
+
+**Endpoint:** `POST /my/{name}/action/bank/buy_expansion`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/buy_expansion' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/buy_expansion';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/buy_expansion"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.bank.buy_expansion()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
+
+---
+
+### Action Deposit Bank Gold
+
+**Endpoint:** `POST /my/{name}/action/bank/deposit/gold`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.quantity | body | integer | Yes | Quantity of gold. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/gold' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/gold"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.bank.deposit_gold(quantity=100)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
+
+---
+
+### Action Deposit Bank Item
+
+**Endpoint:** `POST /my/{name}/action/bank/deposit/item`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body | body | array&lt;SimpleItemSchema&gt; | Yes | List of items to deposit in the bank. |
+| body[].code | body | string | Yes | Item code. |
+| body[].quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/item' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  [
+    {
+      "code": "copper_ore",
+      "quantity": 1
+    }
+  ]
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/item';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify([
+    {
+      code: "copper_ore",
+      quantity: 1
+    }
+  ])
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/deposit/item"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = [
+    {
+        "code": "copper_ore",
+        "quantity": 1
+    }
+]
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    items = [SimpleItemSchema(code="copper_ore", quantity=10)]
+    result = char.bank.deposit_items(items)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
+
+---
+
+### Action Withdraw Bank Gold
+
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/gold`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.quantity | body | integer | Yes | Quantity of gold. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/gold' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/gold"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.bank.withdraw_gold(quantity=100)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
+
+---
+
+### Action Withdraw Bank Item
+
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/item`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body | body | array&lt;SimpleItemSchema&gt; | Yes | Request body payload. |
+| body[].code | body | string | Yes | Item code. |
+| body[].quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/item' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  [
+    {
+      "code": "copper_ore",
+      "quantity": 1
+    }
+  ]
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/item';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify([
+    {
+      code: "copper_ore",
+      quantity: 1
+    }
+  ])
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/bank/withdraw/item"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = [
+    {
+        "code": "copper_ore",
+        "quantity": 1
+    }
+]
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    items = [SimpleItemSchema(code="copper_ore", quantity=10)]
+    result = char.bank.withdraw_items(items)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
+
+---
+
+### Action Change Skin
+
+**Endpoint:** `POST /my/{name}/action/change_skin`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.skin | body | enum(men1, men2, men3, women1, ...) | Yes | Your desired skin. Skins unlocked by default: 'men1', 'men2', 'men3', 'women1', 'women2', 'women3'. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/change_skin' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "skin": "men1"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/change_skin';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    skin: "men1"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/change_skin"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "skin": "men1"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import CharacterSkin
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.change_skin(skin=CharacterSkin.MEN2)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post)
+
+---
+
+### Action Claim Pending Item
+
+**Endpoint:** `POST /my/{name}/action/claim_item/{id}`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| id | path | string | Yes | The ID of the pending item to claim. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/claim_item/123' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/claim_item/123';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/claim_item/123"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.claim_item(id=123)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_claim_pending_item_my__name__action_claim_item__id__post)
+
+---
+
+### Action Crafting
+
+**Endpoint:** `POST /my/{name}/action/crafting`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Craft code. |
+| body.quantity | body | integer | No | Quantity of items to craft. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/crafting' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/crafting';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/crafting"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.skills.craft(code="iron_sword", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
+
+---
+
+### Action Delete Item
+
+**Endpoint:** `POST /my/{name}/action/delete`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/delete' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/delete';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/delete"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.inventory.delete(code="junk_item", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
+
+---
+
+### Action Equip Item
+
+**Endpoint:** `POST /my/{name}/action/equip`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.slot | body | enum(weapon, shield, helmet, body_armor, ...) | Yes | Item slot. |
+| body.quantity | body | integer | No | Item quantity. Applicable to utilities only. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/equip' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "slot": "weapon"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/equip';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    slot: "weapon"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/equip"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "slot": "weapon"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import ItemSlot
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.equipment.equip(code="iron_sword", slot=ItemSlot.WEAPON)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
+
+---
+
+### Action Fight
+
+**Endpoint:** `POST /my/{name}/action/fight`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.participants | body | array&lt;string&gt; | No | Optional list of additional character names to include in the fight (max 2 additional characters). |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "participants": []
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    participants: []
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/fight"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "participants": []
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.fight(participants=["ALLY_NAME"])
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+
+---
+
+### Action Gathering
+
+**Endpoint:** `POST /my/{name}/action/gathering`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/gathering"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.skills.gather()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+
+---
+
+### Action Give Gold
+
+**Endpoint:** `POST /my/{name}/action/give/gold`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.quantity | body | integer | Yes | Gold quantity. |
+| body.character | body | string | Yes | Character name. The name of the character who will receive the gold. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/gold' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "quantity": 1,
+    "character": "YOUR_CHARACTER_NAME"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    quantity: 1,
+    character: "YOUR_CHARACTER_NAME"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/gold"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "quantity": 1,
+    "character": "YOUR_CHARACTER_NAME"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.trading.give_gold(quantity=100, character="ALLY_NAME")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post)
+
+---
+
+### Action Give Items
+
+**Endpoint:** `POST /my/{name}/action/give/item`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.items | body | array&lt;SimpleItemSchema&gt; | Yes | List of items to give |
+| body.character | body | string | Yes | Character name. The name of the character who will receive the items. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/item' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "items": [
+      {
+        "code": "copper_ore",
+        "quantity": 1
+      }
+    ],
+    "character": "YOUR_CHARACTER_NAME"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/item';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    items: [
+      {
+        code: "copper_ore",
+        quantity: 1
+      }
+    ],
+    character: "YOUR_CHARACTER_NAME"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/give/item"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "items": [
+        {
+            "code": "copper_ore",
+            "quantity": 1
+        }
+    ],
+    "character": "YOUR_CHARACTER_NAME"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    items = [SimpleItemSchema(code="copper_ore", quantity=10)]
+    result = char.trading.give_items(items=items, character="ALLY_NAME")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post)
+
+---
+
+### Action Ge Buy Item
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/buy`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.id | body | string | Yes | Order id. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/buy' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "id": "string",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: "string",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/buy"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "id": "string",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.ge.buy(id="ORDER_ID", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post)
+
+---
+
+### Action Ge Cancel Order
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.id | body | string | Yes | Order id. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/cancel' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "id": "string"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/cancel';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: "string"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/cancel"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "id": "string"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.ge.cancel(id="ORDER_ID")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_order_my__name__action_grandexchange_cancel_post)
+
+---
+
+### Action Ge Create Buy Order
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+| body.price | body | integer | Yes | Item price per unit. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-buy-order' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1,
+    "price": 10
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-buy-order';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1,
+    price: 10
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-buy-order"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1,
+    "price": 10
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.ge.create_buy_order(code="copper_ore", quantity=10, price=5)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post)
+
+---
+
+### Action Ge Create Sell Order
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/create-sell-order`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+| body.price | body | integer | Yes | Item price per unit. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-sell-order' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1,
+    "price": 10
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-sell-order';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1,
+    price: 10
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/create-sell-order"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1,
+    "price": 10
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.ge.sell(code="copper_ore", quantity=10, price=5)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_create_sell_order_post)
+
+---
+
+### Action Ge Fill
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/fill`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.id | body | string | Yes | Buy order id. |
+| body.quantity | body | integer | Yes | Item quantity to sell. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/fill' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "id": "string",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/fill';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: "string",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/grandexchange/fill"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "id": "string",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.ge.fill(id="ORDER_ID", quantity=5)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_my__name__action_grandexchange_fill_post)
+
+---
+
+### Action Move
+
+**Endpoint:** `POST /my/{name}/action/move`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.x | body | integer | No | The x coordinate of the destination. |
+| body.y | body | integer | No | The y coordinate of the destination. |
+| body.map_id | body | integer | No | The map ID of the destination. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "x": 0,
+    "y": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    x: 0,
+    y: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "x": 0,
+    "y": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.move(x=0, y=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+---
+
+### Action Npc Buy Item
+
+**Endpoint:** `POST /my/{name}/action/npc/buy`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/buy' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/buy"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.trading.npc_buy(code="wooden_staff", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
+
+---
+
+### Action Npc Sell Item
+
+**Endpoint:** `POST /my/{name}/action/npc/sell`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/sell' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/npc/sell"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.trading.npc_sell(code="wooden_staff", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post)
+
+---
+
+### Action Recycling
+
+**Endpoint:** `POST /my/{name}/action/recycling`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | No | Quantity of items to recycle. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/recycling' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/recycling';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/recycling"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.skills.recycle(code="iron_sword", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
+
+---
+
+### Action Rest
+
+**Endpoint:** `POST /my/{name}/action/rest`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/rest' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/rest';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/rest"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.rest()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
+
+---
+
+### Action Task Cancel
+
+**Endpoint:** `POST /my/{name}/action/task/cancel`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/cancel' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/cancel';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/cancel"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.tasks.cancel()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post)
+
+---
+
+### Action Complete Task
+
+**Endpoint:** `POST /my/{name}/action/task/complete`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/complete' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/complete';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/complete"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.tasks.complete()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
+
+---
+
+### Action Task Exchange
+
+**Endpoint:** `POST /my/{name}/action/task/exchange`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/exchange' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/exchange';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/exchange"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.tasks.exchange()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
+
+---
+
+### Action Accept New Task
+
+**Endpoint:** `POST /my/{name}/action/task/new`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/new' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/new';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/new"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.tasks.new()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
+
+---
+
+### Action Task Trade
+
+**Endpoint:** `POST /my/{name}/action/task/trade`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/trade' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/trade';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/task/trade"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.tasks.trade(code="copper_ore", quantity=10)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
+
+---
+
+### Action Transition
+
+**Endpoint:** `POST /my/{name}/action/transition`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.transition()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)
+
+---
+
+### Action Unequip Item
+
+**Endpoint:** `POST /my/{name}/action/unequip`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.slot | body | enum(weapon, shield, helmet, body_armor, ...) | Yes | Item slot. |
+| body.quantity | body | integer | No | Item quantity. Applicable to utilities only. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/unequip' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "slot": "weapon"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/unequip';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    slot: "weapon"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/unequip"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "slot": "weapon"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+from artifacts.models import ItemSlot
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.equipment.unequip(slot=ItemSlot.WEAPON)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
+
+---
+
+### Action Use Item
+
+**Endpoint:** `POST /my/{name}/action/use`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| body.code | body | string | Yes | Item code. |
+| body.quantity | body | integer | Yes | Item quantity. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/use' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "code": "copper_ore",
+    "quantity": 1
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/use';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: "copper_ore",
+    quantity: 1
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/use"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "code": "copper_ore",
+    "quantity": 1
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    result = char.inventory.use(code="small_health_potion", quantity=1)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
+
+---
+
+### Get My Characters
+
+**Endpoint:** `GET /my/characters`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| None | - | - | - | This endpoint has no parameters. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/characters' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/characters';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/characters"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_characters()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get)
+
+---
+
+### Get All Characters Logs
+
+**Endpoint:** `GET /my/logs`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/logs?page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/logs?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/logs?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_all_logs(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_characters_logs_my_logs_get)
+
+---
+
+### Get Character Logs
+
+**Endpoint:** `GET /my/logs/{name}`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| name | path | string | Yes | Name of your character. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/logs/YOUR_CHARACTER_NAME?page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/logs/YOUR_CHARACTER_NAME?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/logs/YOUR_CHARACTER_NAME?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    logs = char.get_logs(page=1, size=50)
+    print(logs)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my_logs__name__get)
+
+---

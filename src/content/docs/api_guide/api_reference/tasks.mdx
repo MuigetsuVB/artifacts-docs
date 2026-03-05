@@ -1,0 +1,272 @@
+---
+title: Tasks API Reference
+description: Complete endpoint reference for the Tasks category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Get All Tasks
+
+**Endpoint:** `GET /tasks/list`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| min_level | query | integer | No | Minimum level. |
+| max_level | query | integer | No | Maximum level. |
+| skill | query | enum(weaponcrafting, gearcrafting, jewelrycrafting, cooking, ...) | No | Skill of tasks. |
+| type | query | enum(monsters, items) | No | Type of tasks. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.tasks.get_all(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get)
+
+---
+
+### Get Task
+
+**Endpoint:** `GET /tasks/list/{code}`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| code | path | string | Yes | The code of the task. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/tasks/list/copper_ore' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/tasks/list/copper_ore';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/tasks/list/copper_ore"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.tasks.get("chicken_hunt")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_task_tasks_list__code__get)
+
+---
+
+### Get All Tasks Rewards
+
+**Endpoint:** `GET /tasks/rewards`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/tasks/rewards?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/tasks/rewards?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/tasks/rewards?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.tasks.get_all_rewards(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_rewards_tasks_rewards_get)
+
+---
+
+### Get Tasks Reward
+
+**Endpoint:** `GET /tasks/rewards/{code}`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| code | path | string | Yes | The code of the tasks reward. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/tasks/rewards/copper_ore' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/tasks/rewards/copper_ore';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/tasks/rewards/copper_ore"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.tasks.get_reward("task_coin_bag")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_tasks_reward_tasks_rewards__code__get)
+
+---

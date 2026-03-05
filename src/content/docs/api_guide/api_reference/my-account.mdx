@@ -1,0 +1,509 @@
+---
+title: My account API Reference
+description: Complete endpoint reference for the My account category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Get Bank Details
+
+**Endpoint:** `GET /my/bank`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| None | - | - | - | This endpoint has no parameters. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/bank' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/bank';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/bank"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_bank()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get)
+
+---
+
+### Get Bank Items
+
+**Endpoint:** `GET /my/bank/items`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| item_code | query | string | No | Item to search in your bank. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/bank/items?item_code=copper_ore&page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/bank/items?item_code=copper_ore&page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/bank/items?item_code=copper_ore&page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_bank_items(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get)
+
+---
+
+### Change Password
+
+**Endpoint:** `POST /my/change_password`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.current_password | body | string | Yes | Your password. |
+| body.new_password | body | string | Yes | New password. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/change_password' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "current_password": "YOUR_PASSWORD",
+    "new_password": "YOUR_PASSWORD"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/change_password';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    current_password: "YOUR_PASSWORD",
+    new_password: "YOUR_PASSWORD"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/change_password"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "current_password": "YOUR_PASSWORD",
+    "new_password": "YOUR_PASSWORD"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.change_password(password="OLD_PASSWORD", new_password="NEW_PASSWORD")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/change_password_my_change_password_post)
+
+---
+
+### Get Account Details
+
+**Endpoint:** `GET /my/details`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| None | - | - | - | This endpoint has no parameters. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/details' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/details';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/details"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_details()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_account_details_my_details_get)
+
+---
+
+### Get Ge History
+
+**Endpoint:** `GET /my/grandexchange/history`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| id | query | string | No | Order ID to search in your history. |
+| code | query | string | No | Item to search in your history. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/grandexchange/history?id=string&page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/grandexchange/history?id=string&page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/grandexchange/history?id=string&page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_ge_history(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_ge_history_my_grandexchange_history_get)
+
+---
+
+### Get Ge Orders
+
+**Endpoint:** `GET /my/grandexchange/orders`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| code | query | string | No | The code of the item. |
+| type | query | enum(sell, buy) | No | Filter by order type (sell or buy). |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/grandexchange/orders?code=copper_ore&page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/grandexchange/orders?code=copper_ore&page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/grandexchange/orders?code=copper_ore&page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_ge_orders(page=1, size=50)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_ge_orders_my_grandexchange_orders_get)
+
+---
+
+### Get Pending Items
+
+**Endpoint:** `GET /my/pending-items`
+
+**Authentication:** Bearer token required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/pending-items?page=1&size=50' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/my/pending-items?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/my/pending-items?page=1&size=50"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    result = client.my_account.get_pending_items()
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_pending_items_my_pending_items_get)
+
+---

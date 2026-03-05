@@ -1,0 +1,452 @@
+---
+title: Accounts API Reference
+description: Complete endpoint reference for the Accounts category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Get Account
+
+**Endpoint:** `GET /accounts/{account}`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| account | path | string | Yes | The name of the account. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.accounts.get("YOUR_ACCOUNT")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_account_accounts__account__get)
+
+---
+
+### Get Account Achievements
+
+**Endpoint:** `GET /accounts/{account}/achievements`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| account | path | string | Yes | The name of the account. |
+| type | query | enum(combat_kill, combat_drop, combat_level, gathering, ...) | No | Type of achievements. |
+| completed | query | boolean | No | Filter by completed achievements. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/achievements?type=combat_kill&page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/achievements?type=combat_kill&page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/achievements?type=combat_kill&page=1&size=50"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.accounts.get_achievements("YOUR_ACCOUNT")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
+
+---
+
+### Get Account Characters
+
+**Endpoint:** `GET /accounts/{account}/characters`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| account | path | string | Yes | The name of the account. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/characters' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/characters';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/YOUR_ACCOUNT/characters"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.accounts.get_characters("YOUR_ACCOUNT")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_account_characters_accounts__account__characters_get)
+
+---
+
+### Create Account
+
+**Endpoint:** `POST /accounts/create`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.username | body | string | Yes | Your desired username. |
+| body.password | body | string | Yes | Your password. |
+| body.email | body | string (email) | Yes | Your email. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/accounts/create' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "username": "YOUR_USERNAME",
+    "password": "YOUR_PASSWORD",
+    "email": "you@example.com"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/create';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    username: "YOUR_USERNAME",
+    password: "YOUR_PASSWORD",
+    email: "you@example.com"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/create"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "username": "YOUR_USERNAME",
+    "password": "YOUR_PASSWORD",
+    "email": "you@example.com"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.accounts.create(username="YOUR_USERNAME", password="YOUR_PASSWORD", email="you@example.com")
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/create_account_accounts_create_post)
+
+---
+
+### Forgot Password
+
+**Endpoint:** `POST /accounts/forgot_password`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.email | body | string (email) | Yes | Your email address. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/accounts/forgot_password' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "email": "you@example.com"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/forgot_password';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: "you@example.com"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/forgot_password"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "email": "you@example.com"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+# No dedicated helper exists for this endpoint in the current SDK.
+# Use the Python requests example above.
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/forgot_password_accounts_forgot_password_post)
+
+---
+
+### Reset Password
+
+**Endpoint:** `POST /accounts/reset_password`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| body.token | body | string | Yes | Password reset token. |
+| body.new_password | body | string | Yes | Your new password. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/accounts/reset_password' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '  {
+    "token": "string",
+    "new_password": "YOUR_PASSWORD"
+  }
+  '
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/accounts/reset_password';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    token: "string",
+    new_password: "YOUR_PASSWORD"
+  })
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/accounts/reset_password"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "token": "string",
+    "new_password": "YOUR_PASSWORD"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+# No dedicated helper exists for this endpoint in the current SDK.
+# Use the Python requests example above.
+  ```
+  </TabItem>
+</Tabs>
+
+[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/reset_password_accounts_reset_password_post)
+
+---
