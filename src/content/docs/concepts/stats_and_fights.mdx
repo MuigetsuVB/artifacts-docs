@@ -9,7 +9,7 @@ Combat in Artifacts is a turn-based system where stats determine damage output, 
 
 ## Stats
 
-Here are all the stats a character can have. You can view your character's stats using [this request](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get).
+Here are all the stats a character can have.  
 
 | Stat | Description |
 |---|---|
@@ -77,6 +77,67 @@ Haste reduces the cooldown of a fight. See the cooldown formula in Combat Mechan
 
 Both apply to fights, gathering, and wisdom also applies to crafting.
 
+
+### Retrieving Character Stats
+
+You can view a character, including their stats, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    character = client.characters.get("YOUR_CHARACTER_NAME")
+    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
+
+ ---
+
 ## Combat Mechanics
 
 Combat is turn-based. Turn order is determined by initiative.
@@ -93,6 +154,7 @@ Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
 
 **Example:** 20 turns + 10 haste → `20 × 2 - (0.1 × 40) = 36` seconds (instead of 40). Minimum cooldown is **5 seconds**.
 
+
 ### Monster Types
 
 | Type | Description | XP Rate |
@@ -105,9 +167,57 @@ Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
 If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
 :::
 
-### Monster Effects & Abilities
+### Monster Effects
 
-Some monsters have special abilities called effects that activate during combat in addition to their normal attacks.
+Some monsters have special abilities called effects that activate during combat in addition to their normal attacks. You can view a monster's effects in the `effects` array of its API response.
+
+**Example:** A standard monster response.
+```http title="JSON"
+{
+  "data": {
+    "name": "Spider",
+    "code": "spider",
+    "level": 20,
+    "type": "normal",
+    "hp": 550,
+    "attack_fire": 40,
+    "attack_earth": 0,
+    "attack_water": 40,
+    "attack_air": 0,
+    "res_fire": 0,
+    "res_earth": 5,
+    "res_water": -30,
+    "res_air": 5,
+    "critical_strike": 5,
+    "initiative": 100,
+    "effects": [
+      {
+        "code": "poison",
+        "value": 20,
+        "description": "At the start of its first turn, applies a 20 poison to its opponent. Loses 20 HP per turn."
+      }
+    ],
+    "min_gold": 0,
+    "max_gold": 10,
+    "drops": [
+      {
+        "code": "old_boots",
+        "rate": 300,
+        "min_quantity": 1,
+        "max_quantity": 1
+      },
+      {
+        "code": "spider_leg",
+        "rate": 12,
+        "min_quantity": 1,
+        "max_quantity": 2
+      }
+    ]
+  }
+}
+```
+
+In the example above, the Spider has the `poison` effect with a value of `20`. Here are all the possible effects you might encounter:
 
 | Keyword | Effect |
 |---|---|
@@ -123,17 +233,134 @@ Some monsters have special abilities called effects that activate during combat 
 | Barrier | At fight start and every 5 played turns, gains a protective barrier of X HP. All attacks go to the barrier until destroyed. |
 | Protective Bubble | Grants X% resistance to a random element. Element changes each turn (cannot repeat). |
 
-You can view monster effects using the [monsters endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get). Each monster's `effects` field lists its abilities with a `code` and `value`.
+### Retrieving Monsters
 
-## API Endpoints
+#### All Monsters
 
-### Fight
+To retrieve a paginated list of all monsters, use the following endpoint:
 
-`POST /my/{name}/action/fight` — Start a fight with the monster at your current location.
+**Endpoint:** `GET /monsters`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/monsters?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/monsters?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/monsters"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    monsters = client.monsters.get_all(page=1, size=50)
+    for monster in monsters.data:
+        print(f"[{monster.code}] {monster.name} - HP: {monster.hp}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get)
+
+#### Monster by Code
+
+To retrieve specific monster details using its unique code, use the following endpoint:
+
+**Endpoint:** `GET /monsters/{code}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/monsters/red_slime' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/monsters/red_slime';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/monsters/red_slime"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    monster = client.monsters.get("red_slime")
+    print(f"Monster: {monster.name}, Level: {monster.level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get)
+
+## Actions
+
+To start a fight, your character must be on a map with a monster. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
 :::caution
 Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a 497 error.
 :::
+
+### Fight
+
+**Endpoint:** `POST /my/{name}/action/fight`
 
 <Tabs>
   <TabItem label="cURL">
@@ -194,11 +421,14 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post)
 
-### Multi-Character Fights
+### Multi-Characters Fight
 
 You can fight with up to 2 other of **your own characters** against `boss`-type monsters (up to 3 characters total). All participating characters must be on the boss's map. Each character receives XP, gold, and drops independently.
+
+
+**Endpoint:** `POST /my/{name}/action/fight`
 
 <Tabs>
   <TabItem label="cURL">
@@ -269,11 +499,58 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ## Experience to Level
 
-The XP table is the same for combat and all skills. See the full [Experience to Level table](/concepts/skills/#experience-to-level) on the Skills page.
 
-## Related
+Here's the table showing the experience required to level up. This table applies to **all skills and combat**.
 
-- [Equipment & Items](/concepts/equipment_and_items/) — Equip weapons, armor, utilities, and runes
-- [Skills](/concepts/skills/) — XP table and skill leveling
-- [Actions & Cooldowns](/concepts/actions/) — All actions and cooldown mechanics
-- [API Reference](/api_guide/api_reference/) — Browse all monsters, effects, and items
+| Level | XP required to level up |
+|------:|------------------------:|
+| 1 | 150 |
+| 2 | 250 |
+| 3 | 350 |
+| 4 | 450 |
+| 5 | 700 |
+| 6 | 950 |
+| 7 | 1,200 |
+| 8 | 1,450 |
+| 9 | 1,700 |
+| 10 | 2,100 |
+| 11 | 2,500 |
+| 12 | 2,900 |
+| 13 | 3,300 |
+| 14 | 3,700 |
+| 15 | 4,400 |
+| 16 | 5,100 |
+| 17 | 5,800 |
+| 18 | 6,500 |
+| 19 | 7,200 |
+| 20 | 8,200 |
+| 21 | 9,200 |
+| 22 | 10,200 |
+| 23 | 11,200 |
+| 24 | 12,200 |
+| 25 | 13,400 |
+| 26 | 14,600 |
+| 27 | 15,800 |
+| 28 | 17,000 |
+| 29 | 18,200 |
+| 30 | 19,700 |
+| 31 | 21,200 |
+| 32 | 22,700 |
+| 33 | 24,200 |
+| 34 | 25,700 |
+| 35 | 27,500 |
+| 36 | 29,300 |
+| 37 | 31,100 |
+| 38 | 32,900 |
+| 39 | 34,700 |
+| 40 | 36,500 |
+| 41 | 38,600 |
+| 42 | 40,700 |
+| 43 | 42,800 |
+| 44 | 44,900 |
+| 45 | 47,000 |
+| 46 | 48,800 |
+| 47 | 50,600 |
+| 48 | 52,400 |
+| 49 | 54,200 |
+| 50 | — (max level) |

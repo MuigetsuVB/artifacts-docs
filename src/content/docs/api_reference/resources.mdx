@@ -1,13 +1,13 @@
 ---
-title: Leaderboard API Reference
-description: Complete endpoint reference for the Leaderboard category.
+title: Resources API Reference
+description: Complete endpoint reference for the Resources category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get Accounts Leaderboard
+### Get All Resources
 
-**Endpoint:** `GET /leaderboard/accounts`
+**Endpoint:** `GET /resources`
 
 **Authentication:** Public endpoint
 
@@ -15,8 +15,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| sort | query | enum(achievements_points, gold) | No | Sort of account leaderboards. |
-| name | query | string | No | Account name. |
+| min_level | query | integer | No | Minimum level. |
+| max_level | query | integer | No | Maximum level. |
+| skill | query | enum(mining, woodcutting, fishing, alchemy) | No | Skill of resources. |
+| drop | query | string | No | Item code of the drop. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -26,13 +28,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/leaderboard/accounts?sort=achievements_points&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/resources?min_level=1&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/leaderboard/accounts?sort=achievements_points&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/resources?min_level=1&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -49,7 +51,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/leaderboard/accounts?sort=achievements_points&page=1&size=50"
+url = "https://api.artifactsmmo.com/resources?min_level=1&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -63,19 +65,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.leaderboard.get_accounts(sort="gold", page=1, size=50)
+    result = client.resources.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_accounts_leaderboard_leaderboard_accounts_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get)
 
 ---
 
-### Get Characters Leaderboard
+### Get Resource
 
-**Endpoint:** `GET /leaderboard/characters`
+**Endpoint:** `GET /resources/{code}`
 
 **Authentication:** Public endpoint
 
@@ -83,10 +85,7 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| sort | query | enum(combat, woodcutting, mining, fishing, ...) | No | Sort of character leaderboards. |
-| name | query | string | No | Character name. |
-| page | query | integer | No | Page number |
-| size | query | integer | No | Page size |
+| code | path | string | Yes | The code of the resource. |
 
 #### Examples
 
@@ -94,13 +93,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/leaderboard/characters?sort=combat&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/resources/copper_ore' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/leaderboard/characters?sort=combat&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/resources/copper_ore';
 const options = {
   method: 'GET',
   headers: {
@@ -117,7 +116,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/leaderboard/characters?sort=combat&page=1&size=50"
+url = "https://api.artifactsmmo.com/resources/copper_ore"
 headers = {
     "Accept": "application/json",
 }
@@ -131,12 +130,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.leaderboard.get_characters(sort="combat", page=1, size=50)
+    result = client.resources.get("copper_rocks")
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_characters_leaderboard_leaderboard_characters_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_resource_resources__code__get)
 
 ---

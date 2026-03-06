@@ -5,15 +5,94 @@ description: "Gathering and crafting skills, resource nodes, workshops, XP rates
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Skills allow your character to gather resources and craft items. There are 4 gathering skills and 7 crafting skills, all sharing the same XP-to-level table.
+There are 8 skills in Artifacts that allow you to gather resources and craft items.
+
+| Skill | Type | Description |
+| :--- | :--- | :--- |
+| **Woodcutting** | Gathering, Crafting | Harvesting wood from trees and crafting planks |
+| **Mining** | Gathering, Crafting | Extracting ores from rocks and crafting ingots. |
+| **Fishing** | Gathering | Catching fish from water sources. |
+| **Alchemy** | Gathering, Crafting | Collecting plants crafting potions. |
+| **Weaponry** | Crafting | Forging weapons for combat. |
+| **Gearcrafting** | Crafting | Creating armor and equipment. |
+| **Jewelrycrafting** | Crafting | Crafting rings and amulets. |
+| **Cooking** | Crafting | Preparing food for healing. |
+
+### Retrieving Character Skills
+
+You can view a character, including their skills, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    character = client.characters.get("YOUR_CHARACTER_NAME")
+    print(f"Skills for {character.name}: Mining {character.mining_level}, Woodcutting {character.woodcutting_level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
 
 ## Gathering
 
-Gathering skills allow you to harvest resources on the map. There are 4 gathering skills: **Woodcutting**, **Mining**, **Fishing**, and **Alchemy**.
+To gathering a resource, your character must be on a map with a resource. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
-### Browse Resources
+:::caution
+If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
+:::
 
-`GET /resources` — View all available resources and their required skill levels.
+
+### Retrieving Resources
+
+### All resources
+
+To retrieve a paginated list of all resources, use the following endpoint:
+
+
+**Endpoint:** `GET /resources`
 
 <Tabs>
   <TabItem label="cURL">
@@ -61,13 +140,70 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get)
 
-You then need to find a [map](/concepts/maps_and_movement/) that contains this resource.
+### Resource by Code
+
+To retrieve specific resource details using its unique code, use the following endpoint:
+
+**Endpoint:** `GET /resources/{code}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/resources/copper_rocks' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/resources/copper_rocks';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/resources/copper_rocks"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    resource = client.resources.get("copper_rocks")
+    print(f"Resource: {resource.name}, Level: {resource.level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_resource_resources__code__get)
 
 ### Gather Action
 
-`POST /my/{name}/action/gathering` — Gather a resource at your current location. You must have the required skill level.
+To gather a resource, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/gathering`
 
 <Tabs>
   <TabItem label="cURL">
@@ -127,22 +263,29 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
   </TabItem>
 </Tabs>
 
-:::caution
-If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
-:::
-
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 
 
 ## Crafting
 
-Crafting skills let you make all kinds of items. You can craft with 7 skills: **Weaponcrafting**, **Gearcrafting**, **Jewelrycrafting**, **Cooking**, **Mining**, **Woodcutting**, and **Alchemy**.
+To craft an item, your character must be on a map with a workshop of the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
-Some crafts produce more than one item per craft. Check the `craft.quantity` field on an item to see how many are produced.
+:::caution
+If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
+:::
 
-### Browse Craftable Items
+:::note
+Crafting XP varies by skill:
+- **Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy**: Normal XP (1.0×)
+- **Cooking**: Reduced XP (**0.5×**)
+- **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
+:::
 
-`GET /items?craft_skill={skill}` — View all items craftable with a specific skill.
+### Retrieving Craftable Items
+
+To retrieve a paginated list of all items craftable with a specific skill, use the following endpoint:
+
+**Endpoint:** `GET /items?craft_skill={skill}`
 
 <Tabs>
   <TabItem label="cURL">
@@ -190,14 +333,13 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
-
-
-You must find a [map](/concepts/maps_and_movement/) containing a workshop of the matching skill.
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
 
 ### Craft Action
 
-`POST /my/{name}/action/crafting` — Craft an item at a workshop. You must have the required skill level and materials in your inventory.
+To craft an item at a workshop, use the following endpoint. You must have the required skill level and materials in your inventory:
+
+**Endpoint:** `POST /my/{name}/action/crafting`
 
 <Tabs>
   <TabItem label="cURL">
@@ -266,18 +408,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `code` | The item code to craft. |
 | `quantity` | Number of items to craft (optional, default 1). |
 
-:::caution
-If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
-:::
 
-:::note
-Crafting XP varies by skill:
-- **Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy**: Normal XP (1.0×)
-- **Cooking**: Reduced XP (**0.5×**)
-- **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
-:::
-
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
 
 ## Experience to Level
 
@@ -335,11 +467,3 @@ Here's the table showing the experience required to level up. This table applies
 | 48 | 52,400 |
 | 49 | 54,200 |
 | 50 | — (max level) |
-
-## Related
-
-- [Maps & Movement](/concepts/maps_and_movement/) — Find resource nodes and workshops on the map
-- [Equipment & Items](/concepts/equipment_and_items/) — Item types and crafted equipment
-- [Recycling](/concepts/recycling/) — Recycle crafted items back into materials
-- [Combat & Stats](/concepts/stats_and_fights/) — How wisdom and prospecting affect rewards
-- [Actions & Cooldowns](/concepts/actions/) — Gathering and crafting cooldowns

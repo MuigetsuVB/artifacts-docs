@@ -546,8 +546,7 @@ function endpointSection(operation, pathItem, spec) {
     '',
     `**Endpoint:** \`${operation.method.toUpperCase()} ${operation.path}\``,
     '',
-    `**Authentication:** ${
-      auth === 'public' ? 'Public endpoint' : auth === 'basic' ? 'HTTP Basic authentication required' : 'Bearer token required'
+    `**Authentication:** ${auth === 'public' ? 'Public endpoint' : auth === 'basic' ? 'HTTP Basic authentication required' : 'Bearer token required'
     }`,
     '',
     '#### Parameters',
@@ -579,7 +578,7 @@ function endpointSection(operation, pathItem, spec) {
     '  </TabItem>',
     '</Tabs>',
     '',
-    `[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/${operation.operationId})`,
+    `[View API Reference](https://api.artifactsmmo.com/docs/#/operations/${operation.operationId})`,
     '',
     '---',
     '',
@@ -630,7 +629,7 @@ function sortedGroupEntries(groups) {
 }
 
 function categoryPagePath(tag) {
-  return `/api_guide/api_reference/${tagSlug(tag)}/`;
+  return `/api_reference/${tagSlug(tag)}/`;
 }
 
 function buildIndexDoc(groupEntries) {
@@ -712,7 +711,7 @@ function buildPaginationDoc() {
     '}',
     '```',
     '',
-    'See [API Reference](/api_guide/api_reference/) for endpoint-specific parameters.',
+    'See [API Reference](/api_reference/) for endpoint-specific parameters.',
   ].join('\n');
 }
 

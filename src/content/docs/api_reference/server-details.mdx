@@ -1,15 +1,15 @@
 ---
-title: Token API Reference
-description: Complete endpoint reference for the Token category.
+title: Server details API Reference
+description: Complete endpoint reference for the Server details category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Generate Token
+### Get Server Details
 
-**Endpoint:** `POST /token`
+**Endpoint:** `GET /`
 
-**Authentication:** HTTP Basic authentication required
+**Authentication:** Public endpoint
 
 #### Parameters
 
@@ -22,20 +22,18 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 <Tabs>
   <TabItem label="cURL">
   ```bash
-curl --request POST \
-  --url 'https://api.artifactsmmo.com/token' \
-  --header 'Accept: application/json' \
-  --user 'YOUR_USERNAME:YOUR_PASSWORD'
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/' \
+  --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/token';
+const url = 'https://api.artifactsmmo.com/';
 const options = {
-  method: 'POST',
+  method: 'GET',
   headers: {
-    Accept: 'application/json',
-    Authorization: 'Basic ' + btoa('YOUR_USERNAME:YOUR_PASSWORD')
+    Accept: 'application/json'
   }
 };
 
@@ -48,12 +46,12 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/token"
+url = "https://api.artifactsmmo.com/"
 headers = {
     "Accept": "application/json",
 }
 
-response = requests.post(url, headers=headers, auth=("YOUR_USERNAME", "YOUR_PASSWORD"))
+response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </TabItem>
@@ -62,12 +60,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    token = client.token.generate("YOUR_USERNAME", "YOUR_PASSWORD")
-    print(token)
+    result = client.server.get_status()
+    print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/generate_token_token_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_server_details__get)
 
 ---

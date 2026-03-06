@@ -68,3 +68,9 @@
 starlight-theme-select {
   display: none !important;
 }
+
+/* Disable Astro ViewTransitions animation (fade effect) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
+}

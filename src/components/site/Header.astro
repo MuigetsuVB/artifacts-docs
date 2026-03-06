@@ -1,5 +1,6 @@
 ---
 import config from 'virtual:starlight/user-config';
+import { ClientRouter } from 'astro:transitions';
 
 import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
 import Search from 'virtual:starlight/components/Search';
@@ -10,6 +11,8 @@ import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
 const shouldRenderSearch =
   config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
 ---
+
+<ClientRouter />
 
 <div class="header">
   <div class="title-wrapper sl-flex">

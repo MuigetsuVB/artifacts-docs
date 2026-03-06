@@ -1,13 +1,13 @@
 ---
-title: NPCs API Reference
-description: Complete endpoint reference for the NPCs category.
+title: Maps API Reference
+description: Complete endpoint reference for the Maps category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get All Npcs
+### Get All Maps
 
-**Endpoint:** `GET /npcs/details`
+**Endpoint:** `GET /maps`
 
 **Authentication:** Public endpoint
 
@@ -15,8 +15,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| name | query | string | No | NPC name. |
-| type | query | enum(merchant, trader) | No | Type of NPCs. |
+| layer | query | enum(interior, overworld, underground) | No | Filter maps by layer. |
+| content_type | query | enum(monster, resource, workshop, bank, ...) | No | Type of maps. |
+| content_code | query | string | No | Content code on the map. |
+| hide_blocked_maps | query | boolean | No | When true, excludes maps with access_type 'blocked' from the results. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -26,13 +28,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/maps?layer=interior&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/maps?layer=interior&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -49,7 +51,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50"
+url = "https://api.artifactsmmo.com/maps?layer=interior&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -63,19 +65,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.npcs.get_all(page=1, size=50)
+    result = client.maps.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
 
 ---
 
-### Get Npc
+### Get Layer Maps
 
-**Endpoint:** `GET /npcs/details/{code}`
+**Endpoint:** `GET /maps/{layer}`
 
 **Authentication:** Public endpoint
 
@@ -83,74 +85,10 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the NPC. |
-
-#### Examples
-
-<Tabs>
-  <TabItem label="cURL">
-  ```bash
-curl --request GET \
-  --url 'https://api.artifactsmmo.com/npcs/details/copper_ore' \
-  --header 'Accept: application/json'
-  ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-  ```js
-const url = 'https://api.artifactsmmo.com/npcs/details/copper_ore';
-const options = {
-  method: 'GET',
-  headers: {
-    Accept: 'application/json'
-  }
-};
-
-const response = await fetch(url, options);
-const data = await response.json();
-console.log(data);
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-import requests
-
-url = "https://api.artifactsmmo.com/npcs/details/copper_ore"
-headers = {
-    "Accept": "application/json",
-}
-
-response = requests.get(url, headers=headers)
-print(response.json())
-  ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
-  ```python
-from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    result = client.npcs.get("merchant")
-    print(result)
-  ```
-  </TabItem>
-</Tabs>
-
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_npc_npcs_details__code__get)
-
----
-
-### Get All Npcs Items
-
-**Endpoint:** `GET /npcs/items`
-
-**Authentication:** Public endpoint
-
-#### Parameters
-
-| Parameter | In | Type | Required | Description |
-|---|---|---|---|---|
-| code | query | string | No | Item code. |
-| npc | query | string | No | NPC code. |
-| currency | query | string | No | Currency code. |
+| layer | path | enum(interior, overworld, underground) | Yes | The layer of the map (interior, overworld, underground). |
+| content_type | query | enum(monster, resource, workshop, bank, ...) | No | Type of maps. |
+| content_code | query | string | No | Content code on the map. |
+| hide_blocked_maps | query | boolean | No | When true, excludes maps with access_type 'blocked' from the results. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -160,13 +98,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/maps/overworld?content_type=monster&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/maps/overworld?content_type=monster&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -183,7 +121,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50"
+url = "https://api.artifactsmmo.com/maps/overworld?content_type=monster&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -197,19 +135,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.npcs.get_all_items(page=1, size=50)
+    result = client.maps.get_layer("overworld", page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_items_npcs_items_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
 
 ---
 
-### Get Npc Items
+### Get Map By Position
 
-**Endpoint:** `GET /npcs/items/{code}`
+**Endpoint:** `GET /maps/{layer}/{x}/{y}`
 
 **Authentication:** Public endpoint
 
@@ -217,9 +155,9 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the NPC. |
-| page | query | integer | No | Page number |
-| size | query | integer | No | Page size |
+| layer | path | enum(interior, overworld, underground) | Yes | The layer of the map (interior, overworld, underground). |
+| x | path | integer | Yes | The position x of the map. |
+| y | path | integer | Yes | The position y of the map. |
 
 #### Examples
 
@@ -227,13 +165,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/maps/overworld/0/1' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50';
+const url = 'https://api.artifactsmmo.com/maps/overworld/0/1';
 const options = {
   method: 'GET',
   headers: {
@@ -250,7 +188,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50"
+url = "https://api.artifactsmmo.com/maps/overworld/0/1"
 headers = {
     "Accept": "application/json",
 }
@@ -264,12 +202,77 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.npcs.get_items("merchant", page=1, size=50)
+    result = client.maps.get_by_position("overworld", 0, 1)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs_items__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get)
+
+---
+
+### Get Map By Id
+
+**Endpoint:** `GET /maps/id/{map_id}`
+
+**Authentication:** Public endpoint
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| map_id | path | integer | Yes | The unique ID of the map. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request GET \
+  --url 'https://api.artifactsmmo.com/maps/id/101' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/maps/id/101';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/maps/id/101"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    result = client.maps.get_by_id(101)
+    print(result)
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get)
 
 ---

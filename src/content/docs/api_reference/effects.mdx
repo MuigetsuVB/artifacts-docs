@@ -1,13 +1,13 @@
 ---
-title: Monsters API Reference
-description: Complete endpoint reference for the Monsters category.
+title: Effects API Reference
+description: Complete endpoint reference for the Effects category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get All Monsters
+### Get All Effects
 
-**Endpoint:** `GET /monsters`
+**Endpoint:** `GET /effects`
 
 **Authentication:** Public endpoint
 
@@ -15,10 +15,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| name | query | string | No | Name of the monster. |
-| min_level | query | integer | No | Minimum level. |
-| max_level | query | integer | No | Maximum level. |
-| drop | query | string | No | Item code of the drop. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -28,13 +24,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/monsters?name=YOUR_CHARACTER_NAME&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/effects?page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/monsters?name=YOUR_CHARACTER_NAME&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/effects?page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -51,7 +47,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/monsters?name=YOUR_CHARACTER_NAME&page=1&size=50"
+url = "https://api.artifactsmmo.com/effects?page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -65,19 +61,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.monsters.get_all(page=1, size=50)
+    result = client.effects.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_effects_effects_get)
 
 ---
 
-### Get Monster
+### Get Effect
 
-**Endpoint:** `GET /monsters/{code}`
+**Endpoint:** `GET /effects/{code}`
 
 **Authentication:** Public endpoint
 
@@ -85,7 +81,7 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the monster. |
+| code | path | string | Yes | The code of the effect. |
 
 #### Examples
 
@@ -93,13 +89,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/monsters/copper_ore' \
+  --url 'https://api.artifactsmmo.com/effects/copper_ore' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/monsters/copper_ore';
+const url = 'https://api.artifactsmmo.com/effects/copper_ore';
 const options = {
   method: 'GET',
   headers: {
@@ -116,7 +112,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/monsters/copper_ore"
+url = "https://api.artifactsmmo.com/effects/copper_ore"
 headers = {
     "Accept": "application/json",
 }
@@ -130,12 +126,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.monsters.get("chicken")
+    result = client.effects.get("burn")
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_effect_effects__code__get)
 
 ---

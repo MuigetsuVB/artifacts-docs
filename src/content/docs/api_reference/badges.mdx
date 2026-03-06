@@ -1,13 +1,13 @@
 ---
-title: Achievements API Reference
-description: Complete endpoint reference for the Achievements category.
+title: Badges API Reference
+description: Complete endpoint reference for the Badges category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get All Achievements
+### Get All Badges
 
-**Endpoint:** `GET /achievements`
+**Endpoint:** `GET /badges`
 
 **Authentication:** Public endpoint
 
@@ -15,7 +15,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| type | query | enum(combat_kill, combat_drop, combat_level, gathering, ...) | No | Type of achievements. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -25,13 +24,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/achievements?type=combat_kill&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/badges?page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/achievements?type=combat_kill&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/badges?page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -48,7 +47,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/achievements?type=combat_kill&page=1&size=50"
+url = "https://api.artifactsmmo.com/badges?page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -62,19 +61,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.achievements.get_all(page=1, size=50)
+    result = client.badges.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get)
 
 ---
 
-### Get Achievement
+### Get Badge
 
-**Endpoint:** `GET /achievements/{code}`
+**Endpoint:** `GET /badges/{code}`
 
 **Authentication:** Public endpoint
 
@@ -82,7 +81,7 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the achievement. |
+| code | path | string | Yes | The code of the badge. |
 
 #### Examples
 
@@ -90,13 +89,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/achievements/copper_ore' \
+  --url 'https://api.artifactsmmo.com/badges/copper_ore' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/achievements/copper_ore';
+const url = 'https://api.artifactsmmo.com/badges/copper_ore';
 const options = {
   method: 'GET',
   headers: {
@@ -113,7 +112,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/achievements/copper_ore"
+url = "https://api.artifactsmmo.com/badges/copper_ore"
 headers = {
     "Accept": "application/json",
 }
@@ -127,12 +126,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.achievements.get("first_fight")
+    result = client.badges.get("founder_2025")
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_achievement_achievements__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_badge_badges__code__get)
 
 ---

@@ -1,13 +1,13 @@
 ---
-title: Effects API Reference
-description: Complete endpoint reference for the Effects category.
+title: Items API Reference
+description: Complete endpoint reference for the Items category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get All Effects
+### Get All Items
 
-**Endpoint:** `GET /effects`
+**Endpoint:** `GET /items`
 
 **Authentication:** Public endpoint
 
@@ -15,6 +15,12 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
+| name | query | string | No | Name of the item. |
+| min_level | query | integer | No | Minimum level. |
+| max_level | query | integer | No | Maximum level. |
+| type | query | enum(utility, body_armor, weapon, resource, ...) | No | Type of items. |
+| craft_skill | query | enum(weaponcrafting, gearcrafting, jewelrycrafting, cooking, ...) | No | Skill to craft items. |
+| craft_material | query | string | No | Item code of items used as material for crafting. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -24,13 +30,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/effects?page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/items?name=YOUR_CHARACTER_NAME&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/effects?page=1&size=50';
+const url = 'https://api.artifactsmmo.com/items?name=YOUR_CHARACTER_NAME&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -47,7 +53,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/effects?page=1&size=50"
+url = "https://api.artifactsmmo.com/items?name=YOUR_CHARACTER_NAME&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -61,19 +67,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.effects.get_all(page=1, size=50)
+    result = client.items.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_effects_effects_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
 
 ---
 
-### Get Effect
+### Get Item
 
-**Endpoint:** `GET /effects/{code}`
+**Endpoint:** `GET /items/{code}`
 
 **Authentication:** Public endpoint
 
@@ -81,7 +87,7 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the effect. |
+| code | path | string | Yes | The code of the item. |
 
 #### Examples
 
@@ -89,13 +95,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/effects/copper_ore' \
+  --url 'https://api.artifactsmmo.com/items/copper_ore' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/effects/copper_ore';
+const url = 'https://api.artifactsmmo.com/items/copper_ore';
 const options = {
   method: 'GET',
   headers: {
@@ -112,7 +118,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/effects/copper_ore"
+url = "https://api.artifactsmmo.com/items/copper_ore"
 headers = {
     "Accept": "application/json",
 }
@@ -126,12 +132,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.effects.get("burn")
+    result = client.items.get("copper_ore")
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_effect_effects__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_item_items__code__get)
 
 ---

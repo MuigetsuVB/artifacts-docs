@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: "Artifacts MMO — A sandbox MMORPG controlled entirely through code. Use the HTTP API or the official Python SDK to automate your characters."
 ---
 
 import { Image } from 'astro:assets';
@@ -11,80 +12,67 @@ import '../../styles/server-status.css';
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components'
 
-Artifacts is a sandbox MMORPG designed for code lovers, where you **control your characters entirely through an HTTP API**. Every action your characters can take corresponds to an endpoint you can interact with programmatically. This unique approach lets you **automate gameplay**, **build custom tools**, and **explore new ways to play**.
-<br/>
-<Image src={intro} alt="Overview" width={600} />
-<br/>
-The API is **fully documented** using OpenAPI ([view the docs here](https://api.artifactsmmo.com/docs/#/)).
-If you want to **get started quickly**, check out our [Getting Started Guide](/getting-started/).
+Artifacts is a **sandbox MMORPG** built for developers where **every action is an API call**. Move, fight, craft, trade — all through HTTP endpoints you call from any programming language. Automate your characters, build custom tools, and compete on the leaderboard.
 
- <br/>
+<br/>
+<Image src={intro} alt="Artifacts MMO Overview" width={550} />
+<br/>
+
 <CardGrid>
   <LinkCard
     title="Getting Started"
     href="/getting-started/"
-    description="Get from zero to your first automated actions in a few minutes."
+    description="Create an account, grab your token, and run your first command in minutes."
   />
   <LinkCard
     title="Game Concepts"
-    href="/concepts/actions"
-    description="Understand core systems: combat, skills, tasks, bank, and events."
+    href="/concepts/game-overview/"
+    description="Understand the world: combat, skills, trading, tasks, and events."
   />
   <LinkCard
-    title="API Docs"
-    href="https://api.artifactsmmo.com/docs/#/"
-    target="_blank"
-    rel="noopener noreferrer"
-    description="Browse the full OpenAPI reference with all endpoints and schemas."
+    title="API Guide"
+    href="/api_guide/api-overview/"
+    description="Authentication, error codes, rate limits, and the OpenAPI specification."
   />
   <LinkCard
-    title="Discord"
-    href="https://discord.com/invite/prEBQ8a6Vs"
-    target="_blank"
-    rel="noopener noreferrer"
-    description="Join the community for help, updates, and project sharing."
+    title="Python SDK"
+    href="/sdks/python/"
+    description="Official SDK with typed models, auto-cooldowns, async support, and retry."
   />
-
 </CardGrid>
 
-
- <br/>
-Have questions, want to share your projects, or provide feedback? Join our [Discord community](https://discord.gg/prEBQ8a6Vs)!
-
 ## Seasons
-Artifacts operates on a seasonal server system, with each season lasting approximately 4 months. Each season introduces new features, content, and challenges, giving you the opportunity to be among the first to complete achievements and earn unique badges.
+
+Artifacts operates on a **seasonal server system**, with each season lasting approximately **4 months**. Every season resets progress and introduces new features, content, and challenges — giving you the chance to earn unique badges and compete for first completions.
 
 <ServerStatus />
 
 ## Gameplay
 
-Artifacts is a **sandbox MMORPG** with **no predetermined path**—you choose your own adventure.
-Send your characters into **combat against monsters**, **gather resources** using skills like mining and woodcutting, **craft equipment**, **complete tasks**, and much more.
+Artifacts is a sandbox with **no predetermined path** — you choose how to play. Send your characters into **combat against monsters**, **gather resources** with skills like mining and woodcutting, **craft equipment**, **complete tasks**, **trade on the Grand Exchange**, and more.
 
+<Image src={screenshot} alt="Artifacts game screenshot" width={1200} />
 
-<Image src={screenshot} alt="screenshot" width={1200} />
+The economy is **entirely player-driven**: every item is crafted, gathered, or traded by players through the Grand Exchange marketplace.
 
-The game's **economy is player-driven**: players can sell and buy items on the Grand Exchange.
+### Key Features
 
-Explore our [gameplay concepts](/concepts/actions/) for a deeper dive, or jump right in with the [Getting Started guide](/getting-started/).
+- **Elemental combat** — Fire, water, earth, and air with dynamic stats and progression
+- **8 skills** — Mining, Woodcutting, Fishing, Alchemy, Cooking, Gearcrafting, Weaponcrafting, Jewelrycrafting
+- **300+ craftable items** — Weapons, armor, jewelry, consumables, and resources
+- **Grand Exchange** — Player-to-player marketplace with buy and sell orders
+- **NPCs** — Merchants and traders for buying, selling, and bartering
+- **Boss fights** — Multi-character encounters with up to 3 characters
+- **Tasks system** — Random objectives for gold and task coin rewards
+- **Achievements** — Seasonal rankings and account-wide progression
+- **Dynamic events** — World events with exclusive monsters, resources, and NPCs
+- **Banking** — Secure item and gold storage with expandable slots
+- **Recycling** — Break down crafted equipment to recover materials
 
+## Community
 
-### Features
-
-- Elemental combat system (fire, air, water, earth) with dynamic stats and progression
-- 50 levels of combat and skills with diverse playstyles
-- 8 skills: Mining, Woodcutting, Cooking, Alchemy, Gearcrafting, Weaponcrafting, Jewelrycrafting
-- Boss fights and unique monsters with challenging mechanics
-- Grand Exchange for player-to-player trading with buy/sell offers
-- NPCs: merchants and traders for buying, selling, and trading items
-- Item crafting and trading with **300+ recipes**
-- Banking system for storing and managing items
-- Recycling system: recycle crafted equipment to recover resources
-- Dynamic world events with exclusive monsters, resources, and special NPCs
-- Tasks system for earning gold and task coins with random objectives
-- Achievements system with seasonal rankings and account-wide progression
-
+Have questions, want to share your projects, or provide feedback? Join our [Discord community](https://discord.gg/prEBQ8a6Vs)!
 
 ## Get Started
 
-Ready to play? Continue with our [Getting Started Guide](/getting-started/) and learn the basics in less than five minutes!
+Ready to play? Head to the [Getting Started Guide](/getting-started/) and make your first API call in under five minutes.

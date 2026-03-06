@@ -1,0 +1,115 @@
+---
+title: Quick Start
+description: "Get up and running with the Artifacts Python SDK in minutes — sync and async examples, token generation, and your first bot."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Sync Client
+
+No `async`/`await` needed — every call blocks until complete:
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="your_token_here") as client:
+    char = client.character("MyCharacter")
+
+    # View character info
+    info = char.get()
+    print(f"{info.name} lv{info.level} HP={info.hp}/{info.max_hp}")
+
+    # Move to a tile (auto-waits for cooldown)
+    char.move(x=0, y=1)
+
+    # Fight the monster at this tile
+    result = char.fight()
+    print(f"Result: {result.fight.result.value}")
+
+    # Gather a resource
+    char.skills.gather()
+
+    # Deposit gold at the bank
+    char.bank.deposit_gold(quantity=100)
+```
+
+## Async Client
+
+Use `AsyncArtifactsClient` with `asyncio` for concurrent character control:
+
+```python
+import asyncio
+from artifacts import AsyncArtifactsClient
+
+async def main():
+    async with AsyncArtifactsClient(token="your_token_here") as client:
+        char = client.character("MyCharacter")
+
+        info = await char.get()
+        print(f"{info.name} lv{info.level} HP={info.hp}/{info.max_hp}")
+
+        await char.move(x=0, y=1)
+        result = await char.fight()
+        print(f"Result: {result.fight.result.value}")
+
+asyncio.run(main())
+```
+
+## Token Generation
+
+If you don't have a token yet, generate one from credentials:
+
+```python
+from artifacts import AsyncArtifactsClient
+
+async def get_token():
+    async with AsyncArtifactsClient() as client:
+        token = await client.token.generate("your_username", "your_password")
+        print(token)  # Save this token for future use
+```
+
+Or copy it from your [account page](https://www.artifactsmmo.com/my).
+
+## Custom API URL
+
+To use a different server (e.g., sandbox):
+
+```python
+client = ArtifactsClient(
+    token="your_token",
+    base_url="https://api.sandbox.artifactsmmo.com",
+)
+```
+
+## Your First Bot
+
+Here's a simple combat loop that fights until low HP, then rests:
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="your_token") as client:
+    char = client.character("MyCharacter")
+
+    # Move to a monster tile
+    char.move(x=0, y=1)
+
+    for _ in range(20):
+        info = char.get()
+        if info.hp < info.max_hp * 0.3:
+            char.rest()
+            continue
+
+        result = char.fight()
+        fight = result.fight
+        print(f"{fight.result.value} in {fight.turns} turns")
+        for cr in fight.characters:
+            print(f"  +{cr.xp}xp +{cr.gold}g drops={[d.code for d in cr.drops]}")
+```
+
+## What's Next?
+
+- [Character Actions](/sdks/python/character-actions/) — All actions your character can take
+- [Fetching Game Data](/sdks/python/game-data/) — Browse items, monsters, maps, and more
+- [Cooldowns & Retry](/sdks/python/cooldowns-and-retry/) — Auto-wait and retry configuration
+- [Multiple Characters](/sdks/python/multiple-characters/) — Run 5 characters in parallel

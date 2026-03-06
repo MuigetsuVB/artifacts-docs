@@ -1,13 +1,13 @@
 ---
-title: Tasks API Reference
-description: Complete endpoint reference for the Tasks category.
+title: NPCs API Reference
+description: Complete endpoint reference for the NPCs category.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-### Get All Tasks
+### Get All Npcs
 
-**Endpoint:** `GET /tasks/list`
+**Endpoint:** `GET /npcs/details`
 
 **Authentication:** Public endpoint
 
@@ -15,10 +15,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| min_level | query | integer | No | Minimum level. |
-| max_level | query | integer | No | Maximum level. |
-| skill | query | enum(weaponcrafting, gearcrafting, jewelrycrafting, cooking, ...) | No | Skill of tasks. |
-| type | query | enum(monsters, items) | No | Type of tasks. |
+| name | query | string | No | NPC name. |
+| type | query | enum(merchant, trader) | No | Type of NPCs. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -28,13 +26,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50';
+const url = 'https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -51,7 +49,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/tasks/list?min_level=1&page=1&size=50"
+url = "https://api.artifactsmmo.com/npcs/details?name=YOUR_CHARACTER_NAME&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -65,19 +63,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.tasks.get_all(page=1, size=50)
+    result = client.npcs.get_all(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
 
 ---
 
-### Get Task
+### Get Npc
 
-**Endpoint:** `GET /tasks/list/{code}`
+**Endpoint:** `GET /npcs/details/{code}`
 
 **Authentication:** Public endpoint
 
@@ -85,7 +83,7 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the task. |
+| code | path | string | Yes | The code of the NPC. |
 
 #### Examples
 
@@ -93,13 +91,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/tasks/list/copper_ore' \
+  --url 'https://api.artifactsmmo.com/npcs/details/copper_ore' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/tasks/list/copper_ore';
+const url = 'https://api.artifactsmmo.com/npcs/details/copper_ore';
 const options = {
   method: 'GET',
   headers: {
@@ -116,7 +114,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/tasks/list/copper_ore"
+url = "https://api.artifactsmmo.com/npcs/details/copper_ore"
 headers = {
     "Accept": "application/json",
 }
@@ -130,19 +128,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.tasks.get("chicken_hunt")
+    result = client.npcs.get("merchant")
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_task_tasks_list__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_npcs_details__code__get)
 
 ---
 
-### Get All Tasks Rewards
+### Get All Npcs Items
 
-**Endpoint:** `GET /tasks/rewards`
+**Endpoint:** `GET /npcs/items`
 
 **Authentication:** Public endpoint
 
@@ -150,6 +148,9 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
+| code | query | string | No | Item code. |
+| npc | query | string | No | NPC code. |
+| currency | query | string | No | Currency code. |
 | page | query | integer | No | Page number |
 | size | query | integer | No | Page size |
 
@@ -159,13 +160,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/tasks/rewards?page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/tasks/rewards?page=1&size=50';
+const url = 'https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -182,7 +183,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/tasks/rewards?page=1&size=50"
+url = "https://api.artifactsmmo.com/npcs/items?code=copper_ore&page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -196,19 +197,19 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.tasks.get_all_rewards(page=1, size=50)
+    result = client.npcs.get_all_items(page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_rewards_tasks_rewards_get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_items_npcs_items_get)
 
 ---
 
-### Get Tasks Reward
+### Get Npc Items
 
-**Endpoint:** `GET /tasks/rewards/{code}`
+**Endpoint:** `GET /npcs/items/{code}`
 
 **Authentication:** Public endpoint
 
@@ -216,7 +217,9 @@ with ArtifactsClient() as client:
 
 | Parameter | In | Type | Required | Description |
 |---|---|---|---|---|
-| code | path | string | Yes | The code of the tasks reward. |
+| code | path | string | Yes | The code of the NPC. |
+| page | query | integer | No | Page number |
+| size | query | integer | No | Page size |
 
 #### Examples
 
@@ -224,13 +227,13 @@ with ArtifactsClient() as client:
   <TabItem label="cURL">
   ```bash
 curl --request GET \
-  --url 'https://api.artifactsmmo.com/tasks/rewards/copper_ore' \
+  --url 'https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
-const url = 'https://api.artifactsmmo.com/tasks/rewards/copper_ore';
+const url = 'https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -247,7 +250,7 @@ console.log(data);
   ```python
 import requests
 
-url = "https://api.artifactsmmo.com/tasks/rewards/copper_ore"
+url = "https://api.artifactsmmo.com/npcs/items/copper_ore?page=1&size=50"
 headers = {
     "Accept": "application/json",
 }
@@ -261,12 +264,12 @@ print(response.json())
 from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
-    result = client.tasks.get_reward("task_coin_bag")
+    result = client.npcs.get_items("merchant", page=1, size=50)
     print(result)
   ```
   </TabItem>
 </Tabs>
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/get_tasks_reward_tasks_rewards__code__get)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs_items__code__get)
 
 ---

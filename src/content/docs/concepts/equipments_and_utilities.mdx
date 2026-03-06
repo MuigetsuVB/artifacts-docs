@@ -1,5 +1,5 @@
 ---
-title: Equipment & Items
+title: Equipments & Utilites
 description: "All item types, equipment slots, conditions, runes, utilities, and how to equip/unequip in Artifacts MMO."
 ---
 
@@ -7,9 +7,8 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 Equipment and items are central to character progression. This page covers all item types, equipment slots, conditions for equipping, and the equip/unequip actions.
 
-## Overview
 
-### Item Types
+## Item Types
 
 Every item in the game belongs to one of these types:
 
@@ -33,7 +32,7 @@ Every item in the game belongs to one of these types:
 
 You can browse all items using the [items endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get) or on the [encyclopedia](https://artifactsmmo.com/encyclopedia/items).
 
-### Item Schema
+## Item Schema
 
 ```http title="ItemSchema"
 {
@@ -220,7 +219,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `slot` | Equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
 | `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
 
 ### Unequip Item
 
@@ -297,7 +296,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `slot` | Equipment slot to unequip. |
 | `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)
 
 ### Delete Item
 
@@ -371,12 +370,12 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `code` | Item code to delete. |
 | `quantity` | Quantity to delete. |
 
-[View full endpoint details](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_delete_item_my__name__action_delete_post)
 
 ## Related
 
 - [Combat & Stats](/concepts/stats_and_fights/) — How stats from equipment affect combat
 - [Skills](/concepts/skills/) — Crafting equipment with skills
-- [Recycling](/concepts/recycling/) — Recycle equipment back into materials
+- [Skills & Crafting](/concepts/skills/) — Crafting equipment with skills
 - [Inventory & Bank](/concepts/inventory_and_bank/) — Store and manage your items
-- [API Reference: Items](/api_guide/api_reference/items/) — Browse all items, effects, and more
+- [API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get) — Browse all items, effects, and more
