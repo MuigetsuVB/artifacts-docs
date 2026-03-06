@@ -145,7 +145,7 @@ export default defineConfig({
             { label: 'Combat & Stats', link: '/concepts/stats_and_fights/' },
             { label: 'Skills', link: '/concepts/skills/' },
             { label: 'Recycling', link: '/concepts/recycling/' },
-            { label: 'Equipments & Utilites', link: '/concepts/equipments_and_utilities/' },
+            { label: 'Equipment & Utilites', link: '/concepts/equipment_and_utilities/' },
             { label: 'Resting & Using items', link: '/concepts/resting_and_using_items/' },
             { label: 'Give items and gold', link: '/concepts/give/' },
             { label: 'Pending items', link: '/concepts/pending_items/' },
