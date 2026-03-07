@@ -1,0 +1,73 @@
+---
+title: Token API Reference
+description: Complete endpoint reference for the Token category.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+### Generate Token
+
+**Endpoint:** `POST /token`
+
+**Authentication:** HTTP Basic authentication required
+
+#### Parameters
+
+| Parameter | In | Type | Required | Description |
+|---|---|---|---|---|
+| None | - | - | - | This endpoint has no parameters. |
+
+#### Examples
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+curl --request POST \
+  --url 'https://api.artifactsmmo.com/token' \
+  --header 'Accept: application/json' \
+  --user 'YOUR_USERNAME:YOUR_PASSWORD'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+const url = 'https://api.artifactsmmo.com/token';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Basic ' + btoa('YOUR_USERNAME:YOUR_PASSWORD')
+  }
+};
+
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+import requests
+
+url = "https://api.artifactsmmo.com/token"
+headers = {
+    "Accept": "application/json",
+}
+
+response = requests.post(url, headers=headers, auth=("YOUR_USERNAME", "YOUR_PASSWORD"))
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    token = client.token.generate("YOUR_USERNAME", "YOUR_PASSWORD")
+    print(token)
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/generate_token_token_post)
+
+---

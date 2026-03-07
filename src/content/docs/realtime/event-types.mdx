@@ -1,0 +1,229 @@
+---
+title: Event Types
+description: "Detailed reference for each WebSocket notification type, including payload schemas and practical examples."
+---
+
+Every message from the WebSocket server follows this format:
+
+```json
+{
+  "type": "event_type_code",
+  "data": { /* payload */ }
+}
+```
+
+The `data` field uses the same schemas as the REST API wherever possible.
+
+---
+
+## Events
+
+### `event_spawn`
+
+Sent when a **world event spawns**. Payload is an `ActiveEventSchema`.
+
+```json
+{
+  "type": "event_spawn",
+  "data": {
+    "name": "Portal of Shadows",
+    "code": "portal_of_shadows",
+    "map": { "x": 5, "y": 12, "layer": "overworld" },
+    "duration": 3600,
+    "expiration": "2025-06-15T14:00:00Z",
+    "created_at": "2025-06-15T13:00:00Z"
+  }
+}
+```
+
+### `event_removed`
+
+Sent when a **world event expires** and is removed. Same `ActiveEventSchema` payload.
+
+```json
+{
+  "type": "event_removed",
+  "data": {
+    "name": "Portal of Shadows",
+    "code": "portal_of_shadows",
+    "map": { "x": 5, "y": 12, "layer": "overworld" },
+    "duration": 3600,
+    "expiration": "2025-06-15T14:00:00Z",
+    "created_at": "2025-06-15T13:00:00Z"
+  }
+}
+```
+
+---
+
+## Grand Exchange
+
+### `grandexchange_sell_order`
+
+Sent when a **new sell order** is created. Payload is a `GEOrderSchema`.
+
+```json
+{
+  "type": "grandexchange_sell_order",
+  "data": {
+    "id": "67337920ef441b2c7466d5e8",
+    "seller": "muigetsu",
+    "code": "copper_ore",
+    "quantity": 100,
+    "price": 5,
+    "created_at": "2025-06-15T12:00:00Z"
+  }
+}
+```
+
+### `grandexchange_buy_order`
+
+Sent when a **new buy order** is created. Same `GEOrderSchema` payload, with a `buyer` field instead of `seller`.
+
+### `grandexchange_buy`
+
+Sent when a **buy is completed** (buyer purchases from a sell order). Payload is a `GEOrderHistorySchema`.
+
+```json
+{
+  "type": "grandexchange_buy",
+  "data": {
+    "buyer": "player1",
+    "seller": "player2",
+    "code": "copper_ore",
+    "quantity": 50,
+    "price": 5,
+    "total_price": 250,
+    "created_at": "2025-06-15T12:05:00Z"
+  }
+}
+```
+
+### `grandexchange_sell`
+
+Sent when a **sale is completed** (seller fills a buy order). Same `GEOrderHistorySchema` payload.
+
+---
+
+## Pending Items
+
+### `pending_item_received`
+
+Sent when an item is delivered to your **pending items** queue (from GE purchases, achievements, etc.). Payload is a `PendingItemSchema`.
+
+```json
+{
+  "type": "pending_item_received",
+  "data": {
+    "id": 12345,
+    "code": "iron_sword",
+    "quantity": 1,
+    "source": "grandexchange",
+    "created_at": "2025-06-15T12:10:00Z"
+  }
+}
+```
+
+---
+
+## Characters
+
+### `online_characters`
+
+Sent **on connection** and then **every 10 minutes**. Payload is an array of `ActiveCharacterSchema`.
+
+```json
+{
+  "type": "online_characters",
+  "data": [
+    { "name": "Player1", "level": 30, "skin": "men1", "x": 0, "y": 0 },
+    { "name": "Player2", "level": 25, "skin": "women2", "x": 3, "y": 5 }
+  ]
+}
+```
+
+---
+
+## Server
+
+### `version`
+
+Sent **on connection** and whenever the API server version changes.
+
+```json
+{
+  "type": "version",
+  "data": "3.2.1"
+}
+```
+
+### `announcement`
+
+Sent when a new server **announcement** is published.
+
+```json
+{
+  "type": "announcement",
+  "data": {
+    "message": "Season 5 starts in 24 hours! Get ready."
+  }
+}
+```
+
+---
+
+## Account
+
+### `achievement_unlocked`
+
+Sent when an **achievement is unlocked** on your account. Payload is an `AchievementSchema`.
+
+```json
+{
+  "type": "achievement_unlocked",
+  "data": {
+    "code": "first_kill",
+    "name": "First Blood",
+    "description": "Kill your first monster",
+    "type": "combat",
+    "points": 10,
+    "unlocked_at": "2025-06-15T12:15:00Z"
+  }
+}
+```
+
+### `account_log`
+
+Sent every time one of your characters performs an action. Payload is a `LogSchema`.
+
+```json
+{
+  "type": "account_log",
+  "data": {
+    "character": "MyChar",
+    "type": "fight",
+    "description": "Fought chicken and won",
+    "created_at": "2025-06-15T12:20:00Z"
+  }
+}
+```
+
+---
+
+## Test
+
+### `test`
+
+Sent every **60 seconds** when subscribed. Useful for testing your WebSocket connection.
+
+```json
+{
+  "type": "test",
+  "data": "Test message"
+}
+```
+
+## Related
+
+- [Realtime Overview](/realtime/overview/) — Feature summary and requirements
+- [Connection & Auth](/realtime/connection/) — How to connect and authenticate

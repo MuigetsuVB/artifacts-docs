@@ -1,0 +1,129 @@
+---
+title: Advanced Usage
+description: "Sandbox server, fight simulation, character management, logging, and account operations with the Artifacts Python SDK."
+---
+
+## Character Management
+
+```python
+from artifacts.models.enums import CharacterSkin
+
+# Create a character (max 5 per account)
+new_char = client.characters.create("NewHero", CharacterSkin.MEN1)
+
+# Delete a character (permanent)
+client.characters.delete("NewHero")
+
+# List all active characters on the server
+active = client.characters.get_active()
+
+# Get any character's public info
+info = client.characters.get("SomePlayer")
+```
+
+## Account & Bank
+
+```python
+# Account details
+account = client.my_account.get_details()
+print(f"{account.username} — gems={account.gems}")
+
+# Bank
+bank = client.my_account.get_bank()
+print(f"Gold: {bank.gold}")
+
+bank_items = client.my_account.get_bank_items()
+for item in bank_items.data:
+    print(f"  {item.code} x{item.quantity}")
+
+# Your characters
+chars = client.my_account.get_characters()
+
+# Your Grand Exchange orders
+orders = client.my_account.get_ge_orders()
+
+# Pending items
+pending = client.my_account.get_pending_items()
+
+# All action logs
+logs = client.my_account.get_all_logs()
+```
+
+## Logging
+
+Enable SDK logging for debugging:
+
+```python
+import logging
+import artifacts
+
+artifacts.setup_logging()                  # INFO level
+artifacts.setup_logging(logging.DEBUG)     # Verbose (request/response details)
+```
+
+With `DEBUG`, you'll see every HTTP request and response, which is invaluable for troubleshooting.
+
+## Simulation (Members Only)
+
+Test fights without risking your character. Create a fake character with custom stats and simulate battles:
+
+```python
+from artifacts.models.sandbox import FakeCharacterSchema
+
+fake = FakeCharacterSchema(
+    level=20,
+    weapon_slot="iron_sword",
+    body_armor_slot="iron_armor",
+)
+result = client.simulation.fight(
+    characters=[fake],
+    monster="ogre",
+    iterations=100,
+)
+print(f"Winrate: {result.winrate:.1%} ({result.wins}W / {result.losses}L)")
+```
+
+## Sandbox Server (Members Only)
+
+When connected to the sandbox server (`base_url="https://api.sandbox.artifactsmmo.com"`), you can use cheat commands for testing:
+
+```python
+from artifacts import ArtifactsClient
+
+client = ArtifactsClient(
+    token="your_token",
+    base_url="https://api.sandbox.artifactsmmo.com",
+)
+
+# Give gold, items, or XP to a character
+client.sandbox.give_gold("MyChar", 10000)
+client.sandbox.give_item("MyChar", "iron_sword", 5)
+client.sandbox.give_xp("MyChar", "combat", 5000)
+
+# Spawn an event
+client.sandbox.spawn_event("event_code")
+
+# Reset your entire account
+client.sandbox.reset_account()
+```
+
+:::caution
+The sandbox server is separate from production. Account data does not transfer between servers.
+:::
+
+## Password Management
+
+```python
+# Change password
+client.my_account.change_password(current_password="old", new_password="new")
+```
+
+:::note
+Changing your password **invalidates your current token**. You'll need to generate a new one.
+:::
+
+## Related
+
+- [API Reference](/sdks/python/api-reference/) — Full method reference tables
+- [Error Handling](/sdks/python/error-handling/) — Error classes and catch patterns
+- [Cooldowns & Retry](/sdks/python/cooldowns-and-retry/) — Auto-wait and retry config

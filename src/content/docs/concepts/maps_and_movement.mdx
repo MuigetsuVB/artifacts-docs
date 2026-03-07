@@ -1,0 +1,483 @@
+---
+title: Maps & Movement
+description: "World map structure, layers, content types, access conditions, transitions, and movement actions in Artifacts MMO."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import MapPreview from '../../../components/site/MapPreview.astro';
+
+The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
+
+| Layer        | Enum value     | Content                        |
+|--------------|----------------|--------------------------------------|
+| Overworld    | `overworld`    | Main surface maps  |
+| Underground  | `underground`  | Mines, caves     |
+| Interior     | `interior`     | Houses, dungeons |
+
+![Maps](https://artifactsmmo.com/images/docs/map.png)
+ 
+Every map is uniquely identified by:
+- Its tuple: `(layer, x, y)`
+- Or its numeric `map_id` 
+
+---
+## Content 
+
+If something is present on a map tile, it will be listed under `interactions.content`.
+
+A map tile can contain different types of content, indicated by the `content.type` field. Here are the possible types you may encounter:
+
+- `monster`: A monster is present on the tile. [See all monsters](https://artifactsmmo.com/encyclopedia/monsters)
+- `resource`: A resource node is available. [See all resources](https://artifactsmmo.com/encyclopedia/resources)
+- `workshop`: A workshop for crafting items. [See all workshops and crafts](https://artifactsmmo.com/encyclopedia/items)
+- `npc`: A trader/seller NPC is present. [See all NPCs](/concepts/npcs/)
+- `bank`: Access to a bank.
+- `grand_exchange`: Access to the grand exchange.
+- `tasks_master`: A tasks master NPC is present.
+
+Here are examples of maps with different types of content:
+
+<MapPreview codes="223,277,328,433" />
+
+---
+
+## Transition
+
+A transition represents a way to move instantly from one map tile to another, such as through a door, staircase, portal, or similar mechanism. Transitions can connect different locations, including those on separate layers (e.g., from the overworld to an interior or underground area).
+
+A map tile can define a `transition` under `interactions.transition`, specifying the destination and any conditions required to use it.
+
+Here are examples of maps with different transitions:
+
+<MapPreview codes="133,571,134" />
+
+---
+
+## Access Types & Conditions
+
+Not every map is freely traversable. The field `access.type` can be:
+
+| Type | Description |
+| ---- | ----------- |
+| `standard` | Freely accessible. |
+| `blocked` | Not walkable (void, obstacle, mountain, water, etc.). |
+| `teleportation` | Only reachable via teleport effects (e.g. consumable). |
+| `conditional` | Requires all listed conditions to be satisfied. |
+
+Conditions may appear in:
+- `access.conditions` (to step onto / remain on a tile)
+- `interactions.transition.conditions` (to use a portal / door / stairs)
+
+### Global condition operators
+
+The generic operators used for items also work on maps. It can use any character variable as the `code` in a condition. For example, it may require a minimum level, a specific skill level, or any other attribute available on the character.
+| Operator | Meaning |
+|----------|---------|
+| `eq` | Equal to |
+| `ne` | Not equal |
+| `gt` | Greater than |
+| `lt` | Less than |
+
+
+### Maps condition operators
+The following operators are specific to the map system. They can be used on access and transition conditions:
+
+| Operator | Meaning | Consumed? | Notes |
+| -------- | ------- | --------- | ----- |
+| `has_item` | You must possess (inventory or equipped) the specified item `code` | No | |
+| `cost` | You must pay an item or gold | Yes | `code` = item (or `gold`), `value` = quantity. |
+| `achievement_unlocked` | Specific achievement must be completed | N/A | `code` = achievement identifier. |
+
+
+Here are some examples of maps using access or transition conditions:
+
+<MapPreview codes="655,934,1234" />
+
+---
+
+## Retrieving Maps
+
+### All Maps
+
+To retrieve a paginated list of all maps, use the following endpoint:
+
+**Endpoint:** `GET /maps?page={page}&size={size}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/maps?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/maps?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/maps"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    maps = client.maps.get_all(page=1, size=50)
+    for map_data in maps.data:
+        print(f"[{map_data.map_id}] {map_data.name} at {map_data.x}, {map_data.y}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
+
+### Maps by Layer
+
+To retrieve all maps for a specific layer, use the following endpoint:
+
+**Endpoint:** `GET /maps/{layer}?page={page}&size={size}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/maps/overworld?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/maps/overworld?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/maps/overworld"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    maps = client.maps.get_all(layer="overworld", page=1, size=50)
+    for map_data in maps.data:
+        print(f"[{map_data.map_id}] {map_data.name}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
+
+### Map by Coordinates
+
+To retrieve specific map details by layer and coordinates, use the following endpoint:
+
+**Endpoint:** `GET /maps/{layer}/{x}/{y}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/maps/overworld/0/0' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/maps/overworld/0/0';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/maps/overworld/0/0"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    map_data = client.maps.get(0, 0)
+    print(f"Map content: {map_data.content}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get)
+
+### Map by ID
+
+To retrieve specific map details using its unique map ID, use the following endpoint:
+
+**Endpoint:** `GET /maps/id/{map_id}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/maps/id/1' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/maps/id/1';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/maps/id/1"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    map_data = client.maps.get_by_id(1)
+    print(f"Map name: {map_data.name}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get)
+
+---
+
+
+## Actions
+
+### Move
+
+The movement system uses A* pathfinding to find the shortest path, bypassing blocked maps. The cooldown is 5 seconds per map.
+
+To move your character, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/move`
+
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location -g --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
+--data-raw '{
+  "x": 4,
+  "y": -1
+  // OR
+  // "map_id": 101
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/move';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ x: 4, y: -1 })
+  // OR body: JSON.stringify({ map_id: 101 })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"x": 4, "y": -1}  # OR {"map_id": 101}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    char.move(x=4, y=-1)
+    # OR char.move(map_id=101)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `x` | The x coordinate of the destination (used with `y`). |
+| `y` | The y coordinate of the destination (used with `x`). |
+| `map_id` | The map ID of the destination (alternative to `x`/`y`, can target any layer). |
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
+
+### Transition
+
+If no path is possible using move, it is very likely that a transition is necessary to reach the map. A transition represents doors, stairs, boats, etc. It allows you to teleport from one tile to another, either on the same layer or to a different layer. A transition always has a cooldown of 5 seconds.
+
+To use a transition, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/transition`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/transition';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("YOUR_CHARACTER_NAME")
+    char.transition()
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)

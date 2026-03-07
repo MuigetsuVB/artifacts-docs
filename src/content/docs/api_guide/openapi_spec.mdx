@@ -1,0 +1,67 @@
+---
+title: OpenAPI Spec
+description: How to use the Artifacts OpenAPI specification with Swagger UI, Postman, and Insomnia.
+---
+
+import { Tabs, TabItem, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+The Artifacts API is fully described using the [OpenAPI 3.x standard](https://www.openapis.org/). This machine-readable specification lists every endpoint, parameter, request body schema, and response model in the API.
+
+The spec file is publicly available at:
+
+```
+https://api.artifactsmmo.com/openapi.json
+```
+
+## Interactive docs (Swagger UI)
+
+The simplest way to explore and test the API is the hosted Swagger UI. No setup required — just open the link, authorize with your token, and send requests directly from your browser.
+
+**[Open the interactive API docs →](https://api.artifactsmmo.com/docs/#/)**
+
+To authenticate in the Swagger UI:
+1. Click the **Authorize** button (🔒) at the top right
+2. In the `BearerAuth` field, enter your token (without the `Bearer ` prefix)
+3. Click **Authorize** — all subsequent requests will include the header automatically
+
+## Import into Postman
+
+1. Open Postman and click **Import**
+2. Select the **Link** tab and paste: `https://api.artifactsmmo.com/openapi.json`
+3. Click **Import** — Postman generates a collection with all endpoints pre-filled
+4. Set an `Authorization` header variable with your token in the collection settings
+
+## Import into Insomnia
+
+1. In Insomnia, click **Create** → **Import from URL**
+2. Paste `https://api.artifactsmmo.com/openapi.json` and confirm
+3. Add a Bearer token in the request's **Auth** tab
+
+## Download the spec file
+
+If you prefer to work offline or generate a client from the spec:
+
+[Download openapi.json](https://api.artifactsmmo.com/openapi.json)
+
+### Generate a client with openapi-generator
+
+```bash
+# Install the generator (requires Java or use the Docker image)
+npm install @openapitools/openapi-generator-cli -g
+
+# Generate a Python client
+openapi-generator-cli generate \
+  -i https://api.artifactsmmo.com/openapi.json \
+  -g python \
+  -o ./artifacts-client
+
+# Generate a TypeScript/fetch client
+openapi-generator-cli generate \
+  -i https://api.artifactsmmo.com/openapi.json \
+  -g typescript-fetch \
+  -o ./artifacts-client-ts
+```
+
+:::tip[Use the Python SDK instead]
+For Python, the official [artifacts-mmo SDK](/sdks/python/introduction) is a better starting point than a generated client — it adds game-specific helpers, auto-cooldown handling, and typed Pydantic models.
+:::

@@ -1,0 +1,135 @@
+---
+title: Cooldowns & Retry
+description: How the Python SDK handles cooldowns and automatic retries.
+---
+
+## Cooldowns
+
+Every character action (move, fight, gather, craft…) triggers a cooldown. The server will reject subsequent action requests until the cooldown expires (HTTP 499).
+
+### Default behaviour — auto-wait enabled
+
+By default, the SDK **automatically sleeps** for the cooldown duration after every action. You never need to call `time.sleep()` or check cooldown status manually.
+
+```python
+char.move(x=0, y=1)   # SDK sleeps for the move cooldown
+char.fight()           # SDK sleeps for the fight cooldown
+char.skills.gather()   # SDK sleeps for the gather cooldown
+# ... and so on — all chained without any manual waits
+```
+
+### Disable auto-wait per call
+
+Skip the post-action sleep for a single call. Useful when you want to do something else while the cooldown runs.
+
+```python
+result = char.fight(wait=False)
+
+# Do something useful here (e.g. log the result, update state)
+print(f"Fight started. Cooldown: {result.cooldown.total_seconds}s")
+
+# Manually wait later when you need to act again
+from artifacts import wait_for_cooldown
+wait_for_cooldown(result.cooldown)  # async: await wait_for_cooldown(result.cooldown)
+```
+
+### Disable auto-wait per character
+
+All actions on this character return immediately. Useful for advanced async patterns.
+
+```python
+char = client.character("SpeedRunner", auto_wait=False)
+```
+
+### Disable auto-wait globally
+
+```python
+client = ArtifactsClient(token="YOUR_TOKEN", auto_wait=False)
+```
+
+### Toggle globally at runtime
+
+Only characters created without an explicit per-character override are affected.
+
+```python
+client = ArtifactsClient(token="YOUR_TOKEN")
+char1 = client.character("Alice")             # follows client setting
+char2 = client.character("Bob")               # follows client setting
+char3 = client.character("Carol", auto_wait=False)  # isolated, never affected
+
+client.auto_wait = False   # char1 and char2 stop waiting; char3 unchanged
+client.auto_wait = True    # char1 and char2 resume waiting; char3 unchanged
+```
+
+### Manual cooldown helpers
+
+When auto-wait is off, use these helpers to manage cooldowns yourself:
+
+```python
+from artifacts import wait_for_cooldown, cooldown_seconds
+
+result = char.fight(wait=False)
+
+# Option 1 — sleep for the remaining duration (sync or async)
+wait_for_cooldown(result.cooldown)
+
+# Option 2 — read the remaining seconds without sleeping
+seconds = cooldown_seconds(result.cooldown)
+print(f"Waiting {seconds:.2f}s...")
+
+# Option 3 — access the raw CooldownSchema fields
+cd = result.cooldown
+print(f"Total: {cd.total_seconds}s  Reason: {cd.reason.value}  Expires: {cd.expiration}")
+```
+
+---
+
+## Automatic retry
+
+The SDK retries on transient errors with exponential backoff and jitter. You don't need to write retry loops.
+
+| Status code | Meaning | Default behaviour |
+|---|---|---|
+| `429` | Rate limit hit | Wait and retry |
+| `499` | Cooldown active | Wait for remaining cooldown, then retry |
+| `500`, `502`, `503`, `504` | Server error | Exponential backoff with jitter |
+
+### Default configuration (no setup needed)
+
+```python
+client = ArtifactsClient(token="YOUR_TOKEN")
+# max_retries=3, base_delay=1.0s, max_delay=30.0s
+```
+
+### Custom retry configuration
+
+```python
+from artifacts import ArtifactsClient, RetryConfig
+
+client = ArtifactsClient(
+    token="YOUR_TOKEN",
+    retry=RetryConfig(
+        max_retries=5,       # try up to 5 times before raising RetryExhaustedError
+        base_delay=0.5,      # first retry after 0.5s
+        max_delay=60.0,      # cap backoff at 60s
+        retry_on_cooldown=False,  # raise CooldownActiveError instead of retrying on 499
+    ),
+)
+```
+
+:::tip
+`retry_on_cooldown=False` is useful if you disable `auto_wait` and want to handle the 499 yourself (e.g. to do other work while the cooldown runs).
+:::
+
+### When retries are exhausted
+
+If all retry attempts fail, the SDK raises `RetryExhaustedError`:
+
+```python
+from artifacts.errors import RetryExhaustedError
+
+try:
+    result = char.fight()
+except RetryExhaustedError as e:
+    print(f"All retries exhausted. Last error: {e.last_exception}")
+```

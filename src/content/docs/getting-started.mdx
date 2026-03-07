@@ -1,0 +1,119 @@
+---
+title: Getting Started
+description: "Create your Artifacts account, get your API token, and make your first API call in under five minutes."
+---
+
+import { Image } from 'astro:assets';
+import tutorial from '/src/assets/images/tutorial.png';
+import tutorial2 from '/src/assets/images/tutorial2.png';
+import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+
+Artifacts is an API-driven MMORPG. Every action — moving, fighting, gathering, crafting — maps to an HTTP endpoint. You can play using raw HTTP requests from any language, or use the official [Python SDK](/sdks/python/) for automatic cooldowns, typed models, and async support.
+
+## 1. Create Your Account
+
+<Steps>
+1. **Register** at [artifactsmmo.com/account/register](https://www.artifactsmmo.com/account/register)
+2. **Log in** and create your first character
+3. **Copy your token** from [your account page](https://www.artifactsmmo.com/my)
+</Steps>
+
+:::caution
+Your token is used to authenticate every API request. **Keep it secret.** It refreshes when you change your password.
+:::
+
+## 2. Your First API Call
+
+Let's move your character to tile `(0, 1)`:
+
+<Tabs>
+  <TabItem label="cURL">
+  ```bash
+  curl -X POST https://api.artifactsmmo.com/my/{name}/action/move \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_TOKEN" \
+    -d '{"x": 0, "y": 1}'
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+  TOKEN = "YOUR_TOKEN"
+  NAME = "YOUR_CHARACTER"
+
+  url = f"https://api.artifactsmmo.com/my/{NAME}/action/move"
+  headers = {
+      "Content-Type": "application/json",
+      "Authorization": f"Bearer {TOKEN}",
+  }
+
+  response = requests.post(url, json={"x": 0, "y": 1}, headers=headers)
+  print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+  with ArtifactsClient(token="YOUR_TOKEN") as client:
+      char = client.character("YOUR_CHARACTER")
+      char.move(x=0, y=1)  # auto-waits for cooldown
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const TOKEN = "YOUR_TOKEN";
+  const NAME = "YOUR_CHARACTER";
+
+  const response = await fetch(
+    `https://api.artifactsmmo.com/my/${NAME}/action/move`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      body: JSON.stringify({ x: 0, y: 1 }),
+    }
+  );
+
+  console.log(await response.json());
+  ```
+  </TabItem>
+</Tabs>
+
+The API returns your character's updated state and a **cooldown** object. You must wait for the cooldown to expire before sending another action. The Python SDK handles this automatically.
+
+## 3. Interactive Tutorial
+
+Open the **game client** at [play.artifactsmmo.com](https://play.artifactsmmo.com) and click the **Tutorial** button in the top right corner.
+
+<Image src={tutorial} alt="Tutorial button location" />
+
+The tutorial walks you through:
+- **Moving** your character across the map
+- **Fighting** your first monster
+- **Resting** to recover HP
+- **Crafting** your first weapon
+
+It's available in **Python** and **JavaScript** directly in your browser. You can follow along in any language by sending the corresponding HTTP requests.
+
+<Image src={tutorial2} alt="In-browser tutorial interface" width={1000} />
+
+## What's Next?
+
+<CardGrid>
+  <Card title="Game Concepts" icon="information">
+    Understand the world: *maps*, *combat*, *skills*, *crafting*, *Grand Exchange*, *tasks*, and *events*. [Browse Concepts →](/concepts/game-overview/)
+  </Card>
+  <Card title="API Guide" icon="open-book">
+    Learn about **authentication**, **error codes**, **rate limits**, and how to use the OpenAPI spec. [Read the Guide →](/api_guide/api-overview/)
+  </Card>
+  <Card title="Python SDK" icon="puzzle">
+    Install the SDK for **auto-cooldowns**, **typed models**, **async support**, and **retry**. [Get Started →](/sdks/python/)
+  </Card>
+  <Card title="Join Discord" icon="discord">
+    Connect with the community, get help, share projects, and stay updated. [Join →](https://discord.gg/prEBQ8a6Vs)
+  </Card>
+</CardGrid>

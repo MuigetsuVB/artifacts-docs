@@ -1,0 +1,138 @@
+---
+title: Error Handling
+description: Typed exceptions and how to handle API errors in the Python SDK.
+---
+
+The SDK maps every API error code to a specific Python exception, so you can catch exactly the error you care about rather than parsing numeric status codes.
+
+All exceptions inherit from `ArtifactsAPIError`. You can always fall back to catching the base class.
+
+## Exception hierarchy
+
+```
+ArtifactsAPIError                    # Base class — always has .code and .message
+├── RetryExhaustedError              # All retry attempts exhausted
+├── CooldownActiveError              # 499 — character in cooldown
+├── ActionInProgressError            # 486 — another action already running
+├── MemberRequiredError              # 451 — feature requires membership
+│
+├── InventoryFullError               # 497 — inventory is full
+├── InsufficientGoldError            # 492 — not enough gold
+├── NotFoundError                    # 404 — resource / character / item not found
+├── ContentNotOnMapError             # 598 — no monster or resource on this tile
+├── AlreadyAtDestinationError        # 490 — character already at target position
+├── SkillLevelTooLowError            # 493 — skill level too low for this action
+├── EquipmentSlotError               # 491 — equipment slot issue
+├── MapBlockedError                  # 596 — map tile is blocked
+├── NoPathError                      # 595 — no path to destination
+├── ConditionsNotMetError            # 496 — action conditions not satisfied
+│
+├── TaskError                        # 474–489 — task-related errors
+├── GrandExchangeError               # 433–438 — Grand Exchange errors
+└── ValidationError                  # 422 — invalid request body
+```
+
+## Importing exceptions
+
+```python
+from artifacts.errors import (
+    ArtifactsAPIError,
+    RetryExhaustedError,
+    CooldownActiveError,
+    ActionInProgressError,
+    InventoryFullError,
+    InsufficientGoldError,
+    NotFoundError,
+    ContentNotOnMapError,
+    AlreadyAtDestinationError,
+    SkillLevelTooLowError,
+    EquipmentSlotError,
+    MapBlockedError,
+    NoPathError,
+    MemberRequiredError,
+    ConditionsNotMetError,
+    TaskError,
+    GrandExchangeError,
+    ValidationError,
+)
+```
+
+## Practical examples
+
+### Combat loop — handle common fight errors
+
+```python
+from artifacts.errors import ContentNotOnMapError, InventoryFullError, ArtifactsAPIError
+
+while True:
+    try:
+        result = char.fight()
+        print(f"[{char.name}] {result.fight.result.value}")
+
+    except InventoryFullError:
+        print("Inventory full — going to bank")
+        char.move(x=4, y=1)        # bank coordinates
+        char.bank.deposit_items(...)
+        char.move(x=0, y=1)        # back to monster
+
+    except ContentNotOnMapError:
+        print("No monster on this tile — something moved?")
+        break
+
+    except ArtifactsAPIError as e:
+        print(f"Unexpected API error [{e.code}]: {e.message}")
+        break
+```
+
+### Gathering — handle skill level errors
+
+```python
+from artifacts.errors import SkillLevelTooLowError, ContentNotOnMapError
+
+try:
+    result = char.skills.gather()
+except SkillLevelTooLowError:
+    print("Skill level too low for this resource — find a lower-level resource")
+except ContentNotOnMapError:
+    print("No resource on this tile")
+```
+
+### Grand Exchange — handle order errors
+
+```python
+from artifacts.errors import GrandExchangeError, InsufficientGoldError
+
+try:
+    char.ge.buy(id="order_abc", quantity=10)
+except InsufficientGoldError:
+    print("Not enough gold")
+except GrandExchangeError as e:
+    print(f"GE error [{e.code}]: {e.message}")
+```
+
+### Catching all retries exhausted
+
+```python
+from artifacts.errors import RetryExhaustedError
+
+try:
+    char.fight()
+except RetryExhaustedError as e:
+    print(f"Failed after all retries. Last exception: {e.last_exception}")
+```
+
+## Accessing error details
+
+Every `ArtifactsAPIError` exposes:
+
+```python
+try:
+    char.move(x=0, y=1)
+except ArtifactsAPIError as e:
+    print(e.code)      # int — API-level error code (e.g. 490)
+    print(e.message)   # str — human-readable error message from the server
+```
+
+:::note[CooldownActiveError and auto-retry]
+`CooldownActiveError` (499) is normally handled automatically by the retry system before your code sees it. You only need to catch it explicitly if you set `retry_on_cooldown=False` in `RetryConfig`.
+:::

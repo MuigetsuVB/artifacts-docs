@@ -1,0 +1,204 @@
+---
+title: Events
+description: "Time-limited events, active event tracking, and event spawning mechanics in Artifacts MMO."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an NPC.
+
+Each event has a **spawn rate** (chance to appear per minute) and a **duration** (how long it stays active).
+ 
+| Name               | Content                              |
+| ----------------   | ---------------------------------- |
+| Bandit Camp        |[Bandit Lizard (Monster)](https://artifactsmmo.com/encyclopedia/monsters/bandit_lizard) |
+| Portal (Demon)            |[Demon (Monster)](https://artifactsmmo.com/encyclopedia/monsters/demon)|
+| Portal (Efreet Sultan)             |[Efreet Sultan (Monster)](https://artifactsmmo.com/encyclopedia/monsters/efreet_sultan)|
+| Cult of Darkness   |[Cultist Emperor (Monster)](https://artifactsmmo.com/encyclopedia/monsters/cultist_emperor)|
+| Strange Apparition |[Strange Rocks (Resource)](https://artifactsmmo.com/encyclopedia/resources/strange_rocks)|
+| Magic Apparition   |[Magic Tree (Resource)](https://artifactsmmo.com/encyclopedia/resources/magic_tree)|
+| Rosenblood         |[Rosenblood (Monster)](https://artifactsmmo.com/encyclopedia/monsters/rosenblood)|
+| Corrupted Owlbear  |[Corrupted Owlbear (Monster)](https://artifactsmmo.com/encyclopedia/monsters/corrupted_owlbear)|
+| Corrupted Ogre  |[Corrupted Ogre (Monster)](https://artifactsmmo.com/encyclopedia/monsters/corrupted_ogre)|
+| Corrupted Portal |[Grimlet (Monster)](https://artifactsmmo.com/encyclopedia/monsters/grimlet)|
+| Fish Merchant       |[Fish Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/fish_merchant)|
+| Timber Merchant       |[Timber Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/timber_merchant)|
+| Herbal Merchant        |[Herbal Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/herbal_merchant)|
+| Nomadic Merchant        |[Nomadic Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/nomadic_merchant)|
+| Gemstone Merchant         |[Gemstone Merchant (NPC)](https://artifactsmmo.com/encyclopedia/npcs/gemstone_merchant)|
+
+## All Events
+
+You can view the full list of all possible events (including spawn rate, duration, content and maps) using this request:
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/events/' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/events/';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/events/"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    events = client.events.get_all()
+    for event in events.data:
+        print(f"{event.name} ({event.code}) duration={event.duration}min")
+  ```
+  </TabItem>
+</Tabs>
+
+Each event contains:
+
+```http title="JSON"
+{
+  "name": "Bandit Camp",
+  "code": "bandit_camp",
+  "content": {
+    "type": "monster",
+    "code": "bandit_lizard"
+  },
+  "maps": [
+    { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", "skin": "desert_1" }
+  ],
+  "duration": 30,
+  "rate": 6
+}
+```
+
+| Field | Description |
+|---|---|
+| `content.type` | Type of content: `monster`, `resource`, or `npc`. |
+| `content.code` | Code of the monster, resource, or NPC. |
+| `maps` | List of possible maps where the event can appear. |
+| `duration` | Duration in minutes. |
+| `rate` | Spawn rate: the event has a 1/rate chance per minute of appearing. |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_events_events_get)
+
+## Active Events
+
+You can view all currently active events using this request:
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/events/active' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/events/active';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/events/active"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    active = client.events.get_all_active()
+    for event in active.data:
+        print(f"{event.name} at ({event.map.x},{event.map.y}) expires {event.expiration}")
+  ```
+  </TabItem>
+</Tabs>
+
+Each active event contains:
+
+```http title="JSON"
+{
+  "name": "Bandit Camp",
+  "code": "bandit_camp",
+  "map": { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", ... },
+  "previous_map": { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", ... },
+  "duration": 30,
+  "expiration": "2025-01-15T13:00:00.000Z",
+  "created_at": "2025-01-15T12:30:00.000Z"
+}
+```
+
+| Field | Description |
+|---|---|
+| `map` | The current map where the event is active (with event content). |
+| `previous_map` | The original map data before the event spawned (previous content/skin). |
+| `duration` | Duration in minutes. |
+| `expiration` | When the event will end. |
+| `created_at` | When the event started. |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get)
+
+## Related
+
+- [Maps & Movement](/concepts/maps_and_movement/) — Event locations on the world map
+- [Combat & Stats](/concepts/stats_and_fights/) — Fighting event monsters
+- [API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get) — Browse all active events

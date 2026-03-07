@@ -1,0 +1,340 @@
+---
+title: Equipment
+description: "All item types, equipment slots, conditions, runes, utilities, and how to equip/unequip in Artifacts MMO."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ItemPreview from '../../../components/site/ItemPreview.astro';
+
+Your character has 15 equipment slots that allow you to modify your stats and add unique effects to your character.
+
+## Equipment Types
+
+Here are the categories of equipment available in the game:
+
+| Type | Description |
+|---|---|
+| `weapon` | Melee or ranged weapons that provide elemental attacks. |
+| `shield` | Defensive off-hand equipment. |
+| `helmet` | Head armor. |
+| `body_armor` | Torso armor. |
+| `leg_armor` | Leg armor. |
+| `boots` | Foot armor. |
+| `ring` | Accessory worn in ring slots (2 slots available). |
+| `amulet` | Neck accessory. |
+| `artifact` | Special equipment (3 slots, each must be a different artifact). |
+| `utility` | Consumables automatically used in combat (2 slots, each must be different). |
+| `rune` | Special combat abilities |
+| `bag` | Increases inventory capacity. |
+
+:::note
+**Artifact slots** must each contain a different artifact. Similarly, **utility slots** must each contain a different utility item.
+:::
+
+---
+
+
+## Item Schema
+
+Items use an effects system that allows you to modify the character's stats. There are many effects, including basic effects that grant stats, as well as more complex effects for utilities and runes.
+
+Here are examples of equipment with their effects:
+
+<ItemPreview codes="adventurer_vest,enchanted_bow,jester_hat" />
+
+
+## Utilities
+
+Utilities are special items that activate automatically during combat when specific conditions are met. They are consumed when triggered.
+
+
+Here are examples of utilities with their effects:
+
+<ItemPreview codes="air_boost_potion,small_antidote,health_potion" />
+
+
+| Keyword | Effect |
+|---|---|
+| Restore | Heals X HP when the player has lost 50% of their life. |
+| Splash Restore | Restores X HP at the start of the turn to the ally who has lost the most health (if below 50% HP). |
+| Boost | Gives X (HP, % damage, % res, prospecting, critical strike) at the start of fight. |
+| Antipoison | At the beginning of the turn, if the character has at least one poison, removes X poison damage. |
+
+[View all utilities](https://artifactsmmo.com/encyclopedia/items?type=utility)
+
+## Runes
+
+Runes grant special combat abilities. You can obtain them from NPCs (e.g., NPC at position 6,13 on the overworld).
+
+Here are examples of runes with their effects:
+
+<ItemPreview codes="lifesteal_rune,healing_rune,protection_rune" />
+
+| Keyword | Effect |
+|---|---|
+| Burn | On first turn, applies a burn effect of X% of your attack (all elements). Damage is applied each turn and decreases by 10% each time. |
+| Lifesteal | Restores X% of the total attack (all elements) in HP after a critical strike. |
+| Healing | Every 3 played turns, restores X% of HP at the start of the turn. |
+| Healing Aura | Every 2 played turns, heals all allies for X% of their max HP. Does not heal the caster. |
+| Vampiric Strike | After a critical hit, heals the ally with the lowest HP for X% of damage dealt. Once every 3 turns. Does not heal the caster. |
+| Frenzy | On critical hit, grants X% damage to self and allies until end of next turn. |
+| Shell | When below 40% HP, gains X% resistance (all elements) for 3 turns. Once per combat. Boss fights only. |
+| Guard | If an ally is below 50% HP, protects the lowest-HP-% ally by redirecting X% of their damage to this character until the start of next turn. Max 3 times per combat. |
+
+[View all runes](https://artifactsmmo.com/encyclopedia/items?type=rune)
+
+
+## Retrieving Items
+
+
+To obtain a paginated list of all items, use the following endpoint. The `type` filter is particularly useful for finding all equipment of a specific category. For example, to retrieve all weapons:
+
+
+**Endpoint:** `GET /items`
+
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/items?type=weapon' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/items?type=weapon';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/items"
+params = {"type": "weapon"}
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    weapons = client.items.get_all(type="weapon")
+  ```
+  </TabItem>
+</Tabs>
+| Parameter | Type | Description |
+|---|---|---|
+| `name` | `string` | Filter by item name. |
+| `type` | `string` | Filter by item type. Returns all items of that type (see [Equipment Types](#equipment-types) above). |
+| `min_level` | `integer` | Filter by minimum item level. |
+| `max_level` | `integer` | Filter by maximum item level. |
+| `craft_skill` | `string` | Filter by crafting skill (e.g. `weaponcrafting`, `gearcrafting`, `jewelrycrafting`, `cooking`, `woodcutting`, `mining`, `alchemy`). |
+| `craft_material` | `string` | Filter by crafting material item code. Returns all items that use this material in their recipe. |
+| `page` | `integer` | Page number (default: 1). |
+| `size` | `integer` | Page size (default: 50, max: 10000). |
+
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
+
+---
+
+## Actions
+
+
+### Equip Conditions
+
+Items may have conditions that must be met before equipping. Conditions use the `ConditionSchema`:
+
+```http title="ConditionSchema"
+{
+  "code": "level",
+  "operator": "gt",
+  "value": 9
+}
+```
+
+| Operator | Meaning |
+|---|---|
+| `eq` | Equal to |
+| `ne` | Not equal to |
+| `gt` | Greater than |
+| `lt` | Less than |
+| `cost` | Costs a resource to equip |
+| `has_item` | Must have item in inventory |
+| `achievement_unlocked` | Must have unlocked an achievement |
+
+The `code` field can reference any character stat (e.g., `level`, `mining_level`, `attack_fire`).
+
+
+### Equip Item
+
+To equip an item when you meet the conditions, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/equip`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/equip \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "iron_sword",
+  "slot": "weapon"
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/equip';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ code: "iron_sword", slot: "weapon" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/equip"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "iron_sword", "slot": "weapon"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.equipment.equip(code="iron_sword", slot="weapon")
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to equip. |
+| `slot` | Equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
+| `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
+
+### Unequip Item
+
+:::caution
+You must have at least **1 free inventory slot** to unequip. Your character must also have enough HP to survive any stat changes from unequipping.
+:::
+
+To unequip an item, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/unequip`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/unequip \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "slot": "weapon"
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/unequip';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ slot: "weapon" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/unequip"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"slot": "weapon"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.equipment.unequip(slot="weapon")
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `slot` | Equipment slot to unequip. |
+| `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)

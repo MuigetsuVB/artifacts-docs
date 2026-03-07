@@ -1,0 +1,294 @@
+---
+title: NPCs & Trading
+description: "NPC types, shop inventories, buying and selling items from NPCs in Artifacts MMO."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the [event system](/concepts/events). 
+
+## NPC Types
+
+| Type | Description |
+|------|-------------|
+| `merchant` | Buys and sells items for gold. |
+| `trader` | Trades items for other items (currency is an item code instead of gold). |
+
+
+Voici un exemple pour afficher des informations sur des monstres :
+
+When viewing the items on an NPC, if the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
+
+## List of NPCs
+
+You can use this GET request to view the list of all existing NPCs.
+  
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/npcs';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/npcs/details"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    npcs = client.npcs.get_all()
+    for npc in npcs.data:
+        print(f"{npc.code} ({npc.type.value})")
+  ```
+  </TabItem>
+</Tabs>
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
+
+## Buying/selling/trading items
+
+You can use this GET request to view the list of items that an NPC sells/buys/trades.
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url https://api.artifactsmmo.com/npcs/items/{npc_code} \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/npcs/items/{npc_code}';
+const options = {method: 'GET', headers: {Accept: 'application/json'}};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/npcs/items/{npc_code}"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    items = client.npcs.get_items("{npc_code}")
+    for item in items.data:
+        print(f"{item.code} buy={item.buy_price} sell={item.sell_price}")
+  ```
+  </TabItem>
+</Tabs>
+
+Each item entry contains:
+
+| Field | Description |
+|---|---|
+| `code` | Item code. |
+| `npc` | NPC code. |
+| `currency` | Currency used: `gold` or an item code for trades. |
+| `buy_price` | Price to buy from the NPC (null if the NPC doesn't sell this item). |
+| `sell_price` | Price the NPC pays when you sell (null if the NPC doesn't buy this item). |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_npc_items_npcs_items__code__get)
+
+## Actions
+
+To buy or sell an item, you must be on a map with an NPC. [To learn more about the map, click here.](https://docs.artifactsmmo.com/concepts/maps_and_movement)
+
+You can use this POST request to buy an item.
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/buy"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.trading.npc_buy(code="wooden_staff", quantity=1)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to buy. |
+| `quantity` | Number of items to buy (1–100). |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
+
+You can use this POST request to sell an item.
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/sell"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.trading.npc_sell(code="wooden_staff", quantity=1)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to sell. |
+| `quantity` | Number of items to sell (1–100). |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post)
+
+## Related
+
+- [Maps & Movement](/concepts/maps_and_movement/) — Finding NPC locations on the map
+- [Equipment](/concepts/equipment) — Items you can buy and sell
+- [Tasks](/concepts/tasks/) — Accepting tasks from task masters
+- [Grand Exchange](/concepts/grand_exchange/) — Player-to-player trading alternative

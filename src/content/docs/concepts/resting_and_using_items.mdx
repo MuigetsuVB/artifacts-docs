@@ -1,0 +1,191 @@
+---
+title: Resting & Using Items
+description: "HP restoration through resting, consumable items, and using utility items in Artifacts MMO."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ItemPreview from '../../../components/site/ItemPreview.astro';
+
+## Rest 
+
+Resting allows you to fully recover your hit points. The cooldown is **1 second per 1% of missing HP** (rounded up), with a minimum of **3 seconds**.
+
+For example, if your character has lost 50% of their HP, the cooldown will be 50 seconds.
+
+You can rest by using this request:
+
+**Endpoint:** `POST /my/{name}/action/rest`
+ 
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/rest \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/rest"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    result = char.rest()
+    print(f"Restored {result.hp_restored} HP")
+  ```
+  </TabItem>
+</Tabs>
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
+
+
+---
+
+## Using items
+
+You can use all items categorized as consumable. 
+
+There are several types of consumables:
+
+| Keyword | Condition                                            |
+| ------- | ---------------------------------------------------- |
+| Heal | Restores x health points to your character. |
+| Gold   | Adds x gold to your character's inventory. |
+| Teleport   | Teleport to Map ID: x |
+
+
+### Conditions
+
+To use an item, your character must meet all the item's conditions. Conditions use the `ConditionSchema` logic, which can reference any character stat (e.g., `level`, `mining_level`, `hp`, etc.) using various operators:
+
+| Operator | Meaning |
+|---|---|
+| `eq` | Equal to |
+| `ne` | Not equal to |
+| `gt` | Greater than |
+| `lt` | Less than |
+
+
+:::note
+Using a consumable has a fixed cooldown of **3 seconds**, regardless of the quantity used. Heal effects are capped at your maximum HP — you cannot overheal.
+:::
+
+Here are some examples of consumables:
+<ItemPreview codes="cooked_beef,bag_of_gold,recall_potion" />
+
+
+### Use Action
+
+You can use an item by using this request.
+
+**Endpoint:** `POST /my/{name}/action/use`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/use \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/use"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    char.inventory.use(code="healing_potion", quantity=1)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `code` | The consumable item code to use. |
+| `quantity` | Number of items to use. |
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
+
