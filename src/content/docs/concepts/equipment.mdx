@@ -6,11 +6,11 @@ description: "All item types, equipment slots, conditions, runes, utilities, and
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ItemPreview from '../../../components/site/ItemPreview.astro';
 
-Votre personnage possède 15 emplacements d'équipement qui vous permettrent de modifier vos statistiques et d'ajouter des effects uniques à votre personnage.
+Your character has 15 equipment slots that allow you to modify your stats and add unique effects to your character.
 
 ## Equipment Types
 
-Voici les catégories d'équipements disponibles dans le jeu :
+Here are the categories of equipment available in the game:
 
 | Type | Description |
 |---|---|
@@ -36,9 +36,9 @@ Voici les catégories d'équipements disponibles dans le jeu :
 
 ## Item Schema
 
-Les items utilisent un système d'effects qui permettent de modifier les statistiques du personnage. Il existe un tas d'effects dont les effects de base qui permettrent de gagner des statistiques mais aussi des effects plus complexe pour les utilites et les runes.
+Items use an effects system that allows you to modify the character's stats. There are many effects, including basic effects that grant stats, as well as more complex effects for utilities and runes.
 
-Voici des exemples d'équipements avec leurs effets :
+Here are examples of equipment with their effects:
 
 <ItemPreview codes="adventurer_vest,enchanted_bow,jester_hat" />
 
@@ -48,7 +48,7 @@ Voici des exemples d'équipements avec leurs effets :
 Utilities are special items that activate automatically during combat when specific conditions are met. They are consumed when triggered.
 
 
-Voici des exemples d'utilitaires avec leurs effets :
+Here are examples of utilities with their effects:
 
 <ItemPreview codes="air_boost_potion,small_antidote,health_potion" />
 
@@ -66,7 +66,7 @@ Voici des exemples d'utilitaires avec leurs effets :
 
 Runes grant special combat abilities. You can obtain them from NPCs (e.g., NPC at position 6,13 on the overworld).
 
-Voici des exemples de runes avec leurs effets :
+Here are examples of runes with their effects:
 
 <ItemPreview codes="lifesteal_rune,healing_rune,protection_rune" />
 
@@ -87,7 +87,7 @@ Voici des exemples de runes avec leurs effets :
 ## Retrieving Items
 
 
-Pour obtenir une liste paginée de tous les objets, utilisez le point de terminaison suivant. Le filtre `type` est particulièrement utile pour trouver tous les équipements d'une catégorie spécifique. Par exemple, pour récupérer toutes les armes :
+To obtain a paginated list of all items, use the following endpoint. The `type` filter is particularly useful for finding all equipment of a specific category. For example, to retrieve all weapons:
 
 
 **Endpoint:** `GET /items`

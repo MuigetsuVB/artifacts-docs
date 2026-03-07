@@ -4,6 +4,7 @@ description: "Gathering and crafting skills, resource nodes, workshops, XP rates
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ResourcePreview from '../../../components/site/ResourcePreview.astro';
 
 
 Your characters have 8 skills that can gain XP and reach up to level 50. They allow you to gather resources and craft items.
@@ -79,7 +80,13 @@ with ArtifactsClient() as client:
 
 ## Gathering
 
-To gathering a resource, your character must be on a map with a resource. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+Gathered resources are the foundation of the crafting system, as they are essential for almost every crafting recipe in the game.
+To gather a resource, your character must be located on a map tile that contains it. For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
+
+Here are some examples of resources:
+
+<ResourcePreview codes="copper_rocks,birch_tree,salmon_spot,torch_cactus" />
+
 
 :::caution
 If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
@@ -269,7 +276,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ## Crafting
 
-To craft an item, your character must be on a map with a workshop of the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+Crafting is an essential core mechanic; the vast majority of items in the game—including equipment, jewelry, weapons, potions, and food—are entirely player-crafted. To craft an item, your character must be on a map tile with a workshop for the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
 :::caution
 If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.

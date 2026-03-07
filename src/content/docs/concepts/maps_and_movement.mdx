@@ -4,6 +4,7 @@ description: "World map structure, layers, content types, access conditions, tra
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import MapPreview from '../../../components/site/MapPreview.astro';
 
 The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
 
@@ -20,37 +21,9 @@ Every map is uniquely identified by:
 - Or its numeric `map_id` 
 
 ---
-
 ## Content 
 
 If something is present on a map tile, it will be listed under `interactions.content`.
-
-
-**Example:**
-
-```http title="JSON"
-{
-    "data": {
-        "map_id": 1231,
-        "name": "Forest",
-        "skin": "forest_3",
-        "x": -5,
-        "y": -5,
-        "layer": "overworld",
-        "access": {
-            "type": "standard",
-            "conditions": []
-        },
-        "interactions": {
-            "content": {
-                "type": "monster",
-                "code": "red_slime"
-            },
-            "transition": null
-        }
-    }
-}
-```
 
 A map tile can contain different types of content, indicated by the `content.type` field. Here are the possible types you may encounter:
 
@@ -62,9 +35,11 @@ A map tile can contain different types of content, indicated by the `content.typ
 - `grand_exchange`: Access to the grand exchange.
 - `tasks_master`: A tasks master NPC is present.
 
+Here are examples of maps with different types of content:
+
+<MapPreview codes="223,277,328,433" />
 
 ---
-
 
 ## Transition
 
@@ -72,30 +47,9 @@ A transition represents a way to move instantly from one map tile to another, su
 
 A map tile can define a `transition` under `interactions.transition`, specifying the destination and any conditions required to use it.
 
-**Example:**
-```http title="JSON"
-{
-  "map_id": 572,
-  "name": "Underground",
-  "skin": "mine_1",
-  "x": -2,
-  "y": 6,
-  "layer": "underground",
-  "access": {
-    "type": "standard",
-    "conditions": []
-  },
-  "interactions": {
-    "transition": {
-      "map_id": 571,
-      "x": -2,
-      "y": 6,
-      "layer": "overworld",
-      "conditions": []
-    }
-  }
-}
-```
+Here are examples of maps with different transitions:
+
+<MapPreview codes="133,571,134" />
 
 ---
 
@@ -125,80 +79,6 @@ The generic operators used for items also work on maps. It can use any character
 | `lt` | Less than |
 
 
-#### Examples
-
-> The examples use fictional maps created to help illustrate how conditions work.
-
-Here is an example where you must have less than 1000 HP to use a transition.
-
-```http title="JSON"
-
-{
-  "data": {
-    "map_id": 1231,
-    "name": "Sandwhisper Isle",
-    "skin": "desertisland_10",
-    "x": -3,
-    "y": 19,
-    "layer": "overworld",
-    "access": {
-      "type": "standard",
-      "conditions": []
-    },
-    "interactions": {
-      "content": null,
-      "transition": {
-        "map_id": 1233,
-        "x": -3,
-        "y": 19,
-        "layer": "interior",
-        "conditions": [
-          {
-            "code": "hp",
-            "operator": "lt",
-            "value": 1000
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-Here is an example where you must have woodcutting level 30 or higher to enter a map.
-
-```http title="JSON"
-
-{
-  "data": {
-    "map_id": 3012,
-    "name": "Forest",
-    "skin": "forest_3",
-    "x": 10,
-    "y": 10,
-    "layer": "overworld",
-    "access": {
-      "type": "standard",
-      "conditions": [
-        {
-          "code": "woodcutting_level",
-          "operator": "gt",
-          "value": 30
-        }
-      ]
-    },
-    "interactions": {
-      "content": {
-        "type": "resource",
-        "code": "magic_tree"
-      },
-      "transition": null
-    }
-  }
-}
-
-```
-
 ### Maps condition operators
 The following operators are specific to the map system. They can be used on access and transition conditions:
 
@@ -209,103 +89,12 @@ The following operators are specific to the map system. They can be used on acce
 | `achievement_unlocked` | Specific achievement must be completed | N/A | `code` = achievement identifier. |
 
 
-#### Examples
+Here are some examples of maps using access or transition conditions:
 
-> The examples use fictional maps created to help illustrate how conditions work.
+<MapPreview codes="655,934,1234" />
 
-Here is an example of a map where you must pay an item to use the transition. On successful transition, one `lich_tomb_key` is consumed.
+---
 
-```http title="JSON"
-{
-  "map_id": 655,
-  "name": "Graveyard",
-  "skin": "forest_skeleton5",
-  "x": 9,
-  "y": 7,
-  "layer": "overworld",
-  "access": {
-    "type": "standard",
-    "conditions": []
-  },
-  "interactions": {
-    "transition": {
-      "map_id": 656,
-      "x": 9,
-      "y": 7,
-      "layer": "underground",
-      "conditions": [
-        {
-          "code": "lich_tomb_key",
-          "operator": "cost",
-          "value": 1
-        }
-      ]
-    }
-  }
-}
-```
-
-Here is an example of a map where you must have completed an achievement to access it.
-
-```http title="JSON"
-{
-  "map_id": 1234,
-  "name": "Sandwhisper Isle",
-  "skin": "desertisland_11",
-  "x": -2,
-  "y": 19,
-  "layer": "overworld",
-  "access": {
-    "type": "standard",
-    "conditions": [
-      {
-        "code": "secure_the_island",
-        "operator": "achievement_unlocked",
-        "value": 1
-      }
-    ]
-  },
-  "interactions": {
-    "content": {
-      "type": "bank",
-      "code": "bank"
-    }
-  }
-}
-```
-
-Here is an example where you must have an item either in your inventory or equipped to use the transition.
-
-```http title="JSON"
-{
-  "map_id": 934,
-  "name": "Forest",
-  "skin": "forest_house1",
-  "x": 0,
-  "y": 13,
-  "layer": "overworld",
-  "access": {
-    "type": "standard",
-    "conditions": []
-  },
-  "interactions": {
-    "content": null,
-    "transition": {
-      "map_id": 935,
-      "x": 0,
-      "y": 13,
-      "layer": "interior",
-      "conditions": [
-        {
-          "code": "cultist_cloak",
-          "operator": "has_item",
-          "value": 1
-        }
-      ]
-    }
-  }
-}
-```
 ## Retrieving Maps
 
 ### All Maps

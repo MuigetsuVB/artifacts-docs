@@ -16,7 +16,9 @@ You can use this to optimize logistics or simply transfer gear, resources, or cu
 
 ### Give Items
 
-To give one or more items to another of your characters, use the following POST request:
+To give one or more items to another of your characters, use the following request:
+
+**Endpoint:** `POST /my/{sender}/action/give/item`
 
 <Tabs>
   <TabItem label="cURL">
@@ -112,7 +114,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ### Give Gold
 
-To transfer gold to another of your characters on the same map, use the following POST request:
+To transfer gold to another of your characters on the same map, use the following request:
+
+**Endpoint:** `POST /my/{sender}/action/give/gold`
 
 <Tabs>
   <TabItem label="cURL">
@@ -186,9 +190,3 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Amount of gold to give. |
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post)
-
-## Related
-
-- [Inventory & Bank](/concepts/inventory_and_bank/) — Managing items and gold
-- [Pending Items](/concepts/pending_items/) — Claiming overflow items
-- [Maps & Movement](/concepts/maps_and_movement/) — Characters must be at the same location
