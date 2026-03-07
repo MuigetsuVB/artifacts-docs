@@ -4,12 +4,13 @@ description: "Character stats, damage formulas, combat mechanics, monster types,
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import MonsterPreview from '../../../components/site/MonsterPreview.astro';
 
 Combat is a turn-based system where stats determine damage output, defense, and turn order. This page covers all character stats, how combat works, and the fight action.
 
 ## Stats
 
-Your character's stats depend on the equipment you have equipped. For more information about equipment, see [Equipment & Utilites](/concepts/equipment_and_utilities/).
+Your character's stats depend on the equipment you have equipped. For more information about equipment, see [Equipment](/concepts/equipment).
 
 | Stat | Description |
 |---|---|
@@ -155,13 +156,18 @@ Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
 **Example:** 20 turns + 10 haste → `20 × 2 - (0.1 × 40) = 36` seconds (instead of 40). Minimum cooldown is **5 seconds**.
 
 
+
+
 ### Monster Types
+
+There are several types of monsters that can either fight alone or in groups.
 
 | Type | Description | XP Rate |
 |---|---|---|
 | `normal` | Standard monsters found throughout the world. | ×1 |
 | `elite` | Stronger monsters with better stats and drops. | ×1.4 |
 | `boss` | Powerful monsters that can be fought with up to 3 characters. | ×2 |
+
 
 :::caution
 If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
@@ -171,53 +177,9 @@ If your character is more than **5 levels above** the monster, you only earn **7
 
 Some monsters have special abilities called effects that activate during combat in addition to their normal attacks. You can view a monster's effects in the `effects` array of its API response.
 
-**Example:** A standard monster response.
-```http title="JSON"
-{
-  "data": {
-    "name": "Spider",
-    "code": "spider",
-    "level": 20,
-    "type": "normal",
-    "hp": 550,
-    "attack_fire": 40,
-    "attack_earth": 0,
-    "attack_water": 40,
-    "attack_air": 0,
-    "res_fire": 0,
-    "res_earth": 5,
-    "res_water": -30,
-    "res_air": 5,
-    "critical_strike": 5,
-    "initiative": 100,
-    "effects": [
-      {
-        "code": "poison",
-        "value": 20,
-        "description": "At the start of its first turn, applies a 20 poison to its opponent. Loses 20 HP per turn."
-      }
-    ],
-    "min_gold": 0,
-    "max_gold": 10,
-    "drops": [
-      {
-        "code": "old_boots",
-        "rate": 300,
-        "min_quantity": 1,
-        "max_quantity": 1
-      },
-      {
-        "code": "spider_leg",
-        "rate": 12,
-        "min_quantity": 1,
-        "max_quantity": 2
-      }
-    ]
-  }
-}
-```
+Here are some examples of monsters with effects:
 
-In the example above, the Spider has the `poison` effect with a value of `20`. Here are all the possible effects you might encounter:
+<MonsterPreview codes="spider,cultist_emperor,rosenblood" />
 
 | Keyword | Effect |
 |---|---|

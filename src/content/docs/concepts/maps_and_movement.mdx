@@ -540,20 +540,12 @@ with ArtifactsClient() as client:
 
 ---
 
----
 
 ## Actions
-
-Navigating the world is a core aspect of your character's activities. Below are the actions available to move across tiles and transition between different areas or layers.
 
 ### Move
 
 The movement system uses A* pathfinding to find the shortest path, bypassing blocked maps. The cooldown is 5 seconds per map.
-
-You must supply either:
-- Coordinates: `{ "x": <int>, "y": <int> }` (on the current layer, overworld by default)
-- Or a direct `{ "map_id": <int> }` (can target any layer)
-
 
 To move your character, use the following endpoint:
 
