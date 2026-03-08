@@ -13,16 +13,12 @@ The spec file is publicly available at:
 https://api.artifactsmmo.com/openapi.json
 ```
 
-## Interactive docs (Swagger UI)
+## Interactive docs 
 
 The simplest way to explore and test the API is the hosted Swagger UI. No setup required — just open the link, authorize with your token, and send requests directly from your browser.
 
 **[Open the interactive API docs →](https://api.artifactsmmo.com/docs/#/)**
 
-To authenticate in the Swagger UI:
-1. Click the **Authorize** button (🔒) at the top right
-2. In the `BearerAuth` field, enter your token (without the `Bearer ` prefix)
-3. Click **Authorize** — all subsequent requests will include the header automatically
 
 ## Import into Postman
 
@@ -63,5 +59,5 @@ openapi-generator-cli generate \
 ```
 
 :::tip[Use the Python SDK instead]
-For Python, the official [artifacts-mmo SDK](/sdks/python/introduction) is a better starting point than a generated client — it adds game-specific helpers, auto-cooldown handling, and typed Pydantic models.
+For Python, the official [artifacts-mmo SDK](/sdks/python/introduction/) is a better starting point than a generated client — it adds game-specific helpers, auto-cooldown handling, and typed Pydantic models.
 :::

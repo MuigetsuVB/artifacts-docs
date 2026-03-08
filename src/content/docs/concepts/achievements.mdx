@@ -3,7 +3,7 @@ title: Achievements
 description: "Achievement types, objectives, rewards, account-level progress tracking, and season badges in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 
 Achievements are objectives to be met during the season by all your characters. They allow you to earn gold, items, and achievements. Achievement points allow you to obtain seasonal rewards.
@@ -41,7 +41,7 @@ The achievement is completed when **all objectives** reach their required total.
 
 ## Rewards
 
-When you complete an achievement, you earn items rewards that are sent to your [pending items](/concepts/characters-and-account/#pending-items). You can claim them with any character on your account.
+When you complete an achievement, you earn items rewards that are sent to your [pending items](/concepts/pending_items/). You can claim them with any character on your account.
 
 ```http title="JSON"
 "rewards": {
@@ -67,15 +67,15 @@ To view your account's list of achievements, including progress on each objectiv
 
 **Endpoint:** `GET /accounts/{account}/achievements`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get" sdkUrl="https://python.sdk.artifactsmmo.com/account.html#account-achievements">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/accounts/{account}/achievements';
 const options = {
@@ -91,8 +91,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -105,8 +105,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -115,10 +115,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for a in achievements.data:
         print(f"{a.code}: {a.current}/{a.total}")
   ```
-  </TabItem>
-</Tabs>
-
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
+  </Fragment>
+</ApiSdkTabs>
 
 ---
 
@@ -128,15 +126,15 @@ To view the full list of achievements, use the following request:
 
 **Endpoint:** `GET /achievements`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#achievements">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/achievements' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/achievements';
 const options = {
@@ -152,8 +150,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -166,8 +164,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -176,7 +174,5 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for a in achievements.data:
         print(f"{a.name} ({a.type.value})")
   ```
-  </TabItem>
-</Tabs>
-
-You can also view them on the [website](https://www.artifactsmmo.com/encyclopedia/achievements) or the [API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).
+  </Fragment>
+</ApiSdkTabs>

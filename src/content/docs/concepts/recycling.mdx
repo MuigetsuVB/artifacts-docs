@@ -3,7 +3,7 @@ title: Recycling
 description: "How to recycle equipment to recover crafting materials in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 Recycling lets you break down crafted equipment to recover some of the original crafting materials. It's useful for clearing unwanted gear or recovering resources. To recycle an item, your character must be on a map with a workshop of the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
@@ -30,8 +30,8 @@ To recycle an item at the matching skill's workshop, use this endpoint:
 
 **Endpoint:** `POST /my/{name}/action/recycling`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post" sdkUrl="https://python.sdk.artifactsmmo.com/skills.html#recycling">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/recycling \
@@ -43,8 +43,8 @@ To recycle an item at the matching skill's workshop, use this endpoint:
   "quantity": 5
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/recycling';
 const options = {
@@ -65,8 +65,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -81,8 +81,8 @@ data = {"code": "iron_sword", "quantity": 5}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -90,13 +90,13 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.skills.recycle(code="iron_sword", quantity=5)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `code` | The item code to recycle. |
 | `quantity` | Number of items to recycle. |
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post)
+
 

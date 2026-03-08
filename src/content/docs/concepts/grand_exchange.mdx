@@ -3,7 +3,7 @@ title: Grand Exchange
 description: "Player-to-player marketplace for buying, selling, and trading items in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
  
 The Grand Exchange lets you buy and sell items with other players through **sell orders** and **buy orders**. To interact with the Grand Exchange, your character must be on a map containing a Grand Exchange. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
@@ -18,16 +18,16 @@ You can browse all active orders (sell and buy) using the following request. Use
 
 **Endpoint:** `GET /grandexchange/orders`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#browse-orders">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell';
 const options = {
@@ -46,8 +46,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -61,8 +61,8 @@ params = {"code": "ITEM_CODE", "type": "sell"}
 response = requests.get(url, headers=headers, params=params)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -71,8 +71,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for order in orders.data:
         print(f"{order.code} qty={order.quantity} price={order.price}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Parameter | Description |
 |---|---|
@@ -80,7 +80,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `type` | Filter by order type: `sell` or `buy`. |
 | `account` | Filter by account (requires `type` to be specified). |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get)
+
 
 ## Sales history
 
@@ -88,16 +88,16 @@ To consult an item's sales history over the last 7 days, use the following reque
 
 **Endpoint:** `GET /grandexchange/history/{code}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#price-history">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}';
 const options = {
@@ -116,8 +116,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -130,8 +130,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -140,10 +140,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for entry in history.data:
         print(entry)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get)
+
 
 ---
 
@@ -155,8 +155,8 @@ To put items up for sale, use the following request. The items are removed from 
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/sell`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#create-a-sell-order">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order \
@@ -169,8 +169,8 @@ To put items up for sale, use the following request. The items are removed from 
   "price": 100
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order';
 const options = {
@@ -191,8 +191,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -207,8 +207,8 @@ data = {"code": "iron_sword", "quantity": 5, "price": 100}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -216,8 +216,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.ge.sell(code="iron_sword", quantity=5, price=100)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -225,7 +225,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Number of items to sell (1–100). |
 | `price` | Price per unit. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post)
+
 
 ### Buy from a sell order
 
@@ -233,8 +233,8 @@ To buy items from an existing sell order, first browse the sell orders to find t
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/buy`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#buy-an-item">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy \
@@ -246,8 +246,8 @@ To buy items from an existing sell order, first browse the sell orders to find t
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy';
 const options = {
@@ -268,8 +268,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -284,8 +284,8 @@ data = {"id": "ORDER_ID", "quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -293,8 +293,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.ge.buy(id="ORDER_ID", quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -303,7 +303,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 The gold is deducted from your character and the items are added to your inventory immediately.
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post)
+
 
 ---
 
@@ -319,8 +319,8 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#create-a-buy-order">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order \
@@ -333,8 +333,8 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
   "price": 20
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order';
 const options = {
@@ -355,8 +355,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -371,8 +371,8 @@ data = {"code": "iron_ore", "quantity": 50, "price": 20}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -380,8 +380,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.ge.create_buy_order(code="iron_ore", quantity=50, price=20)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -389,7 +389,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Number of items you want to buy (1–100). |
 | `price` | The price per unit you are willing to pay. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post)
+
 
 ### Fill a buy order
 
@@ -397,8 +397,8 @@ To sell your items to an existing buy order, use the following request. The item
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/fill`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#fill-a-buy-order">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill \
@@ -410,8 +410,8 @@ To sell your items to an existing buy order, use the following request. The item
   "quantity": 10
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill';
 const options = {
@@ -432,8 +432,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -448,8 +448,8 @@ data = {"id": "BUY_ORDER_ID", "quantity": 10}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -457,8 +457,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.ge.fill(id="BUY_ORDER_ID", quantity=10)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -469,7 +469,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 You cannot fill your own buy orders. The items purchased through a buy order are delivered to the buyer's [**pending items**](/concepts/pending_items). The buyer can then claim them with any character on their account.
 :::
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post)
+
 
 ---
 
@@ -479,8 +479,8 @@ You can cancel any of your active orders (sell or buy). To find an order to canc
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#cancel-an-order">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel \
@@ -491,8 +491,8 @@ You can cancel any of your active orders (sell or buy). To find an order to canc
   "id": "ORDER_ID"
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel';
 const options = {
@@ -513,8 +513,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -529,8 +529,8 @@ data = {"id": "ORDER_ID"}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -538,11 +538,11 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.ge.cancel(id="ORDER_ID")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 - **Cancelling a sell order**: the items are returned to your character's inventory (requires space).
 - **Cancelling a buy order**: the gold is refunded to your character.
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post)
+
 

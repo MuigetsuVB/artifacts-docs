@@ -3,7 +3,7 @@ title: Skills
 description: "Gathering and crafting skills, resource nodes, workshops, XP rates, and the experience-to-level table in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import ResourcePreview from '../../../components/site/ResourcePreview.astro';
 
 
@@ -26,15 +26,15 @@ You can view a character, including their skills, using this request:
 
 **Endpoint:** `GET /characters/{name}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#character-info">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
 const options = {
@@ -52,8 +52,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -63,8 +63,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -72,10 +72,10 @@ with ArtifactsClient() as client:
     character = client.characters.get("YOUR_CHARACTER_NAME")
     print(f"Skills for {character.name}: Mining {character.mining_level}, Woodcutting {character.woodcutting_level}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
 
 
 ## Gathering
@@ -102,15 +102,15 @@ To retrieve a paginated list of all resources, use the following endpoint:
 
 **Endpoint:** `GET /resources`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#resources">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/resources?page=1&size=50' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/resources?page=1&size=50';
 const options = {
@@ -126,8 +126,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -135,8 +135,8 @@ url = "https://api.artifactsmmo.com/resources"
 response = requests.get(url, params={"page": 1, "size": 50})
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -145,10 +145,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for r in page.data:
         print(f"{r.code} (lv{r.level}) drops: {[d.code for d in r.drops]}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get)
+
 
 ### Resource by Code
 
@@ -156,15 +156,15 @@ To retrieve specific resource details using its unique code, use the following e
 
 **Endpoint:** `GET /resources/{code}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_resource_resources__code__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#resources">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/resources/copper_rocks' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/resources/copper_rocks';
 const options = {
@@ -182,8 +182,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -193,8 +193,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -202,10 +202,10 @@ with ArtifactsClient() as client:
     resource = client.resources.get("copper_rocks")
     print(f"Resource: {resource.name}, Level: {resource.level}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_resource_resources__code__get)
+
 
 ### Gather Action
 
@@ -213,8 +213,8 @@ To gather a resource, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/action/gathering`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post" sdkUrl="https://python.sdk.artifactsmmo.com/skills.html#gathering">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/gathering \
@@ -222,8 +222,8 @@ To gather a resource, use the following endpoint:
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/gathering';
 const options = {
@@ -243,8 +243,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -258,8 +258,8 @@ headers = {
 response = requests.post(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -268,10 +268,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     result = char.skills.gather()
     print(f"+{result.details.xp}xp, got: {[d.code for d in result.details.items]}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
+
 
 
 ## Crafting
@@ -295,15 +295,15 @@ To retrieve a paginated list of all items craftable with a specific skill, use t
 
 **Endpoint:** `GET /items?craft_skill={skill}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get" sdkUrl="https://python.sdk.artifactsmmo.com/skills.html#crafting">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/items?craft_skill=weaponcrafting' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/items?craft_skill=weaponcrafting';
 const options = {
@@ -319,8 +319,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -328,8 +328,8 @@ url = "https://api.artifactsmmo.com/items"
 response = requests.get(url, params={"craft_skill": "weaponcrafting"})
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -338,10 +338,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for item in page.data:
         print(f"{item.code}: {item.name} (lv{item.level})")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
+
 
 ### Craft Action
 
@@ -349,8 +349,8 @@ To craft an item at a workshop, use the following endpoint. You must have the re
 
 **Endpoint:** `POST /my/{name}/action/crafting`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post" sdkUrl="https://python.sdk.artifactsmmo.com/skills.html#crafting">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/crafting \
@@ -361,8 +361,8 @@ To craft an item at a workshop, use the following endpoint. You must have the re
   "code": "iron_sword"
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/crafting';
 const options = {
@@ -383,8 +383,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -399,8 +399,8 @@ data = {"code": "iron_sword"}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -408,8 +408,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.skills.craft(code="iron_sword", quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -417,7 +417,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Number of items to craft (optional, default 1). |
 
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
+
 
 ## Experience to Level
 

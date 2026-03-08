@@ -3,7 +3,7 @@ title: Give Items & Gold
 description: "How to give items and gold between characters at the same map location in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 Your character can give items or gold to other characters on your account, as long as both characters are on the same map. This feature enables you to specialize some characters as dedicated transporters or traders, making it easier to manage resources within your team.
  
@@ -20,8 +20,8 @@ To give one or more items to another of your characters, use the following reque
 
 **Endpoint:** `POST /my/{sender}/action/give/item`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post" sdkUrl="https://python.sdk.artifactsmmo.com/trading.html#give-items">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/item \
@@ -36,8 +36,8 @@ To give one or more items to another of your characters, use the following reque
     ]
   }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/item';
 const options = {
@@ -64,8 +64,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -86,8 +86,8 @@ data = {
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 from artifacts.models.common import SimpleItemSchema
@@ -100,15 +100,15 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     ]
     char.trading.give_items(items=items, character="receiverName")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `character` | Name of the character who will receive the items. |
 | `items` | List of items to give (1–20 items). Each item has a `code` and `quantity`. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post)
+
 
 ---
 
@@ -118,8 +118,8 @@ To transfer gold to another of your characters on the same map, use the followin
 
 **Endpoint:** `POST /my/{sender}/action/give/gold`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post" sdkUrl="https://python.sdk.artifactsmmo.com/trading.html#give-gold">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{sender}/action/give/gold \
@@ -131,8 +131,8 @@ To transfer gold to another of your characters on the same map, use the followin
     "quantity": 500
   }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{sender}/action/give/gold';
 const options = {
@@ -156,8 +156,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -172,8 +172,8 @@ data = {"character": "receiverName", "quantity": 500}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -181,12 +181,12 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{sender}")
     char.trading.give_gold(quantity=500, character="receiverName")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `character` | Name of the character who will receive the gold. |
 | `quantity` | Amount of gold to give. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post)
+

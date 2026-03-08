@@ -3,7 +3,7 @@ title: Maps & Movement
 description: "World map structure, layers, content types, access conditions, transitions, and movement actions in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import MapPreview from '../../../components/site/MapPreview.astro';
 
 The world is a 2D grid addressed by integer coordinates **(x, y)** on a given **layer**:
@@ -103,15 +103,15 @@ To retrieve a paginated list of all maps, use the following endpoint:
 
 **Endpoint:** `GET /maps?page={page}&size={size}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/maps?page=1&size=50' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/maps?page=1&size=50';
 const options = {
@@ -129,8 +129,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -140,8 +140,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -150,10 +150,10 @@ with ArtifactsClient() as client:
     for map_data in maps.data:
         print(f"[{map_data.map_id}] {map_data.name} at {map_data.x}, {map_data.y}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get)
+
 
 ### Maps by Layer
 
@@ -161,15 +161,15 @@ To retrieve all maps for a specific layer, use the following endpoint:
 
 **Endpoint:** `GET /maps/{layer}?page={page}&size={size}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/maps/overworld?page=1&size=50' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/maps/overworld?page=1&size=50';
 const options = {
@@ -187,8 +187,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -198,8 +198,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -208,10 +208,10 @@ with ArtifactsClient() as client:
     for map_data in maps.data:
         print(f"[{map_data.map_id}] {map_data.name}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get)
+
 
 ### Map by Coordinates
 
@@ -219,15 +219,15 @@ To retrieve specific map details by layer and coordinates, use the following end
 
 **Endpoint:** `GET /maps/{layer}/{x}/{y}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/maps/overworld/0/0' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/maps/overworld/0/0';
 const options = {
@@ -245,8 +245,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -256,8 +256,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -265,10 +265,10 @@ with ArtifactsClient() as client:
     map_data = client.maps.get(0, 0)
     print(f"Map content: {map_data.content}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get)
+
 
 ### Map by ID
 
@@ -276,15 +276,15 @@ To retrieve specific map details using its unique map ID, use the following endp
 
 **Endpoint:** `GET /maps/id/{map_id}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/maps/id/1' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/maps/id/1';
 const options = {
@@ -302,8 +302,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -313,8 +313,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -322,10 +322,10 @@ with ArtifactsClient() as client:
     map_data = client.maps.get_by_id(1)
     print(f"Map name: {map_data.name}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get)
+
 
 ---
 
@@ -341,8 +341,8 @@ To move your character, use the following endpoint:
 **Endpoint:** `POST /my/{name}/action/move`
 
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#movement">
+  <Fragment slot="api-curl">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move' \
 --header 'Accept: application/json' \
@@ -355,8 +355,8 @@ To move your character, use the following endpoint:
   // "map_id": 101
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/move';
 const options = {
@@ -378,8 +378,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -394,8 +394,8 @@ data = {"x": 4, "y": -1}  # OR {"map_id": 101}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -404,8 +404,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char.move(x=4, y=-1)
     # OR char.move(map_id=101)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -413,7 +413,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `y` | The y coordinate of the destination (used with `x`). |
 | `map_id` | The map ID of the destination (alternative to `x`/`y`, can target any layer). |
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post)
+
 
 
 ### Transition
@@ -424,16 +424,16 @@ To use a transition, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/action/transition`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#movement">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/transition';
 const options = {
@@ -453,8 +453,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -468,8 +468,8 @@ headers = {
 response = requests.post(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -477,7 +477,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("YOUR_CHARACTER_NAME")
     char.transition()
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post)
+

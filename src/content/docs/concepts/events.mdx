@@ -3,7 +3,7 @@ title: Events
 description: "Time-limited events, active event tracking, and event spawning mechanics in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import EventPreview from '../../../components/site/EventPreview.astro';
 
 Events let exclusive monsters, resources and NPCs appear randomly in the world. When an event appears, you have a limited amount of time to get to the map to kill monsters, gather resources or buy/sell items to an NPC.
@@ -22,16 +22,16 @@ To view the full list of all possible events, use the following request:
 
 **Endpoint:** `GET /events`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_events_events_get" sdkUrl="https://python.sdk.artifactsmmo.com/events.html#browse-all-events">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/events/' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/events/';
 const options = {
@@ -50,8 +50,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -64,8 +64,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -74,26 +74,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for event in events.data:
         print(f"{event.name} ({event.code}) duration={event.duration}min")
   ```
-  </TabItem>
-</Tabs>
-
-Each event contains:
-
-```http title="JSON"
-{
-  "name": "Bandit Camp",
-  "code": "bandit_camp",
-  "content": {
-    "type": "monster",
-    "code": "bandit_lizard"
-  },
-  "maps": [
-    { "map_id": 123, "x": 5, "y": -3, "layer": "overworld", "skin": "desert_1" }
-  ],
-  "duration": 30,
-  "rate": 6
-}
-```
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -103,7 +85,7 @@ Each event contains:
 | `duration` | Duration in minutes. |
 | `rate` | Spawn rate: the event has a 1/rate chance per minute of appearing. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_events_events_get)
+
 
 ---
 
@@ -113,16 +95,16 @@ To view all currently active events, use the following request:
 
 **Endpoint:** `GET /events/active`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get" sdkUrl="https://python.sdk.artifactsmmo.com/events.html#view-active-events">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/events/active' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/events/active';
 const options = {
@@ -141,8 +123,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -155,8 +137,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -165,8 +147,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for event in active.data:
         print(f"{event.name} at ({event.map.x},{event.map.y}) expires {event.expiration}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 Each active event contains:
 
@@ -190,5 +172,5 @@ Each active event contains:
 | `expiration` | When the event will end. |
 | `created_at` | When the event started. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_active_events_events_active_get)
+
 

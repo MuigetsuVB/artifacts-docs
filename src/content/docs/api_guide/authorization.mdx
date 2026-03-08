@@ -3,7 +3,7 @@ title: Authorization
 description: "Token-based authentication, generating API tokens, and securing requests to the Artifacts MMO API."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 The API requires that you authenticate with a valid JWT bearer token in order to access the API.
 
@@ -11,16 +11,20 @@ You can create an account and get your token directly on [our website](https://a
 
 Once you have a JWT bearer token, you can use it to authenticate with the API by including it in the **Authorization** header of every request. The following is an example of authenticating with the API:
 
-<Tabs>
-  <TabItem label="cURL">
+
+**Endpoint:** `GET /my/characters`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#character-info">
+
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/characters?page=1&size=50' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/characters?page=1&size=50';
 const options = {
@@ -40,8 +44,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -55,8 +59,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -65,16 +69,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for char in characters:
         print(f"{char.name} lv{char.level}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 The API will return a 452 error if you attempt to access an endpoint without a valid JWT bearer token.
 
 One common mistake is to forget to include the Bearer prefix in the Authorization header. For example, a proper Authorization header contains the value Bearer .
-
-## Related
-
-- [API Overview](/api_guide/api_overview/) — API structure and endpoint categories
-- [Response Codes](/api_guide/response_codes/) — HTTP status codes and error handling
-- [Rate Limits](/api_guide/rate_limits/) — Request limits and throttling
-

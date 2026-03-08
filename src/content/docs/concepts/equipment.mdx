@@ -3,7 +3,7 @@ title: Equipment
 description: "All item types, equipment slots, conditions, runes, utilities, and how to equip/unequip in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import ItemPreview from '../../../components/site/ItemPreview.astro';
 
 Your character has 15 equipment slots that allow you to modify your stats and add unique effects to your character.
@@ -60,7 +60,6 @@ Here are examples of utilities with their effects:
 | Boost | Gives X (HP, % damage, % res, prospecting, critical strike) at the start of fight. |
 | Antipoison | At the beginning of the turn, if the character has at least one poison, removes X poison damage. |
 
-[View all utilities](https://artifactsmmo.com/encyclopedia/items?type=utility)
 
 ## Runes
 
@@ -81,9 +80,6 @@ Here are examples of runes with their effects:
 | Shell | When below 40% HP, gains X% resistance (all elements) for 3 turns. Once per combat. Boss fights only. |
 | Guard | If an ally is below 50% HP, protects the lowest-HP-% ally by redirecting X% of their damage to this character until the start of next turn. Max 3 times per combat. |
 
-[View all runes](https://artifactsmmo.com/encyclopedia/items?type=rune)
-
-
 ## Retrieving Items
 
 
@@ -93,15 +89,15 @@ To obtain a paginated list of all items, use the following endpoint. The `type` 
 **Endpoint:** `GET /items`
 
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#items">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/items?type=weapon' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/items?type=weapon';
 const options = {
@@ -117,8 +113,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -129,16 +125,16 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, params=params, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient() as client:
     weapons = client.items.get_all(type="weapon")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 | Parameter | Type | Description |
 |---|---|---|
 | `name` | `string` | Filter by item name. |
@@ -149,9 +145,6 @@ with ArtifactsClient() as client:
 | `craft_material` | `string` | Filter by crafting material item code. Returns all items that use this material in their recipe. |
 | `page` | `integer` | Page number (default: 1). |
 | `size` | `integer` | Page size (default: 50, max: 10000). |
-
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get)
 
 ---
 
@@ -189,8 +182,8 @@ To equip an item when you meet the conditions, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/action/equip`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post" sdkUrl="https://python.sdk.artifactsmmo.com/equipment.html#equip-an-item">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/equip \
@@ -202,8 +195,8 @@ To equip an item when you meet the conditions, use the following endpoint:
   "slot": "weapon"
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/equip';
 const options = {
@@ -224,8 +217,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -240,8 +233,8 @@ data = {"code": "iron_sword", "slot": "weapon"}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -249,16 +242,14 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.equipment.equip(code="iron_sword", slot="weapon")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `code` | The item code to equip. |
 | `slot` | Equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
 | `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post)
 
 ### Unequip Item
 
@@ -270,8 +261,8 @@ To unequip an item, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/action/unequip`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post" sdkUrl="https://python.sdk.artifactsmmo.com/equipment.html#unequip-an-item">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/unequip \
@@ -282,8 +273,8 @@ To unequip an item, use the following endpoint:
   "slot": "weapon"
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/unequip';
 const options = {
@@ -304,8 +295,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -320,8 +311,8 @@ data = {"slot": "weapon"}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -329,12 +320,10 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.equipment.unequip(slot="weapon")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `slot` | Equipment slot to unequip. |
 | `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post)

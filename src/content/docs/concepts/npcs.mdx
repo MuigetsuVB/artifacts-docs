@@ -3,7 +3,7 @@ title: NPCs & Trading
 description: "NPC types, shop inventories, buying and selling items from NPCs in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import NpcPreview from '../../../components/site/NpcPreview.astro';
 
 
@@ -30,15 +30,15 @@ To view the list of all existing NPCs, use the following request:
 
 **Endpoint:** `GET /npcs/details`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#npcs">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/npcs';
 const options = {
@@ -54,8 +54,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -68,8 +68,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -78,8 +78,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for npc in npcs.data:
         print(f"{npc.code} ({npc.type.value})")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Parameter | Description |
 |---|---|
@@ -90,7 +90,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `page` | Page number (default: 1). |
 | `size` | Page size (default: 50). |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get)
+
 
 ---
 
@@ -105,8 +105,8 @@ To buy an item from an NPC, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/npc/buy`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post" sdkUrl="https://python.sdk.artifactsmmo.com/trading.html#buy-from-an-npc">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
@@ -118,8 +118,8 @@ To buy an item from an NPC, use the following request:
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
 const options = {
@@ -141,8 +141,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -157,8 +157,8 @@ data = {"code": "string", "quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -166,15 +166,15 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.trading.npc_buy(code="wooden_staff", quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `code` | The item code to buy. |
 | `quantity` | Number of items to buy (1–100). |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post)
+
 
 ### Sell Item
 
@@ -182,8 +182,8 @@ To sell an item to an NPC, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/npc/sell`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post" sdkUrl="https://python.sdk.artifactsmmo.com/trading.html#sell-to-an-npc">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
@@ -195,8 +195,8 @@ To sell an item to an NPC, use the following request:
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
 const options = {
@@ -218,8 +218,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -234,8 +234,8 @@ data = {"code": "string", "quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -243,13 +243,13 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.trading.npc_sell(code="wooden_staff", quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `code` | The item code to sell. |
 | `quantity` | Number of items to sell (1–100). |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post)
+
 

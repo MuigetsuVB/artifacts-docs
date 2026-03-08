@@ -3,7 +3,7 @@ title: Resting & Using Items
 description: "HP restoration through resting, consumable items, and using utility items in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import ItemPreview from '../../../components/site/ItemPreview.astro';
 
 ## Rest 
@@ -16,8 +16,8 @@ You can rest by using this request:
 
 **Endpoint:** `POST /my/{name}/action/rest`
  
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#rest">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/rest \
@@ -25,8 +25,8 @@ You can rest by using this request:
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/rest';
 const options = {
@@ -47,8 +47,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -62,8 +62,8 @@ headers = {
 response = requests.post(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -72,9 +72,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     result = char.rest()
     print(f"Restored {result.hp_restored} HP")
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_rest_my__name__action_rest_post)
+  </Fragment>
+</ApiSdkTabs>
+
 
 
 ---
@@ -118,8 +118,8 @@ You can use an item by using this request.
 
 **Endpoint:** `POST /my/{name}/action/use`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post" sdkUrl="https://python.sdk.artifactsmmo.com/inventory.html#use-an-item">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/use \
@@ -131,8 +131,8 @@ You can use an item by using this request.
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/use';
 const options = {
@@ -154,8 +154,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -170,8 +170,8 @@ data = {"code": "string", "quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -179,13 +179,13 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.inventory.use(code="healing_potion", quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `code` | The consumable item code to use. |
 | `quantity` | Number of items to use. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post)
+
 

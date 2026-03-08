@@ -161,7 +161,6 @@ export default defineConfig({
         {
           label: 'API Guide',
           items: [
-            { label: 'API Overview', link: '/api_guide/api-overview/' },
             { label: 'Authentication', link: '/api_guide/authorization/' },
             { label: 'Response Codes & Errors', link: '/api_guide/response_codes/' },
             { label: 'Rate Limits & Cooldowns', link: '/api_guide/rate_limits/' },

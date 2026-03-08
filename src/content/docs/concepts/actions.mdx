@@ -3,7 +3,7 @@ title: Actions & Cooldowns
 description: "Complete list of character actions, cooldown mechanics, the CooldownSchema, and action logs in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 Every interaction your character makes with the game world is an **action** — moving, fighting, crafting, trading, and more. Each action is a `POST` request to `/my/{name}/action/...` and returns the result immediately along with a cooldown.
 
@@ -103,16 +103,16 @@ To retrieve logs for a specific character, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/logs`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my__name__logs_get" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#action-history">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/my/logs/{name}?page=1&size=50' \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/logs/{name}?page=1&size=50';
 const options = {
@@ -131,8 +131,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -145,8 +145,8 @@ headers = {
 response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -156,10 +156,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for log in logs.data:
         print(f"[{log.type.value}] {log.description}")
   ```
-  </TabItem>
-</Tabs>
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my__name__logs_get)
+  </Fragment>
+</ApiSdkTabs>
 
 ### Account
 
@@ -167,16 +165,16 @@ To retrieve logs for all your characters across your account, use the following 
 
 **Endpoint:** `POST /my/logs`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_characters_logs_my_logs_get" sdkUrl="https://python.sdk.artifactsmmo.com/account.html#account-info">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/my/logs?page=1&size=50' \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/logs?page=1&size=50';
 const options = {
@@ -195,8 +193,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -209,8 +207,8 @@ headers = {
 response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -219,10 +217,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for log in logs.data:
         print(f"[{log.type.value}] {log.description}")
   ```
-  </TabItem>
-</Tabs>
-
-
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_characters_logs_my_logs_get)
+  </Fragment>
+</ApiSdkTabs>
 
 

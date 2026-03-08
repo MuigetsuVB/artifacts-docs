@@ -3,7 +3,7 @@ title: Inventory & Bank
 description: "Character inventory management, bank storage, gold deposit and withdrawal, and bank expansion in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import ItemPreview from '../../../components/site/ItemPreview.astro';
 
 ## Inventory
@@ -40,15 +40,15 @@ You can view a character, including their inventory, using this request:
 
 **Endpoint:** `GET /characters/{name}`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get" sdkUrl="https://python.sdk.artifactsmmo.com/character.html">
+  <Fragment slot="api-curl">
   ```http
   curl --request GET \
   --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
   --header 'Accept: application/json'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
 const options = {
@@ -66,8 +66,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -77,8 +77,8 @@ headers = {"Accept": "application/json"}
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -86,10 +86,10 @@ with ArtifactsClient() as client:
     character = client.characters.get("YOUR_CHARACTER_NAME")
     print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
-[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
 
 
 
@@ -107,15 +107,15 @@ You can view the contents of your bank at any time using the following request:
 
 **Endpoint:** `GET /my/bank/items`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#check-bank-contents">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/bank/items';
 const options = {
@@ -134,8 +134,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -148,8 +148,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -158,9 +158,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     for item in bank_items.data:
         print(f"{item.code} x{item.quantity}")
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get)
+  </Fragment>
+</ApiSdkTabs>
+
 
 ### Get bank details
 
@@ -168,15 +168,15 @@ You can also view general information about your bank (total gold, slots, expans
 
 **Endpoint:** `GET /my/bank`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#check-bank-contents">
+  <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer YOUR_TOKEN'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/bank';
 const options = {
@@ -195,8 +195,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -209,8 +209,8 @@ headers = {
 response = requests.get(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -218,9 +218,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     bank = client.my_account.get_bank()
     print(f"Gold: {bank.gold}")
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get)
+  </Fragment>
+</ApiSdkTabs>
+
 
 
 
@@ -238,8 +238,8 @@ To deposit items, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/bank/deposit/item`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#deposit-and-withdraw-items">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
@@ -251,8 +251,8 @@ To deposit items, use the following request:
     { "code": "another_item", "quantity": 2 }
 ]'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
 const options = {
@@ -276,8 +276,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -295,8 +295,8 @@ data = [
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 from artifacts.models.common import SimpleItemSchema
@@ -309,8 +309,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     ]
     char.bank.deposit_items(items)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -318,7 +318,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Number of items to deposit. |
 
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
+
 
 ### Withdraw items
 
@@ -332,8 +332,8 @@ To withdraw items, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/bank/withdraw/item`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#deposit-and-withdraw-items">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
@@ -345,8 +345,8 @@ To withdraw items, use the following request:
     { "code": "another_item", "quantity": 2 }
 ]'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
 const options = {
@@ -370,8 +370,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -389,8 +389,8 @@ data = [
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 from artifacts.models.common import SimpleItemSchema
@@ -403,8 +403,8 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     ]
     char.bank.withdraw_items(items)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -412,11 +412,11 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `quantity` | Number of items to withdraw. |
 
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
 
 
 
-### Withdraw gold
+
+### Withdraw Gold
 
 To withdraw gold, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/). You can withdraw **any amount of gold** per request.
 
@@ -424,8 +424,8 @@ To withdraw gold, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/bank/withdraw/gold`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#deposit-and-withdraw-gold">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
@@ -436,8 +436,8 @@ To withdraw gold, use the following request:
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
 const options = {
@@ -458,8 +458,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -474,8 +474,8 @@ data = {"quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -483,14 +483,14 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.bank.withdraw_gold(quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `quantity` | Amount of gold to withdraw. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
+
 
 ### Deposit gold
 
@@ -500,8 +500,8 @@ To deposit gold, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/bank/deposit/gold`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#deposit-and-withdraw-gold">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
@@ -512,8 +512,8 @@ To deposit gold, use the following request:
   "quantity": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
 const options = {
@@ -534,8 +534,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -550,8 +550,8 @@ data = {"quantity": 1}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -559,14 +559,14 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.bank.deposit_gold(quantity=1)
   ```
-  </TabItem>
-</Tabs>
+  </Fragment>
+</ApiSdkTabs>
 
 | Field | Description |
 |---|---|
 | `quantity` | Amount of gold to deposit. |
 
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post)
+
 
 ### Buy expansion
 
@@ -576,8 +576,8 @@ To buy an expansion, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/bank/buy_expansion`
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post" sdkUrl="https://python.sdk.artifactsmmo.com/bank.html#expand-the-bank">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
@@ -585,8 +585,8 @@ To buy an expansion, use the following request:
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
 const options = {
@@ -606,8 +606,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -621,8 +621,8 @@ headers = {
 response = requests.post(url, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
@@ -630,7 +630,7 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     char = client.character("{name}")
     char.bank.buy_expansion()
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
+  </Fragment>
+</ApiSdkTabs>
+
 
