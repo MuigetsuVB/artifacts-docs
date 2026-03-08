@@ -18,7 +18,7 @@ You can browse all active orders (sell and buy) using the following request. Use
 
 **Endpoint:** `GET /grandexchange/orders`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#browse-orders">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -88,7 +88,7 @@ To consult an item's sales history over the last 7 days, use the following reque
 
 **Endpoint:** `GET /grandexchange/history/{code}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#price-history">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -155,7 +155,7 @@ To put items up for sale, use the following request. The items are removed from 
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/sell`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#create-a-sell-order">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -233,7 +233,7 @@ To buy items from an existing sell order, first browse the sell orders to find t
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/buy`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#buy-an-item">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -319,7 +319,7 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#create-a-buy-order">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -397,7 +397,7 @@ To sell your items to an existing buy order, use the following request. The item
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/fill`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#fill-a-buy-order">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -479,7 +479,7 @@ You can cancel any of your active orders (sell or buy). To find an order to canc
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post" sdkUrl="https://python.sdk.artifactsmmo.com/grand-exchange.html#cancel-an-order">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \

@@ -29,7 +29,7 @@ You can view a character, including your task and its progress, using this reque
 
 **Endpoint:** `GET /characters/{name}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#character-info">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -104,7 +104,7 @@ To view the list of all existing tasks, use the following request:
 
 **Endpoint:** `GET /tasks/list`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#tasks-static-data">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get">
   <Fragment slot="api-curl">
   ```http
   curl --location --request GET 'https://api.artifactsmmo.com/tasks/all' \
@@ -169,7 +169,7 @@ To see the list of all the rewards you can get when you exchange 6 coins at a Ta
 
 **Endpoint:** `GET /tasks/rewards`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_rewards_tasks_rewards_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#tasks-static-data">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_rewards_tasks_rewards_get">
 <Fragment slot="api-curl">
 ```http
 curl --location --request GET 'https://api.artifactsmmo.com/tasks/rewards' \
@@ -242,7 +242,7 @@ To accept a new task, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/task/new`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post" sdkUrl="https://python.sdk.artifactsmmo.com/tasks.html#task-lifecycle">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post">
 <Fragment slot="api-curl">
 ```http
 curl --request POST \
@@ -310,7 +310,7 @@ To complete a task, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/task/complete`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post" sdkUrl="https://python.sdk.artifactsmmo.com/tasks.html#task-lifecycle">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -380,7 +380,7 @@ To exchange 6 task coins for a random reward, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/task/exchange`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post" sdkUrl="https://python.sdk.artifactsmmo.com/tasks.html#exchange-rewards">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post">
 <Fragment slot="api-curl">
 ```http
 curl --request POST \
@@ -451,7 +451,7 @@ To trade items at a Task Master (Items), use the following request:
 
 **Endpoint:** `POST /my/{name}/action/task/trade`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post" sdkUrl="https://python.sdk.artifactsmmo.com/tasks.html#deliver-items-for-a-task">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post">
 <Fragment slot="api-curl">
 ```http
 curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/task/trade' \
@@ -537,7 +537,7 @@ To cancel a task at the cost of a task coin, use the following request:
 
 **Endpoint:** `POST /my/{name}/action/task/cancel`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post" sdkUrl="https://python.sdk.artifactsmmo.com/tasks.html#cancel-a-task">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post">
 <Fragment slot="api-curl">
 ```http
 curl --request POST \

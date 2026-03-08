@@ -2,7 +2,7 @@
 title: Event Tokens
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 :::caution
 Event Tokens is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
@@ -25,8 +25,8 @@ The number of tokens you have during a season is limited, so use **them only whe
 You can spawn an event using this POST request.
 
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/spawn_event_events_spawn_post">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/events/spawn \
@@ -37,8 +37,8 @@ You can spawn an event using this POST request.
   "code": "string"
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/events/spawn';
 const options = {
@@ -59,8 +59,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -75,15 +75,14 @@ data = {"code": "event_code"}
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
     client.events.spawn(code="event_code")
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/spawn_event_events_spawn_post)
+  </Fragment>
+</ApiSdkTabs>
 

@@ -103,7 +103,7 @@ To retrieve a paginated list of all maps, use the following endpoint:
 
 **Endpoint:** `GET /maps?page={page}&size={size}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_maps_maps_get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -161,7 +161,7 @@ To retrieve all maps for a specific layer, use the following endpoint:
 
 **Endpoint:** `GET /maps/{layer}?page={page}&size={size}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_layer_maps_maps__layer__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -219,7 +219,7 @@ To retrieve specific map details by layer and coordinates, use the following end
 
 **Endpoint:** `GET /maps/{layer}/{x}/{y}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_position_maps__layer___x___y__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -276,7 +276,7 @@ To retrieve specific map details using its unique map ID, use the following endp
 
 **Endpoint:** `GET /maps/id/{map_id}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get" sdkUrl="https://python.sdk.artifactsmmo.com/game-data.html#maps">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -341,7 +341,7 @@ To move your character, use the following endpoint:
 **Endpoint:** `POST /my/{name}/action/move`
 
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#movement">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_move_my__name__action_move_post">
   <Fragment slot="api-curl">
   ```http
   curl --location -g --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/move' \
@@ -424,7 +424,7 @@ To use a transition, use the following endpoint:
 
 **Endpoint:** `POST /my/{name}/action/transition`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post" sdkUrl="https://python.sdk.artifactsmmo.com/character.html#movement">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_transition_my__name__action_transition_post">
   <Fragment slot="api-curl">
   ```http
   curl --location --request POST 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/transition' \

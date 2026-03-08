@@ -138,7 +138,6 @@ export default defineConfig({
         {
           label: 'Game Concepts',
           items: [
-            { label: 'Game Overview', link: '/concepts/game_overview/' },
             { label: 'Seasons', link: '/concepts/seasons/' },
             { label: 'Achievements', link: '/concepts/achievements/' },
             { label: 'Actions & Cooldowns', link: '/concepts/actions/' },
@@ -170,30 +169,47 @@ export default defineConfig({
         {
           label: '[lucide:code-2] Python SDK',
           items: [
-            { label: 'Overview', link: '/sdks/python/' },
-            { label: 'Installation', link: '/sdks/python/introduction/' },
-            { label: 'Quick Start', link: '/sdks/python/quick-start/' },
-            { label: 'Character Actions', link: '/sdks/python/character-actions/' },
-            { label: 'Fetching Game Data', link: '/sdks/python/game-data/' },
-            { label: 'Cooldowns & Retry', link: '/sdks/python/cooldowns-and-retry/' },
-            { label: 'Error Handling', link: '/sdks/python/error-handling/' },
-            { label: 'Multiple Characters', link: '/sdks/python/multiple-characters/' },
-            { label: 'Advanced Usage', link: '/sdks/python/advanced-usage/' },
-            { label: 'API Reference', link: '/sdks/python/api-reference/' },
+            { label: 'Installation', link: '/sdks/python/' },
+
+
+            {
+              label: 'Guides',
+              items: [
+                { label: 'Guides', link: '/sdks/python/guides/' },
+                { label: 'Actions', link: '/sdks/python/character-actions/' },
+                { label: 'Equipment', link: '/sdks/python/equipment/' },
+                { label: 'Skills', link: '/sdks/python/skills/' },
+                { label: 'Inventory', link: '/sdks/python/inventory/' },
+                { label: 'Bank', link: '/sdks/python/bank/' },
+                { label: 'Grand Exchange', link: '/sdks/python/grand-exchange/' },
+                { label: 'NPCs & Trading', link: '/sdks/python/trading/' },
+                { label: 'Tasks', link: '/sdks/python/tasks/' },
+                { label: 'Game Data', link: '/sdks/python/game-data/' },
+                { label: 'Accounts', link: '/sdks/python/accounts/' },
+                { label: 'Cooldowns & Retry', link: '/sdks/python/cooldowns-and-retry/' },
+                { label: 'Error Handling', link: '/sdks/python/error-handling/' },
+                { label: 'Multiple Characters', link: '/sdks/python/multiple-characters/' },
+                { label: 'Sandbox & Simulation', link: '/sdks/python/advanced-usage/' },
+
+              ],
+            },
+            { label: 'SDK Reference', link: '/sdks/python/sdk-reference/' },
           ],
         },
         {
-          label: '[lucide:radio] Realtime (WebSockets)',
+          label: 'Members',
           items: [
-            { label: 'Overview', link: '/realtime/overview/' },
-            { label: 'Connection & Auth', link: '/realtime/connection/' },
-            { label: 'Event Types', link: '/realtime/event-types/' },
+            { label: 'Event Tokens', link: '/members/event-tokens/' },
+            { label: 'Fight Simulator', link: '/members/fight-simulator/' },
+            { label: 'Sandbox Server', link: '/members/sandbox-server/' },
+            { label: 'Test Server', link: '/members/test-server/' },
+            { label: 'WebSockets', link: '/members/websockets/' },
+
           ],
         },
         {
-          label: 'Extras',
+          label: 'Resources',
           items: [
-            { label: 'Members & Premium', link: '/extras/members/' },
             { label: 'Images & Assets', link: '/resources/images/' },
           ],
         },

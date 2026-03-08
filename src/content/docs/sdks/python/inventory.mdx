@@ -1,0 +1,106 @@
+---
+title: Inventory
+description: Inventory management with the Python SDK — use consumables and delete items.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The inventory domain lets you use consumable items and permanently delete unwanted items.
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+```
+
+---
+
+## Use a Consumable
+
+Use items like food, potions, or other consumables from your inventory:
+
+```python
+result = char.inventory.use(code="cooked_chicken", quantity=1)
+```
+
+Returns `UseItemSchema` with the updated character state and cooldown.
+
+### Use Multiple at Once
+
+```python
+char.inventory.use(code="healing_potion", quantity=3)
+```
+
+## Delete Items
+
+Permanently destroy items from your inventory:
+
+```python
+result = char.inventory.delete(code="old_boots", quantity=1)
+```
+
+Returns `DeleteItemSchema`.
+
+
+---
+
+## Reading Inventory
+
+Use `char.get()` to inspect current inventory contents:
+
+```python
+info = char.get()
+
+print(f"Inventory slots used: {info.inventory_used_slots}/{info.inventory_max_items}")
+
+for slot in info.inventory:
+    if slot.code:
+        print(f"  {slot.code} x{slot.quantity}")
+```
+
+---
+
+## Practical Example — Eat Food When Low HP
+
+```python
+from artifacts.errors import ArtifactsAPIError
+
+def heal_if_needed(char, food_code="cooked_chicken", threshold=0.5):
+    """Use food if HP is below threshold."""
+    info = char.get()
+    if info.hp < info.max_hp * threshold:
+        try:
+            char.inventory.use(code=food_code, quantity=1)
+            print(f"Used {food_code} — HP restored")
+        except ArtifactsAPIError as e:
+            print(f"Cannot use item [{e.code}]: {e.message}")
+
+for _ in range(20):
+    heal_if_needed(char)
+    char.fight()
+```
+
+---
+
+## Practical Example — Clean Up Inventory
+
+```python
+# Delete all items of a specific type
+info = char.get()
+for slot in info.inventory:
+    if slot.code and slot.code.startswith("junk_"):
+        char.inventory.delete(code=slot.code, quantity=slot.quantity)
+        print(f"Deleted {slot.code} x{slot.quantity}")
+```
+
+---
+
+## Full Method Reference
+
+### char.inventory
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `use(*, code, quantity=1)` | `str, int` | `UseItemSchema` | Use a consumable item |
+| `delete(*, code, quantity=1)` | `str, int` | `DeleteItemSchema` | Permanently delete items |

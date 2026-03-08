@@ -1,0 +1,152 @@
+---
+title: Equipment
+description: Equipment management with the Python SDK — equip and unequip items, available slots.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Characters have 15 equipment slots. Use `char.equipment` to equip items from inventory or unequip them back.
+
+```python
+from artifacts import ArtifactsClient
+from artifacts.models.enums import ItemSlot
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+```
+
+---
+
+## Equip an Item
+
+The item must be in your inventory. Specify the target slot:
+
+```python
+result = char.equipment.equip(code="iron_sword", slot=ItemSlot.WEAPON)
+```
+
+Returns `EquipRequestSchema` with the updated character state and cooldown.
+
+### Equip Multiples (Stackable Slots)
+
+Some slots accept quantities (e.g., consumables in utility slots):
+
+```python
+char.equipment.equip(code="healing_potion", slot=ItemSlot.UTILITY1, quantity=5)
+```
+
+## Unequip an Item
+
+```python
+result = char.equipment.unequip(slot=ItemSlot.WEAPON)
+```
+
+The item returns to your inventory. Returns `EquipRequestSchema`.
+
+### Unequip Partial Quantity
+
+```python
+char.equipment.unequip(slot=ItemSlot.UTILITY1, quantity=3)
+```
+
+---
+
+## Available Slots
+
+| `ItemSlot` value | Description |
+|---|---|
+| `WEAPON` | Main weapon |
+| `SHIELD` | Off-hand shield |
+| `HELMET` | Head armor |
+| `BODY_ARMOR` | Body armor |
+| `LEG_ARMOR` | Leg armor |
+| `BOOTS` | Footwear |
+| `RING1` | Ring slot 1 |
+| `RING2` | Ring slot 2 |
+| `AMULET` | Amulet |
+| `ARTIFACT1` | Artifact slot 1 |
+| `ARTIFACT2` | Artifact slot 2 |
+| `ARTIFACT3` | Artifact slot 3 |
+| `RUNE` | Rune slot |
+| `UTILITY1` | Utility slot 1 (consumables) |
+| `UTILITY2` | Utility slot 2 (consumables) |
+
+Import all slots via:
+```python
+from artifacts.models.enums import ItemSlot
+```
+
+---
+
+## Reading Current Equipment
+
+Use `char.get()` to inspect what's currently equipped:
+
+```python
+info = char.get()
+
+# Equipment slots are fields on CharacterSchema
+print(f"Weapon:     {info.weapon_slot}")
+print(f"Shield:     {info.shield_slot}")
+print(f"Helmet:     {info.helmet_slot}")
+print(f"Body armor: {info.body_armor_slot}")
+print(f"Leg armor:  {info.leg_armor_slot}")
+print(f"Boots:      {info.boots_slot}")
+print(f"Ring 1:     {info.ring1_slot}")
+print(f"Ring 2:     {info.ring2_slot}")
+print(f"Amulet:     {info.amulet_slot}")
+print(f"Artifact 1: {info.artifact1_slot}")
+print(f"Artifact 2: {info.artifact2_slot}")
+print(f"Artifact 3: {info.artifact3_slot}")
+print(f"Rune:       {info.rune_slot}")
+print(f"Utility 1:  {info.utility1_slot}")
+print(f"Utility 2:  {info.utility2_slot}")
+```
+
+---
+
+## Practical Example — Gear Up Before Fighting
+
+```python
+from artifacts.models.enums import ItemSlot
+from artifacts.errors import EquipmentSlotError, ArtifactsAPIError
+
+def gear_up(char, weapon="iron_sword", armor="iron_armor"):
+    """Equip standard combat gear."""
+    try:
+        char.equipment.equip(code=weapon, slot=ItemSlot.WEAPON)
+        char.equipment.equip(code=armor, slot=ItemSlot.BODY_ARMOR)
+        print("Gear equipped!")
+    except EquipmentSlotError:
+        print("Equipment slot issue — item may already be equipped or incompatible")
+    except ArtifactsAPIError as e:
+        print(f"Error [{e.code}]: {e.message}")
+
+gear_up(char)
+```
+
+---
+
+## Error Handling
+
+```python
+from artifacts.errors import EquipmentSlotError, ConditionsNotMetError
+
+try:
+    char.equipment.equip(code="dragon_sword", slot=ItemSlot.WEAPON)
+except EquipmentSlotError:
+    print("Cannot equip in this slot")
+except ConditionsNotMetError:
+    print("Level or skill requirements not met")
+```
+
+---
+
+## Full Method Reference
+
+### char.equipment
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `equip(*, code, slot, quantity=1)` | `str, ItemSlot, int` | `EquipRequestSchema` | Equip an item from inventory |
+| `unequip(*, slot, quantity=1)` | `ItemSlot, int` | `EquipRequestSchema` | Unequip item back to inventory |

@@ -1,0 +1,283 @@
+---
+title: SDK Reference
+description: Complete reference for every method available in the artifacts-mmo Python SDK v0.2.2.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+This page lists every method available in the `artifacts-mmo` v0.2.2 SDK. Both `ArtifactsClient` (sync) and `AsyncArtifactsClient` (async) expose the same interface — async methods return coroutines.
+
+For in-depth guides with code examples, see the dedicated pages: [Actions](/sdks/python/character-actions/), [Cooldowns & Retry](/sdks/python/cooldowns-and-retry/), [Equipment](/sdks/python/equipment/), [Skills](/sdks/python/skills/), [Inventory](/sdks/python/inventory/), [Bank](/sdks/python/bank/), [Grand Exchange](/sdks/python/grand-exchange/), [NPCs & Trading](/sdks/python/trading/), [Tasks](/sdks/python/tasks/), [Game Data](/sdks/python/game-data/), [Accounts](/sdks/python/accounts/).
+
+## Top-level Client Accessors
+
+| Accessor | Description | Guide |
+|---|---|---|
+| `client.server` | Server status | — |
+| `client.token` | Token generation | [Introduction](/sdks/python/introduction/) |
+| `client.accounts` | Public account endpoints | [Accounts](/sdks/python/accounts/) |
+| `client.my_account` | Your authenticated account endpoints | [Accounts](/sdks/python/accounts/) |
+| `client.characters` | Character CRUD | [Sandbox & Simulation](/sdks/python/advanced-usage/) |
+| `client.items` | Item data | [Game Data](/sdks/python/game-data/) |
+| `client.monsters` | Monster data | [Game Data](/sdks/python/game-data/) |
+| `client.maps` | Map tile data | [Game Data](/sdks/python/game-data/) |
+| `client.resources` | Gatherable resource data | [Game Data](/sdks/python/game-data/) |
+| `client.npcs` | NPC data | [Game Data](/sdks/python/game-data/) |
+| `client.events` | Game events | [Game Data](/sdks/python/game-data/) |
+| `client.achievements` | Achievement data | [Game Data](/sdks/python/game-data/) |
+| `client.badges` | Badge data | [Game Data](/sdks/python/game-data/) |
+| `client.effects` | Effects data | [Game Data](/sdks/python/game-data/) |
+| `client.grand_exchange` | GE market data (read-only) | [Grand Exchange](/sdks/python/grand-exchange/) |
+| `client.leaderboard` | Leaderboard data | [Game Data](/sdks/python/game-data/) |
+| `client.tasks` | Task definitions and rewards | [Tasks](/sdks/python/tasks/) |
+| `client.simulation` | Fight simulator (Members only) | [Sandbox & Simulation](/sdks/python/advanced-usage/) |
+| `client.sandbox` | Sandbox helpers (Sandbox server only) | [Sandbox & Simulation](/sdks/python/advanced-usage/) |
+
+---
+
+## client.server
+
+| Method | Returns | Description |
+|---|---|---|
+| `get_status()` | `StatusSchema` | Server status and version |
+
+## client.token
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `generate(username, password)` | `str, str` | `str` | Generate a JWT token |
+
+## client.accounts
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `create(username, password, email)` | `str, str, str` | `str` | Create a new account |
+| `forgot_password(email)` | `str` | `str` | Request password reset |
+| `reset_password(token, new_password)` | `str, str` | `str` | Reset password with token |
+| `get(account)` | `str` | `AccountDetails` | Get public account info |
+| `get_achievements(account, *, type, completed, page, size)` | `str`, optional | `DataPage[AccountAchievementSchema]` | Account achievements |
+| `get_characters(account)` | `str` | `list[CharacterSchema]` | Account characters |
+
+## client.my_account
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_details()` | — | `MyAccountDetails` | Your account details |
+| `get_bank()` | — | `BankSchema` | Bank gold balance and slots |
+| `get_bank_items(*, item_code, page, size)` | optional | `DataPage[SimpleItemSchema]` | Items in bank |
+| `get_ge_orders(*, code, type, page, size)` | optional | `DataPage[GEOrderSchema]` | Your active GE orders |
+| `get_ge_history(*, id, code, page, size)` | optional | `DataPage[GeOrderHistorySchema]` | Your GE transaction history |
+| `get_pending_items(*, page, size)` | optional | `DataPage[PendingItemSchema]` | Pending items |
+| `get_characters()` | — | `list[CharacterSchema]` | Your characters |
+| `get_all_logs(*, page, size)` | optional | `DataPage[LogSchema]` | All action logs |
+| `change_password(current_password, new_password)` | `str, str` | `str` | Change password |
+
+## client.characters
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `create(name, skin)` | `str, CharacterSkin` | `CharacterSchema` | Create a character (max 5) |
+| `delete(name)` | `str` | `CharacterSchema` | Delete a character (permanent) |
+| `get_active(*, page, size)` | optional | `DataPage[ActiveCharacterSchema]` | All active characters on server |
+| `get(name)` | `str` | `CharacterSchema` | Get any character's public info |
+
+## client.items
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `ItemSchema` | Get a single item by code |
+| `get_all(*, name, min_level, max_level, type, craft_skill, craft_material, page, size)` | optional | `DataPage[ItemSchema]` | List items with filters |
+
+## client.monsters
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `MonsterSchema` | Get a monster by code |
+| `get_all(*, name, min_level, max_level, drop, page, size)` | optional | `DataPage[MonsterSchema]` | List monsters with filters |
+
+## client.maps
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_all(*, layer, content_type, content_code, hide_blocked_maps, page, size)` | optional | `DataPage[MapSchema]` | Find tiles by content |
+| `get_layer(layer, *, content_type, content_code, hide_blocked_maps, page, size)` | `MapLayer`, optional | `DataPage[MapSchema]` | Get tiles in a layer |
+| `get_by_position(layer, x, y)` | `MapLayer, int, int` | `MapSchema` | Get tile at coordinates |
+| `get_by_id(map_id)` | `int` | `MapSchema` | Get tile by database ID |
+
+## client.resources
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `ResourceSchema` | Get a resource by code |
+| `get_all(*, min_level, max_level, skill, drop, page, size)` | optional | `DataPage[ResourceSchema]` | List resources with filters |
+
+## client.npcs
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `NPCSchema` | Get an NPC by code |
+| `get_all(*, name, type, currency, item, page, size)` | optional | `DataPage[NPCSchema]` | List NPCs with filters |
+
+## client.events
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_all_active(*, page, size)` | optional | `DataPage[ActiveEventSchema]` | Currently active events |
+| `get_all(*, page, size)` | optional | `DataPage[EventSchema]` | All events (including past) |
+| `spawn(code)` | `str` | `ActiveEventSchema` | Spawn an event (Member/Founder) |
+
+## client.achievements
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `AchievementSchema` | Get an achievement by code |
+| `get_all(*, type, page, size)` | optional | `DataPage[AchievementSchema]` | List achievements with filters |
+
+## client.badges
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `BadgeSchema` | Get a badge by code |
+| `get_all(*, page, size)` | optional | `DataPage[BadgeSchema]` | List all badges |
+
+## client.effects
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `EffectSchema` | Get an effect by code |
+| `get_all(*, page, size)` | optional | `DataPage[EffectSchema]` | List all effects |
+
+## client.grand_exchange
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_orders(*, code, account, type, page, size)` | optional | `DataPage[GEOrderSchema]` | Browse open orders |
+| `get_order(id)` | `str` | `GEOrderSchema` | Get a specific order by ID |
+| `get_history(code, *, account, page, size)` | `str`, optional | `DataPage[GeOrderHistorySchema]` | Transaction history for an item |
+
+## client.leaderboard
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_characters(*, sort, name, page, size)` | optional | `DataPage[CharacterLeaderboardSchema]` | Character leaderboard |
+| `get_accounts(*, sort, name, page, size)` | optional | `DataPage[AccountLeaderboardSchema]` | Account leaderboard |
+
+## client.tasks
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get(code)` | `str` | `TaskFullSchema` | Get a task definition |
+| `get_all(*, min_level, max_level, skill, type, page, size)` | optional | `DataPage[TaskFullSchema]` | List task definitions with filters |
+| `get_reward(code)` | `str` | `DropRateSchema` | Get a specific task reward |
+| `get_all_rewards(*, page, size)` | optional | `DataPage[DropRateSchema]` | List all task rewards |
+
+---
+
+## Character — Direct Methods
+
+Obtained via `char = client.character("name")`.
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get()` | — | `CharacterSchema` | Fetch current character state |
+| `get_logs(*, page, size)` | optional | `DataPage[LogSchema]` | Character action log |
+| `move(*, x, y)` | `int, int` | `CharacterMovementDataSchema` | Move to coordinates |
+| `move(*, map_id)` | `int` | `CharacterMovementDataSchema` | Move to a tile by ID |
+| `transition()` | — | `CharacterTransitionDataSchema` | Layer transition (enter/exit building) |
+| `fight(*, participants)` | optional `list[str]` | `CharacterFightDataSchema` | Start a fight; optionally with up to 2 others |
+| `rest()` | — | `CharacterRestDataSchema` | Rest to recover HP |
+| `claim_item(id)` | `int` | `ClaimPendingItemDataSchema` | Claim a pending item |
+| `change_skin(*, skin)` | `CharacterSkin` | `ChangeSkinCharacterDataSchema` | Change character skin |
+
+---
+
+## Character Sub-Objects
+
+### char.inventory — [Guide](/sdks/python/inventory/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `use(*, code, quantity=1)` | `str, int` | `UseItemSchema` | Use a consumable item |
+| `delete(*, code, quantity=1)` | `str, int` | `DeleteItemSchema` | Delete items from inventory |
+
+### char.equipment — [Guide](/sdks/python/equipment/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `equip(*, code, slot, quantity=1)` | `str, ItemSlot, int` | `EquipRequestSchema` | Equip an item into a slot |
+| `unequip(*, slot, quantity=1)` | `ItemSlot, int` | `EquipRequestSchema` | Unequip item back to inventory |
+
+### char.skills — [Guide](/sdks/python/skills/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `gather()` | — | `SkillDataSchema` | Gather resource at current tile |
+| `craft(*, code, quantity=1)` | `str, int` | `SkillDataSchema` | Craft an item at current workshop |
+| `recycle(*, code, quantity=1)` | `str, int` | `RecyclingDataSchema` | Recycle item into materials |
+
+### char.bank — [Guide](/sdks/python/bank/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `deposit_gold(*, quantity)` | `int` | `BankGoldTransactionSchema` | Deposit gold into bank |
+| `withdraw_gold(*, quantity)` | `int` | `BankGoldTransactionSchema` | Withdraw gold from bank |
+| `deposit_items(items)` | `list[SimpleItemSchema]` | `BankItemTransactionSchema` | Deposit items into bank |
+| `withdraw_items(items)` | `list[SimpleItemSchema]` | `BankItemTransactionSchema` | Withdraw items from bank |
+| `buy_expansion()` | — | `BankExtensionTransactionSchema` | Buy +20 bank slots |
+
+### char.ge — [Guide](/sdks/python/grand-exchange/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `sell(*, code, quantity, price)` | `str, int, int` | `GEOrderTransactionSchema` | Create a sell order |
+| `buy(*, id, quantity)` | `str, int` | `GETransactionListSchema` | Buy from an existing sell order |
+| `create_buy_order(*, code, quantity, price)` | `str, int, int` | `GEOrderTransactionSchema` | Create a buy order |
+| `fill(*, id, quantity)` | `str, int` | `GETransactionListSchema` | Fill a buy order |
+| `cancel(*, id)` | `str` | `GEOrderTransactionSchema` | Cancel your order |
+
+### char.tasks — [Guide](/sdks/python/tasks/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `new()` | — | `TaskDataSchema` | Accept a new task |
+| `complete()` | — | `RewardDataSchema` | Complete the current task |
+| `exchange()` | — | `RewardDataSchema` | Exchange 6 task coins for reward |
+| `trade(*, code, quantity)` | `str, int` | `TaskTradeDataSchema` | Hand in task items |
+| `cancel()` | — | `TaskCancelledSchema` | Cancel current task |
+
+### char.trading — [Guide](/sdks/python/trading/)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `npc_buy(*, code, quantity=1)` | `str, int` | `NpcMerchantTransactionSchema` | Buy from an NPC shop |
+| `npc_sell(*, code, quantity=1)` | `str, int` | `NpcMerchantTransactionSchema` | Sell to an NPC shop |
+| `give_gold(*, quantity, character)` | `int, str` | `GiveGoldDataSchema` | Give gold to another character |
+| `give_items(*, items, character)` | `list[SimpleItemSchema], str` | `GiveItemDataSchema` | Give items to another character |
+
+---
+
+## Simulation (Members Only)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `client.simulation.fight(characters, monster, iterations=100)` | `list[FakeCharacterSchema], str, int` | `CombatSimulationDataSchema` | Simulate fights |
+
+```python
+from artifacts.models.combat import FakeCharacterSchema
+
+fake = FakeCharacterSchema(level=20, weapon_slot="iron_sword", body_armor_slot="iron_armor")
+result = client.simulation.fight(characters=[fake], monster="ogre", iterations=100)
+print(f"Winrate: {result.winrate:.1%}  ({result.wins}W / {result.losses}L)")
+```
+
+## Sandbox (Sandbox Server Only)
+
+Only available when `base_url="https://api.sandbox.artifactsmmo.com"`.
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `client.sandbox.give_gold(character, quantity)` | `str, int` | `SandboxGiveGoldDataSchema` | Give gold |
+| `client.sandbox.give_item(character, code, quantity)` | `str, str, int` | `SandboxGiveItemDataSchema` | Give an item |
+| `client.sandbox.give_xp(character, type, amount)` | `str, XPType, int` | `SandboxGiveXPDataSchema` | Give XP |
+| `client.sandbox.spawn_event(code)` | `str` | `ActiveEventSchema` | Spawn a game event |
+| `client.sandbox.reset_account()` | — | `str` | Reset the entire sandbox account |

@@ -1,5 +1,5 @@
 ---
-title: Character Actions
+title: Actions
 description: Complete guide to all character action methods in the Python SDK.
 ---
 
@@ -68,6 +68,8 @@ print(f"Restored {result.hp_restored} HP")
 
 ## Skills — Gathering, Crafting, Recycling
 
+For a full guide, see the dedicated [Skills](/sdks/python/skills/) page.
+
 The character must be standing on the correct tile (resource tile for gathering, workshop for crafting).
 
 ```python
@@ -88,6 +90,8 @@ If your skill level exceeds the resource or recipe level by more than 10, you ea
 
 ## Equipment
 
+For a full guide, see the dedicated [Equipment](/sdks/python/equipment/) page.
+
 ```python
 from artifacts.models.enums import ItemSlot
 
@@ -102,6 +106,8 @@ Available `ItemSlot` values: `WEAPON`, `RUNE`, `SHIELD`, `HELMET`, `BODY_ARMOR`,
 
 ## Inventory
 
+For a full guide, see the dedicated [Inventory](/sdks/python/inventory/) page.
+
 ```python
 # Use a consumable (healing potion, food, etc.)
 char.inventory.use(code="healing_potion", quantity=1)
@@ -111,6 +117,8 @@ char.inventory.delete(code="junk_item", quantity=5)
 ```
 
 ## Bank
+
+For a full guide, see the dedicated [Bank](/sdks/python/bank/) page.
 
 The character must be standing on a bank tile.
 
@@ -132,6 +140,8 @@ char.bank.buy_expansion()
 
 ## Grand Exchange (GE)
 
+For a full guide, see the dedicated [Grand Exchange](/sdks/python/grand-exchange/) page.
+
 The character must be standing on a GE tile.
 
 ```python
@@ -152,6 +162,8 @@ char.ge.cancel(id="order_id_here")
 ```
 
 ## Tasks
+
+For a full guide, see the dedicated [Tasks](/sdks/python/tasks/) page.
 
 The character must be at a task master.
 
@@ -175,6 +187,8 @@ char.tasks.cancel()
 
 ## NPC Trading
 
+For a full guide, see the dedicated [Trading](/sdks/python/trading/) page.
+
 The character must be standing on the NPC's tile.
 
 ```python
@@ -186,6 +200,8 @@ char.trading.npc_sell(code="wooden_staff", quantity=1)
 ```
 
 ## Giving items or gold to another character
+
+For a full guide, see the dedicated [Trading](/sdks/python/trading/) page.
 
 Both characters must be on the same tile.
 

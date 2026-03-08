@@ -106,12 +106,18 @@ Available skills: `"woodcutting"`, `"mining"`, `"fishing"`, `"alchemy"`.
 ```python
 # List all NPCs
 npcs = client.npcs.get_all()
+for npc in npcs.data:
+    print(f"  {npc.code}: {npc.name}  type={npc.type.value}")
 
-# Get items sold/bought by a specific NPC
-items = client.npcs.get_items("merchant_1")
-for i in items.data:
-    print(f"  {i.code}  buy={i.buy_price}  sell={i.sell_price}")
+# Filter NPCs by type, currency, or item
+merchants = client.npcs.get_all(type="merchant")
+
+# Get a specific NPC by code
+npc = client.npcs.get("merchant_1")
+print(f"{npc.name}  type={npc.type.value}")
 ```
+
+To buy/sell items from NPCs, use `char.trading.npc_buy()` / `char.trading.npc_sell()` — see [Trading](/sdks/python/trading/).
 
 ## Events
 

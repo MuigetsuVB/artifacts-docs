@@ -1,0 +1,217 @@
+---
+title: Grand Exchange
+description: Grand Exchange with the Python SDK — create and fill orders, browse market data, and manage your GE activity.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The Grand Exchange (GE) is the player marketplace. The SDK provides:
+
+- **`char.ge`** — character actions (buy, sell, create orders, fill, cancel) — requires the character to be on a GE tile
+- **`client.grand_exchange`** — read-only market data (browse orders, history)
+- **`client.my_account`** — your own orders and history
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+```
+
+---
+
+## Finding a GE Tile
+
+```python
+ge_tiles = client.maps.get_all(content_type="grand_exchange")
+tile = ge_tiles.data[0]
+char.move(x=tile.x, y=tile.y)
+```
+
+## Sell Items
+
+Post a sell order. Your items are locked until the order is filled or cancelled:
+
+```python
+result = char.ge.sell(code="copper_ore", quantity=100, price=5)
+order = result.order
+print(f"Sell order created: {order.id}  {order.code} x{order.quantity} @ {order.price}g each")
+```
+
+Returns `GEOrderTransactionSchema`.
+
+## Buy from a Sell Order
+
+Purchase items from an existing sell order:
+
+```python
+result = char.ge.buy(id="order_id_here", quantity=10)
+for tx in result.transactions:
+    print(f"  Bought {tx.quantity}x {tx.code} @ {tx.price}g")
+```
+
+Returns `GETransactionListSchema` with a list of transactions (may span multiple orders).
+
+## Create a Buy Order
+
+Post a buy order — your gold is locked upfront:
+
+```python
+result = char.ge.create_buy_order(code="copper_ore", quantity=100, price=5)
+order = result.order
+print(f"Buy order created: {order.id}")
+```
+
+Returns `GEOrderTransactionSchema`.
+
+## Fill a Buy Order
+
+Deliver items to fulfill someone else's buy order and receive gold:
+
+```python
+result = char.ge.fill(id="order_id_here", quantity=50)
+```
+
+Returns `GETransactionListSchema`.
+
+## Cancel an Order
+
+Cancel your own order — items or gold are returned to you:
+
+```python
+result = char.ge.cancel(id="order_id_here")
+print(f"Order {result.order.id} cancelled")
+```
+
+Returns `GEOrderTransactionSchema`.
+
+---
+
+## Browsing Market Data (Read-Only)
+
+These endpoints don't require a character at a GE tile.
+
+### Open Orders
+
+```python
+from artifacts.models.enums import GEOrderType
+
+# All open orders for an item
+orders = client.grand_exchange.get_orders(code="copper_ore")
+for order in orders.data:
+    print(f"  {order.type.value}  qty={order.quantity}  price={order.price}")
+
+# Filter by type and account
+sell_orders = client.grand_exchange.get_orders(
+    code="copper_ore",
+    type=GEOrderType.SELL,
+    account="SomePlayer",
+)
+
+# Get a specific order by ID
+order = client.grand_exchange.get_order("order_id_here")
+```
+
+### Transaction History
+
+```python
+history = client.grand_exchange.get_history("copper_ore")
+for tx in history.data:
+    print(f"  {tx.code}  qty={tx.quantity}  price={tx.price}")
+
+# Filter by account
+history = client.grand_exchange.get_history("copper_ore", account="SomePlayer")
+```
+
+### Your Own Orders and History
+
+```python
+# Your active orders
+my_orders = client.my_account.get_ge_orders()
+for order in my_orders.data:
+    print(f"  [{order.type.value}] {order.code} x{order.quantity} @ {order.price}g")
+
+# Your transaction history
+my_history = client.my_account.get_ge_history()
+```
+
+---
+
+## Practical Example — Price Check and Sell
+
+```python
+def sell_at_market_price(char, client, item_code, quantity):
+    """Check current sell orders and undercut by 1 gold."""
+    orders = client.grand_exchange.get_orders(
+        code=item_code,
+        type=GEOrderType.SELL,
+    )
+
+    if orders.data:
+        lowest_price = min(o.price for o in orders.data)
+        sell_price = max(1, lowest_price - 1)
+    else:
+        sell_price = 10  # default price if no existing orders
+
+    char.ge.sell(code=item_code, quantity=quantity, price=sell_price)
+    print(f"Listed {quantity}x {item_code} @ {sell_price}g each")
+
+# Move to GE first
+ge_tile = client.maps.get_all(content_type="grand_exchange").data[0]
+char.move(x=ge_tile.x, y=ge_tile.y)
+
+sell_at_market_price(char, client, "copper_ore", 100)
+```
+
+---
+
+## Error Handling
+
+```python
+from artifacts.errors import (
+    GrandExchangeError,
+    InsufficientGoldError,
+    InventoryFullError,
+    ArtifactsAPIError,
+)
+
+try:
+    char.ge.buy(id="order_abc", quantity=10)
+except InsufficientGoldError:
+    print("Not enough gold for this purchase")
+except InventoryFullError:
+    print("Inventory full — deposit items first")
+except GrandExchangeError as e:
+    print(f"GE error [{e.code}]: {e.message}")
+except ArtifactsAPIError as e:
+    print(f"API error [{e.code}]: {e.message}")
+```
+
+---
+
+## Full Method Reference
+
+### char.ge (Character Actions)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `sell(*, code, quantity, price)` | `str, int, int` | `GEOrderTransactionSchema` | Create a sell order |
+| `buy(*, id, quantity)` | `str, int` | `GETransactionListSchema` | Buy from a sell order |
+| `create_buy_order(*, code, quantity, price)` | `str, int, int` | `GEOrderTransactionSchema` | Create a buy order |
+| `fill(*, id, quantity)` | `str, int` | `GETransactionListSchema` | Fill a buy order |
+| `cancel(*, id)` | `str` | `GEOrderTransactionSchema` | Cancel your order |
+
+### client.grand_exchange (Read-Only)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_orders(*, code, account, type, page, size)` | optional | `DataPage[GEOrderSchema]` | Browse open orders |
+| `get_order(id)` | `str` | `GEOrderSchema` | Get a specific order |
+| `get_history(code, *, account, page, size)` | `str`, optional | `DataPage[GeOrderHistorySchema]` | Transaction history for an item |
+
+### client.my_account (Your GE Activity)
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `get_ge_orders(*, code, type, page, size)` | optional | `DataPage[GEOrderSchema]` | Your active orders |
+| `get_ge_history(*, id, code, page, size)` | optional | `DataPage[GeOrderHistorySchema]` | Your transaction history |

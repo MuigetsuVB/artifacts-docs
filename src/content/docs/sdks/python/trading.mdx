@@ -1,0 +1,144 @@
+---
+title: NPCs & Trading
+description: NPC trading and player-to-player transfers with the Python SDK.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The trading domain covers both NPC shops and player-to-player item/gold transfers.
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+```
+
+---
+
+## NPC Trading
+
+Your character must be standing on the NPC's tile.
+
+### Finding an NPC
+
+```python
+# Browse NPCs from game data
+npcs = client.npcs.get_all()
+for npc in npcs.data:
+    print(f"  {npc.code}: {npc.name}  type={npc.type.value}")
+
+# Find NPC tiles on the map
+npc_tiles = client.maps.get_all(content_type="npc", content_code="merchant_1")
+tile = npc_tiles.data[0]
+char.move(x=tile.x, y=tile.y)
+```
+
+### Buy from an NPC
+
+```python
+result = char.trading.npc_buy(code="wooden_staff", quantity=1)
+print(f"Bought {result.transaction.code} x{result.transaction.quantity}")
+print(f"Cost: {result.transaction.total_price}g")
+```
+
+Returns `NpcMerchantTransactionSchema`.
+
+### Sell to an NPC
+
+```python
+result = char.trading.npc_sell(code="wooden_staff", quantity=1)
+print(f"Sold for {result.transaction.total_price}g")
+```
+
+Returns `NpcMerchantTransactionSchema`.
+
+---
+
+## Player-to-Player Transfers
+
+Both characters must be on the **same tile**.
+
+### Give Gold
+
+```python
+result = char.trading.give_gold(quantity=100, character="OtherChar")
+```
+
+Returns `GiveGoldDataSchema`.
+
+### Give Items
+
+```python
+from artifacts.models.common import SimpleItemSchema
+
+items = [
+    SimpleItemSchema(code="copper_ore", quantity=20),
+    SimpleItemSchema(code="iron_ore", quantity=10),
+]
+result = char.trading.give_items(items=items, character="OtherChar")
+```
+
+Returns `GiveItemDataSchema`.
+
+---
+
+## Practical Example — Buy Supplies and Transfer
+
+```python
+# Character A buys potions from NPC and gives them to Character B
+char_a = client.character("Buyer")
+char_b = client.character("Fighter")
+
+# Find NPC and buy potions
+npc_tile = client.maps.get_all(content_type="npc", content_code="potion_seller").data[0]
+char_a.move(x=npc_tile.x, y=npc_tile.y)
+char_a.trading.npc_buy(code="healing_potion", quantity=10)
+
+# Both characters meet at the same tile
+meeting_point = (0, 0)
+char_a.move(x=meeting_point[0], y=meeting_point[1])
+# char_b also needs to be at the same tile (done in parallel with async)
+
+# Transfer items
+from artifacts.models.common import SimpleItemSchema
+char_a.trading.give_items(
+    items=[SimpleItemSchema(code="healing_potion", quantity=10)],
+    character="Fighter",
+)
+```
+
+---
+
+## Error Handling
+
+```python
+from artifacts.errors import (
+    InsufficientGoldError,
+    InventoryFullError,
+    NotFoundError,
+    ArtifactsAPIError,
+)
+
+try:
+    char.trading.npc_buy(code="expensive_item", quantity=1)
+except InsufficientGoldError:
+    print("Not enough gold")
+except NotFoundError:
+    print("Item not sold by this NPC")
+except ArtifactsAPIError as e:
+    print(f"Error [{e.code}]: {e.message}")
+```
+
+---
+
+## Full Method Reference
+
+### char.trading
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `npc_buy(*, code, quantity=1)` | `str, int` | `NpcMerchantTransactionSchema` | Buy from an NPC shop |
+| `npc_sell(*, code, quantity=1)` | `str, int` | `NpcMerchantTransactionSchema` | Sell to an NPC shop |
+| `give_gold(*, quantity, character)` | `int, str` | `GiveGoldDataSchema` | Give gold to another character |
+| `give_items(*, items, character)` | `list[SimpleItemSchema], str` | `GiveItemDataSchema` | Give items to another character |

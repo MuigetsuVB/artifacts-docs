@@ -2,19 +2,19 @@
 title: Fight Simulator
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 :::caution
 Fight Simulator is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
 :::
 
-The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used [via an interface by clicking here](https://simulator.artifactsmmo.com) or directly with the API.
+The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used via the game client or directly with the API.
 
 You can use this POST request to use the simulator.
   
 
-<Tabs>
-  <TabItem label="cURL">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post">
+  <Fragment slot="api-curl">
   ```http
   curl --request POST \
   --url https://api.artifactsmmo.com/simulation/fight_simulation \
@@ -48,8 +48,8 @@ You can use this POST request to use the simulator.
   "iterations": 1
 }'
   ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </Fragment>
+  <Fragment slot="api-javascript">
   ```js
   const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
 const options = {
@@ -71,8 +71,8 @@ try {
   console.error(error);
 }
   ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </Fragment>
+  <Fragment slot="api-python">
   ```python
   import requests
 
@@ -97,8 +97,8 @@ data = {
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
+  </Fragment>
+  <Fragment slot="sdk-python">
   ```python
   from artifacts import ArtifactsClient
 from artifacts.models.sandbox import FakeCharacterSchema
@@ -116,7 +116,6 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
     )
     print(f"Winrate: {result.winrate:.1%} ({result.wins}W / {result.losses}L)")
   ```
-  </TabItem>
-</Tabs>
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post)
+  </Fragment>
+</ApiSdkTabs>
 

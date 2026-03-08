@@ -1,0 +1,197 @@
+---
+title: Skills
+description: Gathering, crafting, and recycling with the Python SDK.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The skills domain covers the three core production actions: gathering resources, crafting items, and recycling equipment.
+
+```python
+from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("MyCharacter")
+```
+
+---
+
+## Gathering
+
+Your character must be on a resource tile. Gathering yields raw materials and skill XP.
+
+```python
+# Move to a resource tile
+resource_tile = client.maps.get_all(
+    content_type="resource",
+    content_code="copper_rocks",
+).data[0]
+char.move(x=resource_tile.x, y=resource_tile.y)
+
+# Gather
+result = char.skills.gather()
+print(f"+{result.details.xp} XP")
+for item in result.details.items:
+    print(f"  Got: {item.code} x{item.quantity}")
+```
+
+Returns `SkillDataSchema` with XP gained, items received, and cooldown.
+
+### Available Gathering Skills
+
+| Skill | Resource examples |
+|---|---|
+| Woodcutting | Trees, special trees |
+| Mining | Rocks, ore veins |
+| Fishing | Fish spots |
+| Alchemy | Herb patches |
+
+Find resources by skill:
+
+```python
+from artifacts.models.enums import GatheringSkill
+
+mining_resources = client.resources.get_all(skill=GatheringSkill.MINING, min_level=1, max_level=20)
+for r in mining_resources.data:
+    print(f"  {r.code}  lv{r.level}  drops: {[d.code for d in r.drops]}")
+```
+
+## Crafting
+
+Your character must be at the appropriate **workshop tile** for the item's craft skill.
+
+```python
+# Find a weaponcrafting workshop
+workshop = client.maps.get_all(
+    content_type="workshop",
+    content_code="weaponcrafting",
+).data[0]
+char.move(x=workshop.x, y=workshop.y)
+
+# Craft an item
+result = char.skills.craft(code="iron_sword", quantity=1)
+print(f"+{result.details.xp} XP  crafted: {[i.code for i in result.details.items]}")
+```
+
+Returns `SkillDataSchema`.
+
+### Craft Multiple Items at Once
+
+```python
+char.skills.craft(code="copper_ring", quantity=5)
+```
+
+### Checking Craft Requirements
+
+```python
+item = client.items.get("iron_sword")
+if item.craft:
+    print(f"Skill: {item.craft.skill.value}  Level: {item.craft.level}")
+    for mat in item.craft.items:
+        print(f"  Requires: {mat.code} x{mat.quantity}")
+```
+
+## Recycling
+
+Break down crafted items into raw materials. Character must be at the appropriate workshop.
+
+```python
+result = char.skills.recycle(code="iron_sword", quantity=1)
+print(f"+{result.details.xp} XP")
+for item in result.details.items:
+    print(f"  Recovered: {item.code} x{item.quantity}")
+```
+
+Returns `RecyclingDataSchema`.
+
+---
+
+## Practical Example — Gathering Loop
+
+```python
+from artifacts.errors import InventoryFullError, ContentNotOnMapError
+
+# Find resource and bank tiles
+resource = client.maps.get_all(content_type="resource", content_code="ash_tree").data[0]
+bank = client.maps.get_all(content_type="bank").data[0]
+
+while True:
+    char.move(x=resource.x, y=resource.y)
+
+    try:
+        while True:
+            result = char.skills.gather()
+            print(f"+{result.details.xp} XP  {[i.code for i in result.details.items]}")
+    except InventoryFullError:
+        print("Inventory full — banking...")
+    except ContentNotOnMapError:
+        print("Resource depleted or moved")
+        break
+
+    # Deposit everything
+    char.move(x=bank.x, y=bank.y)
+    info = char.get()
+    from artifacts.models.common import SimpleItemSchema
+    items = [
+        SimpleItemSchema(code=s.code, quantity=s.quantity)
+        for s in info.inventory if s.code
+    ]
+    if items:
+        char.bank.deposit_items(items)
+```
+
+## Practical Example — Craft Until Out of Materials
+
+```python
+from artifacts.errors import ArtifactsAPIError
+
+workshop = client.maps.get_all(content_type="workshop", content_code="weaponcrafting").data[0]
+char.move(x=workshop.x, y=workshop.y)
+
+crafted = 0
+while True:
+    try:
+        char.skills.craft(code="iron_sword", quantity=1)
+        crafted += 1
+    except ArtifactsAPIError:
+        print(f"Crafted {crafted} iron swords total")
+        break
+```
+
+---
+
+## Error Handling
+
+```python
+from artifacts.errors import (
+    SkillLevelTooLowError,
+    ContentNotOnMapError,
+    InventoryFullError,
+    ArtifactsAPIError,
+)
+
+try:
+    char.skills.gather()
+except SkillLevelTooLowError:
+    print("Skill level too low for this resource")
+except ContentNotOnMapError:
+    print("No resource on this tile")
+except InventoryFullError:
+    print("Inventory full — deposit items first")
+```
+
+:::caution[XP Cap]
+If your skill level exceeds the resource or recipe level by more than **10 levels**, you earn **0 XP**. Plan your grinding route accordingly.
+:::
+
+---
+
+## Full Method Reference
+
+### char.skills
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `gather()` | — | `SkillDataSchema` | Gather resource at current tile |
+| `craft(*, code, quantity=1)` | `str, int` | `SkillDataSchema` | Craft an item at current workshop |
+| `recycle(*, code, quantity=1)` | `str, int` | `RecyclingDataSchema` | Recycle item into materials |
