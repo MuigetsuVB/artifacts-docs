@@ -62,8 +62,7 @@ if (codes) {
 
       // Generate tab headers
       const tabsHtml = events.map((eventItem, index) => {
-        // Fallback for image
-        const imageUrl = `https://www.artifactsmmo.com/images/events/${eventItem.code}.png`;
+        const imageUrl = `https://www.artifactsmmo.com/images/${eventItem.content.type}s/${eventItem.content.code}.png`;
         const isActive = index === 0 ? 'active' : '';
         const eventName = eventItem.name || eventItem.code;
         
@@ -261,7 +260,7 @@ if (codes) {
 
   .event-icon {
     width: 32px;
-    height: 32px;
+
     image-rendering: pixelated;
   }
 

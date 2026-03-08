@@ -140,6 +140,7 @@ export default defineConfig({
           items: [
             { label: 'Game Overview', link: '/concepts/game_overview/' },
             { label: 'Seasons', link: '/concepts/seasons/' },
+            { label: 'Achievements', link: '/concepts/achievements/' },
             { label: 'Actions & Cooldowns', link: '/concepts/actions/' },
             { label: 'Maps & Movement', link: '/concepts/maps_and_movement/' },
             { label: 'Combat & Stats', link: '/concepts/stats_and_fights/' },
@@ -154,7 +155,6 @@ export default defineConfig({
             { label: 'NPCs', link: '/concepts/npcs/' },
             { label: 'Tasks', link: '/concepts/tasks/' },
             { label: 'Events', link: '/concepts/events/' },
-            { label: 'Achievements', link: '/concepts/achievements/' },
 
           ],
         },

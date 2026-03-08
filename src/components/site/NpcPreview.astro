@@ -60,7 +60,7 @@ if (codes) {
       // Generate tab headers
       const tabsHtml = npcs.map((npc, index) => {
         // Fallback or multiple options for icon. Npcs can be characters or items.
-        const imageUrl = `https://www.artifactsmmo.com/images/characters/${npc.code}.png`;
+        const imageUrl = `https://www.artifactsmmo.com/images/npcs/${npc.code}.png`;
         const isActive = index === 0 ? 'active' : '';
         const npcName = npc.name || npc.code;
         
@@ -258,7 +258,6 @@ if (codes) {
 
   .npc-icon {
     width: 32px;
-    height: 32px;
     image-rendering: pixelated;
   }
 

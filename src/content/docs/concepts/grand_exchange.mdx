@@ -6,7 +6,7 @@ description: "Player-to-player marketplace for buying, selling, and trading item
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
  
-The Grand Exchange lets you buy and sell items with other players through **sell orders** and **buy orders**. To interact with the Grand Exchange, your character must be on a map containing a Grand Exchange.
+The Grand Exchange lets you buy and sell items with other players through **sell orders** and **buy orders**. To interact with the Grand Exchange, your character must be on a map containing a Grand Exchange. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
 :::note
 There is a limit of **100 active orders** (sell + buy combined) per account.
@@ -14,7 +14,9 @@ There is a limit of **100 active orders** (sell + buy combined) per account.
 
 ## Browse orders
 
-You can browse all active orders (sell and buy) using this request. Use the `type` parameter to filter by order type, and `code` to filter by item.
+You can browse all active orders (sell and buy) using the following request. Use the `type` parameter to filter by order type, and `code` to filter by item.
+
+**Endpoint:** `GET /grandexchange/orders`
 
 <Tabs>
   <TabItem label="cURL">
@@ -82,7 +84,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ## Sales history
 
-To consult an item's sales history over the last 7 days, you can use this request:
+To consult an item's sales history over the last 7 days, use the following request:
+
+**Endpoint:** `GET /grandexchange/history/{code}`
 
 <Tabs>
   <TabItem label="cURL">
@@ -147,7 +151,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ### Create a sell order
 
-To put items up for sale, use this POST request. The items are removed from your inventory when the order is created.
+To put items up for sale, use the following request. The items are removed from your inventory when the order is created.
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/sell`
 
 <Tabs>
   <TabItem label="cURL">
@@ -223,7 +229,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ### Buy from a sell order
 
-To buy items from an existing sell order, first browse the sell orders to find the order ID, then use this POST request:
+To buy items from an existing sell order, first browse the sell orders to find the order ID, then use the following request:
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/buy`
 
 <Tabs>
   <TabItem label="cURL">
@@ -309,6 +317,8 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 
 ### Create a buy order
 
+**Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
+
 <Tabs>
   <TabItem label="cURL">
   ```http
@@ -383,7 +393,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ### Fill a buy order
 
-To sell your items to an existing buy order, use this POST request. The items are removed from your inventory and you receive the gold immediately.
+To sell your items to an existing buy order, use the following request. The items are removed from your inventory and you receive the gold immediately.
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/fill`
 
 <Tabs>
   <TabItem label="cURL">
@@ -465,6 +477,8 @@ You cannot fill your own buy orders. The items purchased through a buy order are
 
 You can cancel any of your active orders (sell or buy). To find an order to cancel, first check [your orders list](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get).
 
+**Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
+
 <Tabs>
   <TabItem label="cURL">
   ```http
@@ -532,8 +546,3 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post)
 
-## Related
-
-- [Inventory & Bank](/concepts/inventory_and_bank/) — Managing items and gold storage
-- [NPCs & Trading](/concepts/npcs/) — NPC-based buying and selling
-- [Actions & Cooldowns](/concepts/actions/) — Exchange action cooldowns

@@ -6,60 +6,42 @@ description: "Achievement types, objectives, rewards, account-level progress tra
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 
-Achievements are objectives to be met during the season by all your characters. They grant you gold, items, and achievement points, which allow you to earn seasonal rewards.
+Achievements are objectives to be met during the season by all your characters. They allow you to earn gold, items, and achievements. Achievement points allow you to obtain seasonal rewards.
+
 Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
 
 
-
-
-## Achievement Types
-
-- `combat_kill` – Defeat monsters
-- `combat_drop` – Obtain item drops from combat
-- `combat_level` – Reach certain combat levels
-- `gathering` – Gather resources
-- `crafting` – Craft items
-- `recycling` – Recycle equipment
-- `task` – Complete tasks
-- `use` – Use consumables
-- `npc_buy` – Buy items from NPCs
-- `npc_sell` – Sell items to NPCs
+---
 
 ## Objectives
 
 Achievements can have **multiple objectives** that must all be completed to unlock the achievement. Each objective tracks progress independently.
 
+Here are all the possible types of objectives:
 
-Each objective has:
-| Field | Description |
-|---|---|
-| `type` | The achievement type (e.g., `combat_kill`, `crafting`). |
-| `target` | The specific target (e.g., monster code, item code). Can be `null` for general objectives. |
-| `total` | The total amount required to complete this objective. |
-| `progress` | Your current progress (only in account achievement responses). |
 
-```http title="JSON"
-"objectives": [
-  {
-    "type": "combat_kill",
-    "target": "wolf",
-    "progress": 30,
-    "total": 50
-  },
-  {
-    "type": "combat_drop",
-    "target": "wolf_hide",
-    "progress": 12,
-    "total": 20
-  }
-]
-```
+| Type           | Description                        |
+|----------------|------------------------------------|
+| `combat_kill`  | Defeat monsters                    |
+| `combat_drop`  | Obtain item drops from combat      |
+| `combat_level` | Reach certain combat levels        |
+| `gathering`    | Gather resources                   |
+| `crafting`     | Craft items                        |
+| `recycling`    | Recycle equipment                  |
+| `task`         | Complete tasks                     |
+| `use`          | Use consumables                    |
+| `npc_buy`      | Buy items from NPCs                |
+| `npc_sell`     | Sell items to NPCs                 |
+
+
 
 The achievement is completed when **all objectives** reach their required total.
 
+---
+
 ## Rewards
 
-When you complete an achievement, you earn rewards that are sent to your [pending items](/concepts/characters-and-account/#pending-items). You can claim them with any character on your account.
+When you complete an achievement, you earn items rewards that are sent to your [pending items](/concepts/characters-and-account/#pending-items). You can claim them with any character on your account.
 
 ```http title="JSON"
 "rewards": {
@@ -77,9 +59,13 @@ When you complete an achievement, you earn rewards that are sent to your [pendin
 | `items` | List of item rewards, each with a `code` and `quantity`. Can be `null` if there are no item rewards. |
 
 
+---
+
 ## Account Achievements
 
-You can use this GET request to view your account's list of achievements, including progress on each objective.
+To view your account's list of achievements, including progress on each objective, use the following request:
+
+**Endpoint:** `GET /accounts/{account}/achievements`
 
 <Tabs>
   <TabItem label="cURL">
@@ -134,5 +120,63 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get)
 
+---
 
-View all achievements using [this endpoint](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get) or on our [website](https://www.artifactsmmo.com/encyclopedia/achievements).
+## Retrieving Achievements
+
+To view the full list of achievements, use the following request:
+
+**Endpoint:** `GET /achievements`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/achievements' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/achievements';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/achievements"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    achievements = client.achievements.get_all()
+    for a in achievements.data:
+        print(f"{a.name} ({a.type.value})")
+  ```
+  </TabItem>
+</Tabs>
+
+You can also view them on the [website](https://www.artifactsmmo.com/encyclopedia/achievements) or the [API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get).

@@ -3,39 +3,106 @@ title: Tasks
 description: "Task system, task types, rewards, task coins, and task actions (accept, complete, exchange, trade, cancel) in Artifacts MMO."
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import MapPreview from "../../../components/site/MapPreview.astro";
 
-Tasks assign you random objectives (such as killing monsters, collecting resources, bringing back items) and when you complete tasks, you get some gold and a currency: tasks coins.
-Tasks coins can be exchanged at all Tasks Masters. For 6 coins, you can get a random reward. You can also trade them for a higher cost at the NPC Tasks Trader to get the item you want.
+Tasks are a quest system that assigns you random objectives to complete in order to obtain gold and a special currency: **task coins**.
 
-You can check your objective and its progress directly on your character by using this [request](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get).
+Task coins can be exchanged at any Tasks Master for a random reward (costs 6 coins), or traded at a higher cost at the Tasks Trader NPC for a specific item.
 
-## Task Types
+There are currently two types of objectives:
 
-Tasks come in two types:
+- Killing monsters (`monsters`)
+- Delivering items (`items`)
 
-| Type | Description |
-|------|-------------|
-| `monsters` | Kill a specific number of a monster. |
-| `items` | Gather or craft a specific number of an item. |
+Tasks are assigned by **Tasks Masters** located on the map. The type of task you receive depends on the Tasks Master you visit. For example, if you visit the Monsters Tasks Master, they will only give you a task to kill monsters.
 
-### Rewards by level
+Here is where you can find the Tasks Masters:
+
+<MapPreview codes="376,946" />
+
+---
+
+## Retrieving Character Data
+
+You can view a character, including your task and its progress, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    character = client.characters.get("YOUR_CHARACTER_NAME")
+    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
+
+---
+## Tasks Rewards
 
 Completing a task rewards gold and tasks coins based on the task type and level:
 
-| Type | Level | Gold | Tasks Coins |
-|------|-------|------|-------------|
-| `items` | 1–14 | 150 | 2 |
-| `items` | 15–29 | 250 | 3 |
-| `items` | 30–40 | 350 | 4 |
-| `items` | 41+ | 300 | 4 |
-| `monsters` | 1–14 | 200 | 3 |
-| `monsters` | 15–29 | 300 | 4 |
-| `monsters` | 30+ | 500 | 5 |
+| Type       | Level | Gold | Tasks Coins |
+| ---------- | ----- | ---- | ----------- |
+| `items`    | 1–14  | 150  | 2           |
+| `items`    | 15–29 | 250  | 3           |
+| `items`    | 30–40 | 350  | 4           |
+| `items`    | 41+   | 300  | 4           |
+| `monsters` | 1–14  | 200  | 3           |
+| `monsters` | 15–29 | 300  | 4           |
+| `monsters` | 30+   | 500  | 5           |
+
+---
 
 ## Tasks List
 
-You can use this GET request to view the list of all existing tasks.
+To view the list of all existing tasks, use the following request:
+
+**Endpoint:** `GET /tasks/list`
 
 <Tabs>
   <TabItem label="cURL">
@@ -54,54 +121,62 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/tasks/all"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
+  "Accept": "application/json",
+  "Content-Type": "application/json"
 }
 
 response = requests.get(url, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    page = client.tasks.get_all()
-    for task in page.data:
-        print(f"{task.code} ({task.type.value}) lv{task.level}")
-  ```
-  </TabItem>
+page = client.tasks.get_all()
+for task in page.data:
+print(f"{task.code} ({task.type.value}) lv{task.level}")
+
+````
+</TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_tasks_list_get)
 
 
+---
+
 ## Rewards
 
-You can use this GET request to see the list of all the rewards you can get when you exchange 6 coins at a Tasks Master.
+To see the list of all the rewards you can get when you exchange 6 coins at a Tasks Master, use the following request:
+
+**Endpoint:** `GET /tasks/rewards`
 
 <Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --location --request GET 'https://api.artifactsmmo.com/tasks/rewards' \
+<TabItem label="cURL">
+```http
+curl --location --request GET 'https://api.artifactsmmo.com/tasks/rewards' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json'
-  ```
+````
+
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
@@ -112,38 +187,41 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/tasks/rewards"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
+  "Accept": "application/json",
+  "Content-Type": "application/json"
 }
 
 response = requests.get(url, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    rewards = client.tasks.get_all_rewards()
-    for reward in rewards.data:
-        print(f"{reward.code} (lv{reward.level})")
-  ```
-  </TabItem>
+rewards = client.tasks.get_all_rewards()
+for reward in rewards.data:
+print(f"{reward.code} (lv{reward.level})")
+
+````
+</TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_all_tasks_rewards_tasks_rewards_get)
@@ -151,27 +229,29 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ## Actions
 
-To get a new task or to complete it, you need to be on a map with a tasks master.
+To interact with a task master, you must be on their map. For more information, see [Maps & Movement](/concepts/maps_and_movement/).
 
 :::caution
-You must be at a Tasks Master that **matches your task type**. A `monsters` task must be completed/cancelled at a monsters Tasks Master, and an `items` task at an items Tasks Master.
+You must be at a Tasks Master that **matches your task type**. For example,  a `monsters` task must be completed/cancelled at a Monsters Tasks Master.
 :::
 
-:::note
-All task actions (new, complete, exchange, trade, cancel) have a **3-second** cooldown. Completing a task or exchanging coins requires at least **1 free inventory slot**.
-:::
 
-You can use this POST request to accept a new task.
+### Accept New Task
+
+To accept a new task, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/task/new`
 
 <Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/task/new \
-  --header 'Accept: application/json' \
-  --header 'Authorization: Bearer YOUR_TOKEN' \
-  --header 'Content-Type: application/json' \
-  ```
+<TabItem label="cURL">
+```http
+curl --request POST \
+--url https://api.artifactsmmo.com/my/{name}/action/task/new \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
+--header 'Content-Type: application/json' \
+````
+
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
@@ -200,30 +280,35 @@ try {
 
 url = "https://api.artifactsmmo.com/my/{name}/action/task/new"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
+"Accept": "application/json",
+"Content-Type": "application/json",
+"Authorization": "Bearer YOUR_TOKEN"
 }
 
 response = requests.post(url, headers=headers)
 print(response.json())
-  ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
-  ```python
-  from artifacts import ArtifactsClient
+
+````
+</TabItem>
+<TabItem label="Python SDK" icon="seti:python">
+```python
+from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.tasks.new()
-    print(f"Task: {result.task.code} ({result.task.type.value}) x{result.task.total}")
-  ```
+  char = client.character("{name}")
+  result = char.tasks.new()
+  print(f"Task: {result.task.code} ({result.task.type.value}) x{result.task.total}")
+````
+
   </TabItem>
 </Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post)
 
+### Complete Task
 
-You can use this POST request to complete a task
+To complete a task, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/task/complete`
 
 <Tabs>
   <TabItem label="cURL">
@@ -248,55 +333,63 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/my/{name}/action/task/complete"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_TOKEN"
 }
 
 response = requests.post(url, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.tasks.complete()
-    print(result)
-  ```
-  </TabItem>
+char = client.character("{name}")
+result = char.tasks.complete()
+print(result)
+
+````
+</TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post)
 
 
-You can use this POST request to exchange 6 coins tasks for a random reward.
+### Exchange Coins
+
+To exchange 6 task coins for a random reward, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/task/exchange`
 
 <Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/task/exchange \
-  --header 'Accept: application/json' \
-  --header 'Authorization: Bearer YOUR_TOKEN' \
-  --header 'Content-Type: application/json' \
-  ```
+<TabItem label="cURL">
+```http
+curl --request POST \
+--url https://api.artifactsmmo.com/my/{name}/action/task/exchange \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
+--header 'Content-Type: application/json' \
+````
+
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
@@ -311,58 +404,66 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/my/{name}/action/task/exchange"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_TOKEN"
 }
 
 response = requests.post(url, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.tasks.exchange()
-    print(result)
-  ```
-  </TabItem>
+char = client.character("{name}")
+result = char.tasks.exchange()
+print(result)
+
+````
+</TabItem>
 </Tabs>
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post)
 
 
-You can use this POST request to trade items at a Task Master (Items).
+### Trade Items
+
+To trade items at a Task Master (Items), use the following request:
+
+**Endpoint:** `POST /my/{name}/action/task/trade`
 
 <Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/task/trade' \
+<TabItem label="cURL">
+```http
+curl --location -g --request POST 'https://api.artifactsmmo.com/my/{name}/action/task/trade' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer YOUR_TOKEN' \
 --data-raw '{
-  "item": "name",
-  "quantity":0
-}' 
-  ```
+"item": "name",
+"quantity":0
+}'
+````
+
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
@@ -378,39 +479,42 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/my/{name}/action/task/trade"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_TOKEN"
 }
 data = {"code": "item_code", "quantity": 10}
 
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.tasks.trade(code="item_code", quantity=10)
-  ```
-  </TabItem>
+char = client.character("{name}")
+char.tasks.trade(code="item_code", quantity=10)
+
+````
+</TabItem>
 </Tabs>
 
 | Field | Description |
@@ -418,24 +522,31 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `code` | The item code to trade. |
 | `quantity` | Number of items to trade. |
 
-:::caution
-Trade is only available for `items` type tasks. You cannot deliver more items than the remaining quantity needed to complete the task.
-:::
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_trade_my__name__action_task_trade_post)
 
 
-You can use this POST request to cancel a task at the cost of a task coin.
+### Cancel Task
+
+
+:::caution
+Canceling a task costs **1 tasks coin**. You must have at least 1 tasks coin in your inventory.
+:::
+
+To cancel a task at the cost of a task coin, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/task/cancel`
 
 <Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/task/cancel \
-  --header 'Accept: application/json' \
-  --header 'Authorization: Bearer YOUR_TOKEN' \
-  --header 'Content-Type: application/json' \
-  ```
+<TabItem label="cURL">
+```http
+curl --request POST \
+--url https://api.artifactsmmo.com/my/{name}/action/task/cancel \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN' \
+--header 'Content-Type: application/json' \
+````
+
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
   ```js
@@ -450,49 +561,42 @@ const options = {
 };
 
 try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
+const response = await fetch(url, options);
+const data = await response.json();
+console.log(data);
 } catch (error) {
-  console.error(error);
+console.error(error);
 }
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+
+````
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+```python
+import requests
 
 url = "https://api.artifactsmmo.com/my/{name}/action/task/cancel"
 headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_TOKEN"
 }
 
 response = requests.post(url, headers=headers)
 print(response.json())
-  ```
+````
+
   </TabItem>
   <TabItem label="Python SDK" icon="seti:python">
   ```python
   from artifacts import ArtifactsClient
 
 with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.tasks.cancel()
-  ```
-  </TabItem>
+char = client.character("{name}")
+char.tasks.cancel()
+
+```
+</TabItem>
 </Tabs>
 
-:::caution
-Canceling a task costs **1 tasks coin**. You must have at least 1 tasks coin in your inventory.
-:::
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post)
-
-## Related
-
-- [NPCs & Trading](/concepts/npcs/) — Task masters and trading NPCs
-- [Achievements](/concepts/achievements/) — Achievement rewards from completing tasks
-- [Actions & Cooldowns](/concepts/actions/) — All available character actions
-- [Characters & Account](/concepts/characters-and-account/) — Pending items and claiming rewards

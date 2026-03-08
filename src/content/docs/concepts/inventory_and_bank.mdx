@@ -4,12 +4,12 @@ description: "Character inventory management, bank storage, gold deposit and wit
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ItemPreview from '../../../components/site/ItemPreview.astro';
 
 ## Inventory
 
 Each character has 20 slots in their inventory, which can hold a maximum of 100 items. So you can have 20 different items, but a maximum of 100 items in total. At each level, the maximum total items increases by 2.
-  
-You can view the contents of your inventory with [this request.](https://api.artifactsmmo.com/docs/#/operations/get_my_characters_my_characters_get)
+
   
 ```http title="JSON"
 ....
@@ -22,6 +22,79 @@ You can view the contents of your inventory with [this request.](https://api.art
 ]
 ``` 
 
+
+### Bags
+
+Your character can [equip](/concepts/equipment/#equip-item) a bag to increase the size of their inventory in the `bag_slot` slot.
+
+Here are some examples of bags you can equip:
+
+<ItemPreview codes="satchel,backpack" />
+
+
+
+
+### Retrieving Character Data
+
+You can view a character, including their inventory, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+
+with ArtifactsClient() as client:
+    character = client.characters.get("YOUR_CHARACTER_NAME")
+    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
+  ```
+  </TabItem>
+</Tabs>
+
+[View API Reference](https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get)
+
+
+
+---
+
 ## Bank 
 
 At the bank, you can deposit items and gold. The bank is shared with all your characters, it's the best way to trade with your other characters.
@@ -31,6 +104,8 @@ The bank is limited to 50 slots, but you can buy expansions at a cost of 4,500 g
 ### View bank items
 
 You can view the contents of your bank at any time using the following request:
+
+**Endpoint:** `GET /my/bank/items`
 
 <Tabs>
   <TabItem label="cURL">
@@ -89,7 +164,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 ### Get bank details
 
-You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using:
+You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using the following request:
+
+**Endpoint:** `GET /my/bank`
 
 <Tabs>
   <TabItem label="cURL">
@@ -145,99 +222,21 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 </Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get)
 
-### Deposit/withdraw item
 
-To deposit or withdraw items, you must be on a map containing a bank.
 
-- You can deposit or withdraw up to **20 different items at once** per request.
-- The **cooldown** is **3 seconds per different item** deposited or withdrawn.
+### Deposit items
 
-You can use this POST request to **withdraw items**:
 
-<Tabs>
-  <TabItem label="cURL">
-  ```http
-  curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
-  --header 'Accept: application/json' \
-  --header 'Authorization: Bearer YOUR_TOKEN' \
-  --header 'Content-Type: application/json' \
-  --data '[
-    { "code": "string", "quantity": 1 },
-    { "code": "another_item", "quantity": 2 }
-]'
-  ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-  ```js
-  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
-const options = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    Authorization: 'Bearer YOUR_TOKEN'
-  },
-  body: JSON.stringify([
-    { code: "string", quantity: 1 },
-    { code: "another_item", quantity: 2 }
-  ])
-};
+To deposit items, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
 
-try {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
-  ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-  ```python
-  import requests
+:::note
+There is a **3-second cooldown** per different item deposit.
+:::
 
-url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item"
-headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_TOKEN"
-}
-data = [
-    {"code": "string", "quantity": 1},
-    {"code": "another_item", "quantity": 2}
-]
 
-response = requests.post(url, json=data, headers=headers)
-print(response.json())
-  ```
-  </TabItem>
-  <TabItem label="Python SDK" icon="seti:python">
-  ```python
-  from artifacts import ArtifactsClient
-from artifacts.models.common import SimpleItemSchema
+To deposit items, use the following request:
 
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    items = [
-        SimpleItemSchema(code="string", quantity=1),
-        SimpleItemSchema(code="another_item", quantity=2)
-    ]
-    char.bank.withdraw_items(items)
-  ```
-  </TabItem>
-</Tabs>
-
-| Field | Description |
-|---|---|
-| `code` | The item code to withdraw. |
-| `quantity` | Number of items to withdraw. |
-
-The body is an array of items (1–20 items per request).
-
-[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
-
-You can use this POST request to **deposit items**:
+**Endpoint:** `POST /my/{name}/action/bank/deposit/item`
 
 <Tabs>
   <TabItem label="cURL">
@@ -318,19 +317,112 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 | `code` | The item code to deposit. |
 | `quantity` | Number of items to deposit. |
 
-The body is an array of items (1–20 items per request).
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post)
 
+### Withdraw items
 
-### Deposit/withdraw gold
+To withdraw items, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
 
-To deposit or withdraw gold, you must be on a map containing a bank.
+:::note
+There is a **3-second cooldown** per different item withdrawn.
+:::
 
-- You can deposit or withdraw **any amount of gold** per request, as long as you have the gold available.
-- The **cooldown** is **always 3 seconds** per deposit or withdrawal of gold, regardless of the amount.
+To withdraw items, use the following request:
 
-You can use this POST request to **withdraw gold**:
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/item`
+
+<Tabs>
+  <TabItem label="cURL">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '[
+    { "code": "string", "quantity": 1 },
+    { "code": "another_item", "quantity": 2 }
+]'
+  ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify([
+    { code: "string", quantity: 1 },
+    { code: "another_item", quantity: 2 }
+  ])
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = [
+    {"code": "string", "quantity": 1},
+    {"code": "another_item", "quantity": 2}
+]
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </TabItem>
+  <TabItem label="Python SDK" icon="seti:python">
+  ```python
+  from artifacts import ArtifactsClient
+from artifacts.models.common import SimpleItemSchema
+
+with ArtifactsClient(token="YOUR_TOKEN") as client:
+    char = client.character("{name}")
+    items = [
+        SimpleItemSchema(code="string", quantity=1),
+        SimpleItemSchema(code="another_item", quantity=2)
+    ]
+    char.bank.withdraw_items(items)
+  ```
+  </TabItem>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to withdraw. |
+| `quantity` | Number of items to withdraw. |
+
+
+[View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post)
+
+
+
+### Withdraw gold
+
+To withdraw gold, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/). You can withdraw **any amount of gold** per request.
+
+To withdraw gold, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/gold`
 
 <Tabs>
   <TabItem label="cURL">
@@ -400,7 +492,13 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post)
 
-You can use this POST request to **deposit gold**:
+### Deposit gold
+
+To deposit gold, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/). You can deposit **any amount of gold** per request, as long as you have the gold available.
+
+To deposit gold, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/deposit/gold`
 
 <Tabs>
   <TabItem label="cURL">
@@ -474,7 +572,9 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 
 To buy an expansion, you need to be on a map containing a bank. It costs 4,500 gold for 20 slots, and the price increases (x2) with each expansion purchased.
 
-You can use this POST request to buy an expansion:
+To buy an expansion, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/buy_expansion`
 
 <Tabs>
   <TabItem label="cURL">
@@ -534,8 +634,3 @@ with ArtifactsClient(token="YOUR_TOKEN") as client:
 </Tabs>
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post)
 
-## Related
-
-- [Equipment](/concepts/equipment) — Equipping and managing items
-- [Grand Exchange](/concepts/grand_exchange/) — Buying and selling items on the market
-- [Maps & Movement](/concepts/maps_and_movement/) — Navigating to bank locations
