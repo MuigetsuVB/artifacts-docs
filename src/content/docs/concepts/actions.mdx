@@ -14,6 +14,7 @@ Every interaction your character makes with the game world is an **action** — 
 3. Your character enters a cooldown period — you must wait before sending another action for that character.
 4. If you send an action while in cooldown, you receive error **499** with the remaining time.
 
+--- 
 ## CooldownSchema
 
 Every action response includes a `cooldown` object:
@@ -42,6 +43,7 @@ Every action response includes a `cooldown` object:
 You can use the `expiration` field to schedule your next action precisely. Simply wait until the current time reaches the expiration timestamp.
 :::
 
+---
 ## Cooldown Durations
 
 | Action | Duration | Notes |
@@ -55,6 +57,8 @@ You can use the `expiration` field to schedule your next action precisely. Simpl
 | Deposit/Withdraw | 3s per different item | — |
 | Give item | 3s per different item | — |
 | Others | 3s | Default cooldown |
+
+---
 
 ## All Available Actions
 
@@ -91,7 +95,7 @@ You can use the `expiration` field to schedule your next action precisely. Simpl
 | [Claim pending item](https://api.artifactsmmo.com/docs/#/operations/action_claim_pending_item_my__name__action_claim_item__id__post) | `/my/{name}/action/claim/{id}` | [Characters & Account](/concepts/characters-and-account/) |
 | [Change skin](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post) | `/my/{name}/action/change_skin` | [Characters & Account](/concepts/characters-and-account/) |
 
-
+---
 ## Logs
 
 Every action your character performs is recorded in a log journal. Logs are paginated and include the action type, description, timestamp, and result.
