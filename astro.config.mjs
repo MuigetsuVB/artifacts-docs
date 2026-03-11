@@ -37,7 +37,7 @@ export default defineConfig({
       logo: {
         dark: './src/styles/logo.png',
         light: './src/styles/logo.png',
-        alt: 'Artifacts game logo',
+        alt: 'Artifacts logo',
         replacesTitle: true,
       },
       social: [
