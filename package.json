@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "start": "astro preview --host --port 3000",
+    "start": "serve dist --listen 3000",
     "preview": "astro preview"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "@iconify-json/fe": "^1.2.4",
     "@iconify-json/lucide": "^1.2.95",
     "astro": "^5.18.0",
+    "serve": "^14.2.4",
     "sharp": "^0.34.5",
     "starlight-ion-theme": "^2.3.3"
   },
