@@ -5,6 +5,11 @@ import { ion } from 'starlight-ion-theme';
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
+  vite: {
+    preview: {
+      allowedHosts: true,
+    },
+  },
   trailingSlash: 'always',
   prefetch: {
     prefetchAll: false,
