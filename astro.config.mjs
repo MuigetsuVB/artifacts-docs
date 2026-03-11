@@ -28,6 +28,7 @@ export default defineConfig({
         Pagination: './src/components/ion/Pagination.astro',
       },
       title: 'Artifacts',
+      favicon: '/src/assets/images/favicon.png',
       logo: {
         dark: './src/styles/logo.png',
         light: './src/styles/logo.png',
@@ -90,13 +91,6 @@ export default defineConfig({
           tag: 'script',
           content:
             "try { localStorage.setItem('starlight-theme', 'dark'); } catch {} document.documentElement.dataset.theme = 'dark';",
-        },
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'icon',
-            href: 'https://api.artifactsmmo.com/docs/favicon.png',
-          },
         },
         {
           tag: 'meta',
