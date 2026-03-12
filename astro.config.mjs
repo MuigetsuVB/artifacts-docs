@@ -44,9 +44,6 @@ export default defineConfig({
         { icon: 'discord', label: 'Discord', href: 'https://discord.gg/prEBQ8a6Vs' },
         { icon: 'github', label: 'GitHub', href: 'https://github.com/MuigetsuVB/artifacts-docs' },
       ],
-      editLink: {
-        baseUrl: 'https://github.com/MuigetsuVB/artifacts-docs/edit/main/',
-      },
       lastUpdated: true,
       customCss: [
         './src/styles/custom.css',
