@@ -64,16 +64,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    character = client.characters.get("YOUR_CHARACTER_NAME")
-    print(f"Skills for {character.name}: Mining {character.mining_level}, Woodcutting {character.woodcutting_level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -136,17 +127,7 @@ response = requests.get(url, params={"page": 1, "size": 50})
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    page = client.resources.get_all(page=1, size=50)
-    for r in page.data:
-        print(f"{r.code} (lv{r.level}) drops: {[d.code for d in r.drops]}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -194,16 +175,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    resource = client.resources.get("copper_rocks")
-    print(f"Resource: {resource.name}, Level: {resource.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -259,17 +231,7 @@ response = requests.post(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.skills.gather()
-    print(f"+{result.details.xp}xp, got: {[d.code for d in result.details.items]}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -329,17 +291,7 @@ response = requests.get(url, params={"craft_skill": "weaponcrafting"})
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    page = client.items.get_all(craft_skill="weaponcrafting")
-    for item in page.data:
-        print(f"{item.code}: {item.name} (lv{item.level})")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -400,16 +352,7 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.skills.craft(code="iron_sword", quantity=1)
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|

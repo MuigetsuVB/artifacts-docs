@@ -71,16 +71,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    character = client.characters.get("YOUR_CHARACTER_NAME")
-    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 The API will return a list of your characters. Now it's time to start playing with our tutorial.
 

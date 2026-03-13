@@ -60,17 +60,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    characters = client.my_account.get_characters()
-    for char in characters:
-        print(f"{char.name} lv{char.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 The API will return a 452 error if you attempt to access an endpoint without a valid JWT bearer token.
 

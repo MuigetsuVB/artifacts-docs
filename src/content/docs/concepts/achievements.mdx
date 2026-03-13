@@ -106,17 +106,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    achievements = client.accounts.get_achievements("{account}")
-    for a in achievements.data:
-        print(f"{a.code}: {a.current}/{a.total}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 ---
 
@@ -165,14 +155,4 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    achievements = client.achievements.get_all()
-    for a in achievements.data:
-        print(f"{a.name} ({a.type.value})")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>

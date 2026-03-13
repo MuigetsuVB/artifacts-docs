@@ -7,75 +7,33 @@ interface Props {
 
 const { apiUrl } = Astro.props;
 
-/**
- * Two-level tab component: API / SDK at the top level,
- * with language sub-tabs inside each.
- *
- * Slots:
- *   api-curl, api-javascript, api-python  → shown under the API tab
- *   sdk-python                            → shown under the SDK tab
- */
-
 const hasApiCurl = Astro.slots.has('api-curl');
 const hasApiJs   = Astro.slots.has('api-javascript');
 const hasApiPy   = Astro.slots.has('api-python');
-const hasSdkPy   = Astro.slots.has('sdk-python');
 const hasApi     = hasApiCurl || hasApiJs || hasApiPy;
-const hasSdk     = hasSdkPy;
 ---
 
-<api-sdk-tabs class="api-sdk-tabs not-content">
-  {/* ── Top-level toggle ── */}
-  <div class="api-sdk-toggle" role="tablist" aria-label="API or SDK">
-    {hasApi && (
-      <button role="tab" aria-selected="true" data-tab="api" class="toggle-btn active">
-        API
-      </button>
-    )}
-    {hasSdk && (
-      <button role="tab" aria-selected={!hasApi ? 'true' : 'false'} data-tab="sdk" class={`toggle-btn${!hasApi ? ' active' : ''}`}>
-        SDK
-      </button>
-    )}
-  </div>
-
-  {/* ── API panel ── */}
+<div class="api-tabs not-content">
   {hasApi && (
-    <div class="api-sdk-panel" data-panel="api">
-      <Tabs syncKey="api-language">
-        {hasApiCurl && (
-          <TabItem label="cURL">
-            <slot name="api-curl" />
-          </TabItem>
-        )}
-        {hasApiJs && (
-          <TabItem label="JavaScript" icon="seti:javascript">
-            <slot name="api-javascript" />
-          </TabItem>
-        )}
-        {hasApiPy && (
-          <TabItem label="Python" icon="seti:python">
-            <slot name="api-python" />
-          </TabItem>
-        )}
-      </Tabs>
-    </div>
+    <Tabs syncKey="api-language">
+      {hasApiCurl && (
+        <TabItem label="cURL">
+          <slot name="api-curl" />
+        </TabItem>
+      )}
+      {hasApiJs && (
+        <TabItem label="JavaScript" icon="seti:javascript">
+          <slot name="api-javascript" />
+        </TabItem>
+      )}
+      {hasApiPy && (
+        <TabItem label="Python" icon="seti:python">
+          <slot name="api-python" />
+        </TabItem>
+      )}
+    </Tabs>
   )}
 
-  {/* ── SDK panel ── */}
-  {hasSdk && (
-    <div class="api-sdk-panel" data-panel="sdk" hidden={hasApi}>
-      <Tabs syncKey="sdk-language">
-        {hasSdkPy && (
-          <TabItem label="Python" icon="seti:python">
-            <slot name="sdk-python" />
-          </TabItem>
-        )}
-      </Tabs>
-    </div>
-  )}
-
-  {/* ── Always Display API Reference ── */}
   {apiUrl && (
     <div class="reference-link-wrapper">
       <a href={apiUrl} target="_blank" rel="noopener noreferrer" class="reference-link">
@@ -83,96 +41,14 @@ const hasSdk     = hasSdkPy;
       </a>
     </div>
   )}
-</api-sdk-tabs>
+</div>
 
 <style>
-  /* ── Wrapper to control toggle alignment ── */
-  .api-sdk-tabs {
+  .api-tabs {
     display: flex;
     flex-direction: column;
-    position: relative; /* required for absolute toggle on desktop */
   }
 
-  /* ── Top-level toggle (sliding switch) ── */
-  .api-sdk-toggle {
-    display: inline-flex;
-    align-self: flex-start; /* Mobile: left alignment */
-    position: relative;
-    background: var(--sl-color-gray-6, #1e1e2e);
-    border-radius: 9999px; /* Fully rounded for switch look */
-    padding: 4px;
-    margin-bottom: 1rem;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-  }
-
-  /* Desktop: right alignment inline with Starlight tabs */
-  @media (min-width: 768px) {
-    .api-sdk-toggle {
-      position: absolute;
-      top: -24px;
-      right: 1rem; /* Slight padding from the right edge */
-      margin: 0;   /* Remove margins to eliminate dead space */
-      z-index: 10; /* Sit above the Starlight tabs wrapper */
-      /* Tab bars in Starlight have some padding, so adjust top for visual vertical center */
-      transform: translateY(0.25rem);
-    }
-  }
-
-  /* The sliding background indicator */
-  .api-sdk-toggle::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 4px;
-    width: calc(50% - 4px); /* Half width minus padding space */
-    background: var(--sl-color-accent, #009f70);
-    border-radius: 9999px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  }
-
-  /* Move indicator to the right when SDK is active */
-  .api-sdk-toggle.sdk-active::before {
-    transform: translateX(100%);
-  }
-
-  .toggle-btn {
-    position: relative;
-    z-index: 2; /* Keep text above the sliding indicator */
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: var(--sl-color-gray-3, #9ca3af);
-    font-family: var(--sl-font, inherit);
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.5rem 1.5rem;
-    border-radius: 9999px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    line-height: normal;
-    text-align: center;
-    /* Ensure equal width for both buttons if they exist */
-    flex: 1; 
-  }
-
-  .toggle-btn:hover {
-    color: var(--sl-color-white, #fff);
-  }
-
-  .toggle-btn.active {
-    color: var(--sl-color-white, #fff);
-  }
-
-  /* ── Panels ── */
-  .api-sdk-panel[hidden] {
-    display: none;
-  }
-
-  /* ── Reference Links ── */
   .reference-link {
     display: inline-block;
     margin-top: 0.8rem;
@@ -187,60 +63,3 @@ const hasSdk     = hasSdkPy;
     text-decoration: underline;
   }
 </style>
-
-<script>
-  class ApiSdkTabs extends HTMLElement {
-    #storageKey = 'api-sdk-tabs-choice';
-
-    connectedCallback() {
-      const buttons = [...this.querySelectorAll<HTMLButtonElement>('.toggle-btn')];
-      const panels  = [...this.querySelectorAll<HTMLElement>('.api-sdk-panel')];
-      const toggleContainer = this.querySelector<HTMLElement>('.api-sdk-toggle');
-
-      // Restore persisted choice
-      const saved = localStorage.getItem(this.#storageKey);
-      if (saved) {
-        const btn = buttons.find(b => b.dataset.tab === saved);
-        if (btn) this.#activate(btn, buttons, panels, toggleContainer);
-      }
-
-      for (const btn of buttons) {
-        btn.addEventListener('click', () => {
-          this.#activate(btn, buttons, panels, toggleContainer);
-          localStorage.setItem(this.#storageKey, btn.dataset.tab!);
-          window.dispatchEvent(new CustomEvent('api-sdk-tab-changed', { detail: btn.dataset.tab }));
-        });
-      }
-
-      window.addEventListener('api-sdk-tab-changed', (e: Event) => {
-        const tab = (e as CustomEvent).detail;
-        const btn = buttons.find(b => b.dataset.tab === tab);
-        if (btn && !btn.classList.contains('active')) {
-          this.#activate(btn, buttons, panels, toggleContainer);
-        }
-      });
-    }
-
-    #activate(
-      active: HTMLButtonElement,
-      buttons: HTMLButtonElement[],
-      panels: HTMLElement[],
-      toggleContainer: HTMLElement | null
-    ) {
-      if (toggleContainer) {
-        toggleContainer.classList.toggle('sdk-active', active.dataset.tab === 'sdk');
-      }
-
-      for (const b of buttons) {
-        const isActive = b === active;
-        b.classList.toggle('active', isActive);
-        b.setAttribute('aria-selected', String(isActive));
-      }
-      for (const p of panels) {
-        p.hidden = p.dataset.panel !== active.dataset.tab;
-      }
-    }
-  }
-
-  customElements.define('api-sdk-tabs', ApiSdkTabs);
-</script>

@@ -67,16 +67,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    character = client.characters.get("YOUR_CHARACTER_NAME")
-    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -145,18 +136,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-page = client.tasks.get_all()
-for task in page.data:
-print(f"{task.code} ({task.type.value}) lv{task.level}")
-
-````
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -211,18 +191,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-rewards = client.tasks.get_all_rewards()
-for reward in rewards.data:
-print(f"{reward.code} (lv{reward.level})")
-
-````
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -290,17 +259,6 @@ print(response.json())
 
 ````
 </Fragment>
-<Fragment slot="sdk-python">
-```python
-from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-  char = client.character("{name}")
-  result = char.tasks.new()
-  print(f"Task: {result.task.code} ({result.task.type.value}) x{result.task.total}")
-````
-
-  </Fragment>
 </ApiSdkTabs>
 
 
@@ -358,18 +316,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-char = client.character("{name}")
-result = char.tasks.complete()
-print(result)
-
-````
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -429,18 +376,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-char = client.character("{name}")
-result = char.tasks.exchange()
-print(result)
-
-````
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -505,17 +441,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-char = client.character("{name}")
-char.tasks.trade(code="item_code", quantity=10)
-
-````
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -586,17 +512,7 @@ print(response.json())
 ````
 
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-char = client.character("{name}")
-char.tasks.cancel()
-
-```
-</Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 

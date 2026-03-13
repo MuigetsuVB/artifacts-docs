@@ -65,17 +65,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    events = client.events.get_all()
-    for event in events.data:
-        print(f"{event.name} ({event.code}) duration={event.duration}min")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -138,17 +128,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    active = client.events.get_all_active()
-    for event in active.data:
-        print(f"{event.name} at ({event.map.x},{event.map.y}) expires {event.expiration}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 Each active event contains:
 

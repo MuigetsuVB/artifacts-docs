@@ -30,6 +30,7 @@ export default defineConfig({
       ],
       components: {
         Header: './src/components/site/Header.astro',
+        Search: './src/components/site/Search.astro',
         Pagination: './src/components/ion/Pagination.astro',
       },
       title: 'Artifacts',
@@ -132,7 +133,7 @@ export default defineConfig({
           link: '/funding/',
         },
         {
-          label: 'Game Concepts',
+          label: '[lucide:swords] Game Concepts',
           items: [
             { label: 'Seasons', link: '/concepts/seasons/' },
             { label: 'Achievements', link: '/concepts/achievements/' },
@@ -154,7 +155,7 @@ export default defineConfig({
           ],
         },
         {
-          label: 'API Guide',
+          label: '[lucide:code-2] API Guide',
           items: [
             { label: 'Authentication', link: '/api_guide/authorization/' },
             { label: 'Response Codes & Errors', link: '/api_guide/response_codes/' },
@@ -163,37 +164,7 @@ export default defineConfig({
           ],
         },
         {
-          label: '[lucide:code-2] Python SDK',
-          items: [
-            { label: 'Installation', link: '/sdks/python/' },
-
-
-            {
-              label: 'Guides',
-              items: [
-                { label: 'Guides', link: '/sdks/python/guides/' },
-                { label: 'Actions', link: '/sdks/python/character-actions/' },
-                { label: 'Equipment', link: '/sdks/python/equipment/' },
-                { label: 'Skills', link: '/sdks/python/skills/' },
-                { label: 'Inventory', link: '/sdks/python/inventory/' },
-                { label: 'Bank', link: '/sdks/python/bank/' },
-                { label: 'Grand Exchange', link: '/sdks/python/grand-exchange/' },
-                { label: 'NPCs & Trading', link: '/sdks/python/trading/' },
-                { label: 'Tasks', link: '/sdks/python/tasks/' },
-                { label: 'Game Data', link: '/sdks/python/game-data/' },
-                { label: 'Accounts', link: '/sdks/python/accounts/' },
-                { label: 'Cooldowns & Retry', link: '/sdks/python/cooldowns-and-retry/' },
-                { label: 'Error Handling', link: '/sdks/python/error-handling/' },
-                { label: 'Multiple Characters', link: '/sdks/python/multiple-characters/' },
-                { label: 'Sandbox & Simulation', link: '/sdks/python/advanced-usage/' },
-
-              ],
-            },
-            { label: 'SDK Reference', link: '/sdks/python/sdk-reference/' },
-          ],
-        },
-        {
-          label: 'Members',
+          label: '[lucide:crown] Members',
           items: [
             { label: 'Event Tokens', link: '/members/event-tokens/' },
             { label: 'Fight Simulator', link: '/members/fight-simulator/' },
@@ -204,7 +175,7 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Resources',
+          label: '[lucide:image] Resources',
           items: [
             { label: 'Images & Assets', link: '/resources/images/' },
           ],

@@ -164,6 +164,12 @@ if (codes) {
     });
   }
 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initResourcePreviews, { once: true });
+  } else {
+    initResourcePreviews();
+  }
+
   document.addEventListener('astro:page-load', initResourcePreviews);
 </script>
 

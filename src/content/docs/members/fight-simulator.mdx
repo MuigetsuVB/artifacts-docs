@@ -98,24 +98,5 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-from artifacts.models.sandbox import FakeCharacterSchema
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    fake = FakeCharacterSchema(
-        level=1,
-        weapon_slot="iron_sword",
-        body_armor_slot="iron_armor",
-    )
-    result = client.simulation.fight(
-        characters=[fake],
-        monster="MONSTER_CODE",
-        iterations=100,
-    )
-    print(f"Winrate: {result.winrate:.1%} ({result.wins}W / {result.losses}L)")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 

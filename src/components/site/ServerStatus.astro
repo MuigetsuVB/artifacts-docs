@@ -164,6 +164,12 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
     }
   }
 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initServerStatus, { once: true });
+  } else {
+    initServerStatus();
+  }
+
   document.addEventListener('astro:page-load', initServerStatus);
 </script>
 

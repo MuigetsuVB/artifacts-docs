@@ -123,16 +123,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    character = client.characters.get("YOUR_CHARACTER_NAME")
-    print(f"Stats for {character.name}: HP {character.hp}, Level {character.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -241,17 +232,7 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    monsters = client.monsters.get_all(page=1, size=50)
-    for monster in monsters.data:
-        print(f"[{monster.code}] {monster.name} - HP: {monster.hp}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -299,16 +280,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    monster = client.monsters.get("red_slime")
-    print(f"Monster: {monster.name}, Level: {monster.level}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -370,18 +342,7 @@ response = requests.post(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.fight()
-    fight = result.fight
-    print(f"{fight.result.value} in {fight.turns} turns")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -443,17 +404,7 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    result = char.fight(participants=["Character2", "Character3"])
-    print(f"{result.fight.result.value} in {result.fight.turns} turns")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|

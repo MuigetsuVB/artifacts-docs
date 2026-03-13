@@ -82,16 +82,7 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    char.skills.recycle(code="iron_sword", quantity=5)
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|

@@ -62,16 +62,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    status = client.get_status()
-    print(f"Season: {status.season.name}, Players online: {status.characters_online}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -135,17 +126,7 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    badges = client.badges.get_all(page=1, size=50)
-    for badge in badges.data:
-        print(f"Badge: {badge.code}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 

@@ -150,18 +150,7 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("{name}")
-    logs = char.get_logs(page=1, size=50)
-    for log in logs.data:
-        print(f"[{log.type.value}] {log.description}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 ### Account
 
@@ -212,16 +201,6 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    logs = client.my_account.get_all_logs(page=1, size=50)
-    for log in logs.data:
-        print(f"[{log.type.value}] {log.description}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 

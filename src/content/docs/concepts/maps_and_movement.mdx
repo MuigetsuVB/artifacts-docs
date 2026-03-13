@@ -37,7 +37,7 @@ A map tile can contain different types of content, indicated by the `content.typ
 
 Here are examples of maps with different types of content:
 
-<MapPreview codes="223,277,328,433" />
+<MapPreview codes="223,277,328" />
 
 ---
 
@@ -141,17 +141,7 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    maps = client.maps.get_all(page=1, size=50)
-    for map_data in maps.data:
-        print(f"[{map_data.map_id}] {map_data.name} at {map_data.x}, {map_data.y}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -199,17 +189,7 @@ response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    maps = client.maps.get_all(layer="overworld", page=1, size=50)
-    for map_data in maps.data:
-        print(f"[{map_data.map_id}] {map_data.name}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -257,16 +237,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    map_data = client.maps.get(0, 0)
-    print(f"Map content: {map_data.content}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -314,16 +285,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient() as client:
-    map_data = client.maps.get_by_id(1)
-    print(f"Map name: {map_data.name}")
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
 
@@ -395,17 +357,7 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("YOUR_CHARACTER_NAME")
-    char.move(x=4, y=-1)
-    # OR char.move(map_id=101)
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 | Field | Description |
 |---|---|
@@ -469,15 +421,6 @@ response = requests.post(url, headers=headers)
 print(response.json())
   ```
   </Fragment>
-  <Fragment slot="sdk-python">
-  ```python
-  from artifacts import ArtifactsClient
-
-with ArtifactsClient(token="YOUR_TOKEN") as client:
-    char = client.character("YOUR_CHARACTER_NAME")
-    char.transition()
-  ```
-  </Fragment>
-</ApiSdkTabs>
+  </ApiSdkTabs>
 
 
