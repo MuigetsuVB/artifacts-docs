@@ -340,5 +340,13 @@ if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash
     #starlight__search .pagefind-ui__form::before {
       --pagefind-ui-text: var(--sl-color-gray-1);
     }
+
+    #starlight__search .pagefind-ui__result-nested .pagefind-ui__result-link::before {
+      content: none !important;
+    }
+
+    #starlight__search .pagefind-ui__result-nested {
+      padding-left: 0 !important;
+    }
   }
 </style>
