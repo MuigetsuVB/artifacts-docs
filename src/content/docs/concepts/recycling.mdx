@@ -1,0 +1,93 @@
+---
+title: Recycling
+description: "How to recycle equipment to recover crafting materials in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+Recycling lets you break down crafted equipment to recover some of the original crafting materials. It's useful for clearing unwanted gear or recovering resources. To recycle an item, your character must be on a map with a workshop of the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::caution
+Only items that have a craft recipe and are crafted using the `weaponcrafting`, `gearcrafting`, or `jewelrycrafting` skills are eligible for recycling.
+:::
+
+
+### Resources Returned
+
+The materials you receive are chosen **randomly** from the item's craft recipe. The number of resources returned depends on recipe complexity:
+
+```
+resources returned = floor((total items in recipe - 1) / 5) + 1
+```
+
+With a **minimum of 1 resource** per recycled item.
+
+
+## Recycle Item
+
+To recycle an item at the matching skill's workshop, use this endpoint:
+
+
+**Endpoint:** `POST /my/{name}/action/recycling`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/recycling \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "iron_sword",
+  "quantity": 5
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/recycling';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ code: "iron_sword", quantity: 5 })
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/recycling"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "iron_sword", "quantity": 5}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to recycle. |
+| `quantity` | Number of items to recycle. |
+
+
+

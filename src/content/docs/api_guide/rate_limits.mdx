@@ -1,0 +1,162 @@
+---
+title: Rate limits
+---
+
+## Rate Limit Values
+
+| Type       | /second    | /minute    | /hour       |
+|------------|------------|------------|-------------|
+| `account`  | 10/s       | —          | 500/h       |
+| `data`     | 20/s       | 500/min    | 10 000/h    |
+| `action`   | 20/2s      | 500/min    | 10 000/h    |
+
+---
+
+## Endpoints — `account` type
+
+### Account Management
+| Method | Endpoint |
+|--------|----------|
+| `POST` | `/accounts/create` |
+| `POST` | `/accounts/forgot_password` |
+| `POST` | `/accounts/reset_password` |
+| `POST` | `/token` |
+| `POST` | `/my/change_password` |
+
+
+### Characters
+| Method | Endpoint |
+|--------|----------|
+| `POST` | `/characters/create` |
+| `POST` | `/characters/delete` |
+
+---
+
+## Endpoints — `data` type
+
+### Server Status
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/` |
+
+### Public Accounts
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/accounts/{account}` |
+| `GET` | `/accounts/{account}/characters` |
+| `GET` | `/accounts/{account}/achievements` |
+
+### Public Characters
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/characters/active` |
+| `GET` | `/characters/{name}` |
+
+### Items
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/items` |
+| `GET` | `/items/{code}` |
+
+### Monsters
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/monsters` |
+| `GET` | `/monsters/{code}` |
+
+### Resources
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/resources` |
+| `GET` | `/resources/{code}` |
+
+### Maps
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/maps` |
+| `GET` | `/maps/{layer}` |
+| `GET` | `/maps/{layer}/{x}/{y}` |
+
+### Events
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/events` |
+| `GET` | `/events/active` |
+
+### Grand Exchange (public)
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/grandexchange/orders` |
+| `GET` | `/grandexchange/orders/{id}` |
+| `GET` | `/grandexchange/history/{code}` |
+
+### Achievements & Badges (public)
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/achievements` |
+| `GET` | `/achievements/{code}` |
+| `GET` | `/badges` |
+| `GET` | `/badges/{code}` |
+
+### My Account (data)
+| Method | Endpoint |
+|--------|----------|
+| `GET` | `/my/details` |
+| `GET` | `/my/characters` |
+| `GET` | `/my/bank` |
+| `GET` | `/my/bank/items` |
+| `GET` | `/my/grandexchange/orders` |
+| `GET` | `/my/grandexchange/history/{code}` |
+| `GET` | `/my/logs` |
+| `GET` | `/my/logs/{name}` |
+| `GET` | `/my/pending-items` |8
+
+---
+
+## Endpoints — `action` type
+
+### Character Actions (`/my/{name}/action/...`)
+| Method | Endpoint |
+|--------|----------|
+| `POST` | `/my/{name}/action/move` |
+| `POST` | `/my/{name}/action/rest` |
+| `POST` | `/my/{name}/action/equip` |
+| `POST` | `/my/{name}/action/unequip` |
+| `POST` | `/my/{name}/action/use` |
+| `POST` | `/my/{name}/action/fight` |
+| `POST` | `/my/{name}/action/gathering` |
+| `POST` | `/my/{name}/action/crafting` |
+| `POST` | `/my/{name}/action/recycling` |
+| `POST` | `/my/{name}/action/bank/deposit/item` |
+| `POST` | `/my/{name}/action/bank/deposit/gold` |
+| `POST` | `/my/{name}/action/bank/withdraw/item` |
+| `POST` | `/my/{name}/action/bank/withdraw/gold` |
+| `POST` | `/my/{name}/action/bank/buy_expansion` |
+| `POST` | `/my/{name}/action/task/new` |
+| `POST` | `/my/{name}/action/task/complete` |
+| `POST` | `/my/{name}/action/task/cancel` |
+| `POST` | `/my/{name}/action/task/exchange` |
+| `POST` | `/my/{name}/action/npc/buy` |
+| `POST` | `/my/{name}/action/npc/sell` |
+| `POST` | `/my/{name}/action/grandexchange/sell` |
+| `POST` | `/my/{name}/action/grandexchange/buy` |
+| `POST` | `/my/{name}/action/grandexchange/cancel` |
+| `POST` | `/my/{name}/action/give` |
+| `POST` | `/my/{name}/action/claim/{id}` |
+| `POST` | `/my/{name}/action/change_skin` |
+| `POST` | `/my/{name}/action/delete` |
+| `POST` | `/my/{name}/action/transition` |
+
+### Events (member required)
+| Method | Endpoint |
+|--------|----------|
+| `POST` | `/events/spawn` |
+
+### Sandbox only
+| Method | Endpoint |
+|--------|----------|
+| `POST` | `/sandbox/give_item` |
+| `POST` | `/sandbox/give_gold` |
+| `POST` | `/sandbox/give_xp` |
+| `POST` | `/sandbox/spawn_event` |
+| `POST` | `/sandbox/reset_account` |

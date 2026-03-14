@@ -1,0 +1,76 @@
+---
+title: Overview
+description: "Artifacts MMO — A sandbox MMORPG controlled entirely through code. Use the HTTP API to automate your characters."
+---
+
+import { Image } from 'astro:assets';
+import intro from '/src/assets/images/overview.png';
+import season from '/src/assets/images/season.jpeg';
+import screenshot from '/src/assets/images/screenshot.png';
+import ServerStatus from '../../components/site/ServerStatus.astro';
+
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+Artifacts is a **sandbox MMORPG** built for developers where **every action is an API call**. Move, fight, craft, trade — all through HTTP endpoints you call from any programming language. Automate your characters, build custom tools, and compete on the leaderboard.
+
+<br/>
+<Image src={intro} alt="Artifacts MMO Overview" width={550} />
+<br/>
+
+<CardGrid>
+  <LinkCard
+    title="Getting Started"
+    href="/getting-started/"
+    description="Create an account, grab your token, and run your first command in minutes."
+  />
+  <LinkCard
+    title="Game Concepts"
+    href="/concepts/"
+    description="Understand the world: combat, skills, trading, tasks, and events."
+  />
+  <LinkCard
+    title="Changelog"
+    href="/changelog/"
+    description="Track the latest updates and changes to Artifacts."
+  />
+  <LinkCard
+    title="Discord"
+    href="https://discord.gg/prEBQ8a6Vs"
+    description="Join the community to ask questions, share projects, and get support."
+  />
+</CardGrid>
+
+## Seasons
+
+Artifacts operates on a **seasonal server system**, with each season lasting approximately **4 months**. Every season resets progress and introduces new features, content, and challenges — giving you the chance to earn unique badges and compete for first completions.
+
+<ServerStatus />
+
+## Gameplay
+
+Artifacts is a sandbox with **no predetermined path** — you choose how to play. Send your characters into **combat against monsters**, **gather resources** with skills like mining and woodcutting, **craft equipment**, **complete tasks**, **trade on the Grand Exchange**, and more.
+
+<Image src={screenshot} alt="Artifacts game screenshot" width={1200} />
+
+### Key Features
+
+- **Elemental combat** — Fire, water, earth, and air with dynamic stats and progression
+- **8 skills** — Mining, Woodcutting, Fishing, Alchemy, Cooking, Gearcrafting, Weaponcrafting, Jewelrycrafting
+- **300+ craftable items** — Weapons, armor, jewelry, consumables, and resources
+- **Grand Exchange** — Player-to-player marketplace with buy and sell orders
+- **NPCs** — Merchants and traders for buying, selling, and bartering
+- **Boss fights** — Multi-character encounters with up to 3 characters
+- **Tasks system** — Random objectives for gold and task coin rewards
+- **Achievements** — Seasonal rankings and account-wide progression
+- **Dynamic events** — World events with exclusive monsters, resources, and NPCs
+- **Banking** — Secure item and gold storage with expandable slots
+- **Recycling** — Break down crafted equipment to recover materials
+
+## Community
+
+Have questions, want to share your projects, or provide feedback? Join our [Discord community](https://discord.gg/prEBQ8a6Vs)!
+
+## Get Started
+
+Ready to play? Head to the [Getting Started Guide](/getting-started/) and make your first API call in under five minutes.

@@ -1,0 +1,441 @@
+---
+interface Props {
+  code?: string;
+  codes?: string | string[];
+}
+
+const { code, codes } = Astro.props;
+
+// Normalize to an array of codes
+let achievementsToFetch: string[] = [];
+if (codes) {
+  if (Array.isArray(codes)) {
+    achievementsToFetch = codes;
+  } else {
+    achievementsToFetch = codes.split(',').map(c => c.trim());
+  }
+} else if (code) {
+  achievementsToFetch = [code];
+}
+---
+
+<div 
+  class="achievement-preview not-content loading" 
+  data-achievement-codes={achievementsToFetch.join(',')}
+>
+  Loading achievements...
+</div>
+
+<script>
+  async function fetchAchievementPreview(container: Element) {
+    const codesAttr = container.getAttribute('data-achievement-codes');
+    if (!codesAttr) return;
+
+    const codes = codesAttr.split(',');
+
+    try {
+      // Fetch all achievements in parallel
+      const responses = await Promise.all(
+        codes.map(code => fetch(`https://api.artifactsmmo.com/achievements/${code}`))
+      );
+      
+      const jsonResponses = await Promise.all(responses.map(res => res.json()));
+      const achievements = jsonResponses.map(json => json.data);
+
+      // Syntax highlight JSON
+      const highlightJson = (json: string) => {
+        return json
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/("(?:\\.|[^"\\])*")\s*:/g, '<span class="json-key">$1</span>:')
+          .replace(/:\s*("(?:\\.|[^"\\])*")/g, ': <span class="json-string">$1</span>')
+          .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="json-number">$1</span>')
+          .replace(/:\s*(true|false)/g, ': <span class="json-bool">$1</span>')
+          .replace(/:\s*(null)/g, ': <span class="json-null">$1</span>')
+          .replace(/\[(\s*])/g, '[<span class="json-null">$1</span>')
+          .replace(/("(?:\\.|[^"\\])*")(?=\s*[,\]])/g, '<span class="json-string">$1</span>');
+      };
+
+      // Generate tab headers
+      const tabsHtml = achievements.map((achievement, index) => {
+        const imageUrl = `https://www.artifactsmmo.com/images/items/${achievement.code}.png`;
+        const isActive = index === 0 ? 'active' : '';
+        return `
+          <button class="achievement-tab ${isActive}" data-index="${index}">
+            <div class="achievement-icon-wrapper">
+              <img src="${imageUrl}" alt="${achievement.name}" class="achievement-icon sprite" onerror="this.parentElement.style.display='none'" />
+            </div>
+            <div class="achievement-details">
+              <span class="achievement-name">${achievement.name}</span>
+              <div class="achievement-badges">
+                ${achievement.type ? `<span class="badge badge-type">${achievement.type.replace(/_/g, ' ')}</span>` : ''}
+                ${achievement.target ? `<span class="badge badge-level">Target: ${achievement.target}</span>` : ''}
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      // Render the structure
+      container.innerHTML = `
+        <div class="achievement-tabs-container">
+          <div class="achievement-tabs">
+            ${tabsHtml}
+          </div>
+          <a href="https://api.artifactsmmo.com/docs/#/operations/get_achievement_achievements__code__get" target="_blank" rel="noopener" class="achievement-api-link" title="View API docs">
+            API ↗
+          </a>
+        </div>
+        <details class="achievement-json-details" open>
+          <summary>
+            <span class="json-toggle-label">JSON</span>
+            <button class="copy-btn" title="Copy JSON">Copy</button>
+          </summary>
+          <div class="achievement-json-panes"></div>
+        </details>
+      `;
+
+      container.classList.remove('loading');
+
+      // Generate JSON pane contents
+      const panesContainer = container.querySelector('.achievement-json-panes')!;
+      let currentJson = '';
+
+      achievements.forEach((achievement, index) => {
+        const prettyJson = JSON.stringify(achievement, null, 2);
+        const pane = document.createElement('pre');
+        pane.className = `achievement-json-pre ${index === 0 ? 'active' : ''}`;
+        pane.setAttribute('data-index', index.toString());
+        pane.innerHTML = `<code>${highlightJson(prettyJson)}</code>`;
+        panesContainer.appendChild(pane);
+        
+        if (index === 0) currentJson = prettyJson;
+      });
+
+      // Handle Tab Switching
+      const tabs = container.querySelectorAll('.achievement-tab');
+      const panes = container.querySelectorAll('.achievement-json-pre');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          // Remove active from all
+          tabs.forEach(t => t.classList.remove('active'));
+          panes.forEach(p => p.classList.remove('active'));
+
+          // Add active to clicked
+          const target = e.currentTarget as HTMLElement;
+          target.classList.add('active');
+          const index = target.getAttribute('data-index');
+          
+          container.querySelector(`.achievement-json-pre[data-index="${index}"]`)?.classList.add('active');
+          
+          // Update current json for copying
+          currentJson = JSON.stringify(achievements[Number(index)], null, 2);
+        });
+      });
+
+      // Copy button
+      const copyBtn = container.querySelector('.copy-btn');
+      copyBtn?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          await navigator.clipboard.writeText(currentJson);
+          if (copyBtn) {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+
+    } catch (error) {
+      console.error(`Failed to fetch achievements ${codes.join(',')}:`, error);
+      container.innerHTML = `<div class="achievement-error">Failed to load achievements: <code>${codes.join(', ')}</code></div>`;
+      container.classList.remove('loading');
+    }
+  }
+
+  function initAchievementPreviews() {
+    document.querySelectorAll('.achievement-preview').forEach(container => {
+      fetchAchievementPreview(container);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAchievementPreviews, { once: true });
+  } else {
+    initAchievementPreviews();
+  }
+
+  document.addEventListener('astro:page-load', initAchievementPreviews);
+</script>
+
+<style is:global>
+  /* ── Container ── */
+  .achievement-preview {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+    background: var(--sl-color-gray-7);
+  }
+
+  .achievement-preview.loading {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--sl-color-gray-3);
+    font-style: italic;
+  }
+
+  /* ── Tabs Container ── */
+  .achievement-tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--sl-color-gray-6);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    padding-right: 1rem; /* Space for the API link */
+  }
+
+  .achievement-tabs {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--sl-color-gray-4) transparent;
+  }
+  
+  /* Webkit scrollbar for tabs */
+  .achievement-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  .achievement-tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .achievement-tabs::-webkit-scrollbar-thumb {
+    background-color: var(--sl-color-gray-5);
+    border-radius: 3px;
+  }
+
+  /* ── Individual Tab ── */
+  .achievement-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--sl-color-gray-5);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    min-width: max-content;
+    outline: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .achievement-tab:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .achievement-tab.active {
+    background: var(--sl-color-gray-7);
+    border-bottom-color: var(--sl-color-text-accent);
+  }
+
+  .achievement-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sl-color-gray-7);
+    flex-shrink: 0;
+  }
+
+  .achievement-tab.active .achievement-icon-wrapper {
+    border-color: var(--sl-color-gray-4);
+  }
+
+  .achievement-icon {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  .achievement-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .achievement-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.2;
+    transition: color 0.15s;
+  }
+
+  .achievement-tab.active .achievement-name {
+    color: var(--sl-color-white);
+  }
+
+  .achievement-badges {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+    color: var(--sl-color-gray-2);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 25%, transparent);
+  }
+
+  .achievement-tab.active .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 20%, transparent);
+    color: var(--sl-color-text-accent);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 35%, transparent);
+  }
+
+  .badge-level {
+    background: color-mix(in srgb, var(--sl-color-gray-3) 15%, transparent);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-6);
+  }
+
+  .achievement-tab.active .badge-level {
+    color: var(--sl-color-gray-2);
+    border-color: var(--sl-color-gray-5);
+  }
+
+  .achievement-api-link {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--sl-color-gray-5);
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .achievement-api-link:hover {
+    color: var(--sl-color-text-accent);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON collapsible ── */
+  .achievement-json-details {
+    margin: 0;
+  }
+
+  .achievement-json-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+    border-top: none;
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .achievement-json-details summary::-webkit-details-marker { display: none; }
+  .achievement-json-details summary::marker { display: none; content: ''; }
+
+  .achievement-json-details summary:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .json-toggle-label::before {
+    content: '▸ ';
+  }
+
+  .achievement-json-details[open] .json-toggle-label::before {
+    content: '▾ ';
+  }
+
+  .copy-btn {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 2px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .copy-btn:hover {
+    color: var(--sl-color-white);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON code block ── */
+  .achievement-json-pre {
+    display: none;
+    margin: 0 !important;
+    padding: 0.85rem 1rem !important;
+    border-radius: 0 0 8px 8px !important;
+    background: var(--sl-color-gray-7) !important;
+    border-top: 1px solid var(--sl-color-gray-5) !important;
+    overflow-x: auto;
+    font-size: 0.78rem !important;
+    line-height: 1.6 !important;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .achievement-json-pre.active {
+    display: block;
+  }
+
+  .achievement-json-pre code {
+    background: none !important;
+    padding: 0 !important;
+    color: var(--sl-color-gray-2) !important;
+    font-family: var(--sl-font-mono, ui-monospace, monospace) !important;
+    font-size: inherit !important;
+  }
+
+  /* ── JSON syntax colors ── */
+  .json-key { color: #7dc4e4; }
+  .json-string { color: #a6da95; }
+  .json-number { color: #f5a97f; }
+  .json-bool { color: #ee99a0; }
+  .json-null { color: #8087a2; }
+
+  /* ── Error state ── */
+  .achievement-error {
+    padding: 1rem;
+    color: var(--sl-color-red-high);
+    font-size: 0.85rem;
+  }
+
+  /* ── Global Sprite Class ── */
+  .sprite {
+    filter: drop-shadow(2px 0 0 #4e5b57) drop-shadow(0 2px 0 #4e5b57) drop-shadow(-2px 0 0 #4e5b57) drop-shadow(0 -2px 0 #4e5b57);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>

@@ -1,0 +1,227 @@
+---
+title: NPCs & Trading
+description: "NPC types, shop inventories, buying and selling items from NPCs in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+import NpcPreview from '../../../components/site/NpcPreview.astro';
+
+
+NPCs are merchant or trader characters from whom you can buy, sell or trade items. Some are static, while others appear dynamically thanks to the [event system](/concepts/events). 
+
+## NPC Types
+
+| Type | Description |
+|------|-------------|
+| `merchant` | Buys and sells items for gold. |
+| `trader` | Trades items for other items (currency is an item code instead of gold). |
+
+When viewing the items on an NPC, if the `currency` field shows anything other than `gold`, it will display the code of the item you need to trade to the NPC.
+
+Here are some examples of NPCs:
+
+<NpcPreview codes="tailor,rune_vendor,cultist_wizard" />
+
+---
+
+## List of NPCs
+
+To view the list of all existing NPCs, use the following request:
+
+**Endpoint:** `GET /npcs/details`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_npcs_npcs_details_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/npcs/details' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/npcs';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/npcs/details"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Parameter | Description |
+|---|---|
+| `name` | NPC name. |
+| `type` | Type of NPCs. |
+| `currency` | Currency code to filter NPCs that trade with this currency. |
+| `item` | Item code to filter NPCs that trade this item. |
+| `page` | Page number (default: 1). |
+| `size` | Page size (default: 50). |
+
+
+
+---
+
+
+## Actions
+
+To buy or sell an item, you must be on a map with an NPC. For more information, see [Maps & Movement](/concepts/maps_and_movement/).
+
+### Buy Item
+
+To buy an item from an NPC, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/npc/buy`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/buy"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to buy. |
+| `quantity` | Number of items to buy (1–100). |
+
+
+
+### Sell Item
+
+To sell an item to an NPC, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/npc/sell`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/npc/sell \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "string",
+  "quantity": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/npc/sell';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+    body: '{"code":"string","quantity":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/npc/sell"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "string", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to sell. |
+| `quantity` | Number of items to sell (1–100). |
+
+
+

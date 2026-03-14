@@ -1,0 +1,65 @@
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+interface Props {
+  apiUrl?: string;
+}
+
+const { apiUrl } = Astro.props;
+
+const hasApiCurl = Astro.slots.has('api-curl');
+const hasApiJs   = Astro.slots.has('api-javascript');
+const hasApiPy   = Astro.slots.has('api-python');
+const hasApi     = hasApiCurl || hasApiJs || hasApiPy;
+---
+
+<div class="api-tabs not-content">
+  {hasApi && (
+    <Tabs syncKey="api-language">
+      {hasApiCurl && (
+        <TabItem label="cURL">
+          <slot name="api-curl" />
+        </TabItem>
+      )}
+      {hasApiJs && (
+        <TabItem label="JavaScript" icon="seti:javascript">
+          <slot name="api-javascript" />
+        </TabItem>
+      )}
+      {hasApiPy && (
+        <TabItem label="Python" icon="seti:python">
+          <slot name="api-python" />
+        </TabItem>
+      )}
+    </Tabs>
+  )}
+
+  {apiUrl && (
+    <div class="reference-link-wrapper">
+      <a href={apiUrl} target="_blank" rel="noopener noreferrer" class="reference-link">
+        View the API Reference
+      </a>
+    </div>
+  )}
+</div>
+
+<style>
+  .api-tabs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reference-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    color: var(--sl-color-accent, #009f70);
+    text-decoration: none;
+    font-weight: 500;
+        text-decoration: underline;
+
+
+  }
+  .reference-link:hover {
+    text-decoration: underline;
+  }
+</style>

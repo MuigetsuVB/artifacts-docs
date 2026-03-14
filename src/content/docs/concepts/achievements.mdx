@@ -1,0 +1,158 @@
+---
+title: Achievements
+description: "Achievement types, objectives, rewards, account-level progress tracking, and season badges in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+
+Achievements are objectives to be met during the season by all your characters. They allow you to earn gold, items, and achievements. Achievement points allow you to obtain seasonal rewards.
+
+Progress is tracked at the account level, so all your characters contribute together to unlock achievements.
+
+
+---
+
+## Objectives
+
+Achievements can have **multiple objectives** that must all be completed to unlock the achievement. Each objective tracks progress independently.
+
+Here are all the possible types of objectives:
+
+
+| Type           | Description                        |
+|----------------|------------------------------------|
+| `combat_kill`  | Defeat monsters                    |
+| `combat_drop`  | Obtain item drops from combat      |
+| `combat_level` | Reach certain combat levels        |
+| `gathering`    | Gather resources                   |
+| `crafting`     | Craft items                        |
+| `recycling`    | Recycle equipment                  |
+| `task`         | Complete tasks                     |
+| `use`          | Use consumables                    |
+| `npc_buy`      | Buy items from NPCs                |
+| `npc_sell`     | Sell items to NPCs                 |
+
+
+
+The achievement is completed when **all objectives** reach their required total.
+
+---
+
+## Rewards
+
+When you complete an achievement, you earn items rewards that are sent to your [pending items](/concepts/pending_items/). You can claim them with any character on your account.
+
+```http title="JSON"
+"rewards": {
+  "gold": 5000,
+  "items": [
+    { "code": "tasks_coin", "quantity": 3 },
+    { "code": "iron_sword", "quantity": 1 }
+  ]
+}
+```
+
+| Field | Description |
+|---|---|
+| `gold` | Gold reward amount. |
+| `items` | List of item rewards, each with a `code` and `quantity`. Can be `null` if there are no item rewards. |
+
+
+---
+
+## Account Achievements
+
+To view your account's list of achievements, including progress on each objective, use the following request:
+
+**Endpoint:** `GET /accounts/{account}/achievements`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_account_achievements_accounts__account__achievements_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/accounts/{account}/achievements' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/accounts/{account}/achievements';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/accounts/{account}/achievements"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+---
+
+## Retrieving Achievements
+
+To view the full list of achievements, use the following request:
+
+**Endpoint:** `GET /achievements`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_achievements_achievements_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/achievements' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/achievements';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/achievements"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>

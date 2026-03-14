@@ -1,0 +1,483 @@
+---
+title: Grand Exchange
+description: "Player-to-player marketplace for buying, selling, and trading items in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+ 
+The Grand Exchange lets you buy and sell items with other players through **sell orders** and **buy orders**. To interact with the Grand Exchange, your character must be on a map containing a Grand Exchange. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::note
+There is a limit of **100 active orders** (sell + buy combined) per account.
+:::
+
+## Browse orders
+
+You can browse all active orders (sell and buy) using the following request. Use the `type` parameter to filter by order type, and `code` to filter by item.
+
+**Endpoint:** `GET /grandexchange/orders`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/grandexchange/orders?code={ITEM_CODE}&type=sell';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/grandexchange/orders"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+params = {"code": "ITEM_CODE", "type": "sell"}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Parameter | Description |
+|---|---|
+| `code` | Filter by item code. |
+| `type` | Filter by order type: `sell` or `buy`. |
+| `account` | Filter by account (requires `type` to be specified). |
+
+
+
+## Sales history
+
+To consult an item's sales history over the last 7 days, use the following request:
+
+**Endpoint:** `GET /grandexchange/history/{code}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/grandexchange/history/{ITEM_CODE}"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+---
+
+## Sell Orders
+
+### Create a sell order
+
+To put items up for sale, use the following request. The items are removed from your inventory when the order is created.
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/sell`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "iron_sword",
+  "quantity": 5,
+  "price": 100
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ code: "iron_sword", quantity: 5, price: 100 })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "iron_sword", "quantity": 5, "price": 100}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to sell. |
+| `quantity` | Number of items to sell (1–100). |
+| `price` | Price per unit. |
+
+
+
+### Buy from a sell order
+
+To buy items from an existing sell order, first browse the sell orders to find the order ID, then use the following request:
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/buy`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "id": "ORDER_ID",
+  "quantity": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ id: "ORDER_ID", quantity: 1 })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/buy"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"id": "ORDER_ID", "quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `id` | The sell order ID. |
+| `quantity` | Number of items to buy (1–100). |
+
+The gold is deducted from your character and the items are added to your inventory immediately.
+
+
+
+---
+
+## Buy Orders
+
+Buy orders let you place a standing offer to purchase items at a specific price. Other players can then fill your order by selling their items to it.
+
+:::note
+When you create a buy order, the **total gold** (`price × quantity`) is deducted from your character immediately as a guarantee. If no one fills your order and you cancel it, the gold is refunded.
+:::
+
+### Create a buy order
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "iron_ore",
+  "quantity": 50,
+  "price": 20
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ code: "iron_ore", quantity: 50, price: 20 })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "iron_ore", "quantity": 50, "price": 20}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code you want to buy. |
+| `quantity` | Number of items you want to buy (1–100). |
+| `price` | The price per unit you are willing to pay. |
+
+
+
+### Fill a buy order
+
+To sell your items to an existing buy order, use the following request. The items are removed from your inventory and you receive the gold immediately.
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/fill`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "id": "BUY_ORDER_ID",
+  "quantity": 10
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ id: "BUY_ORDER_ID", quantity: 10 })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/fill"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"id": "BUY_ORDER_ID", "quantity": 10}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `id` | The buy order ID. |
+| `quantity` | Number of items to sell to the order (1–100). |
+
+:::caution
+You cannot fill your own buy orders. The items purchased through a buy order are delivered to the buyer's [**pending items**](/concepts/pending_items). The buyer can then claim them with any character on their account.
+:::
+
+
+
+---
+
+## Cancel an order
+
+You can cancel any of your active orders (sell or buy). To find an order to cancel, first check [your orders list](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get).
+
+**Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "id": "ORDER_ID"
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ id: "ORDER_ID" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/cancel"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"id": "ORDER_ID"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+- **Cancelling a sell order**: the items are returned to your character's inventory (requires space).
+- **Cancelling a buy order**: the gold is refunded to your character.
+
+
+

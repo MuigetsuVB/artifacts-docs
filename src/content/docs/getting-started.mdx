@@ -1,0 +1,91 @@
+---
+title: Getting Started
+description: "Create your Artifacts account, get your API token, and make your first API call in under five minutes."
+---
+
+import { Image } from 'astro:assets';
+import tutorial from '/src/assets/images/tutorial.png';
+import tutorial2 from '/src/assets/images/tutorial2.png';
+import { Tabs, TabItem, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+import ApiSdkTabs from '../../components/site/ApiSdkTabs.astro';
+
+Artifacts is an asynchronous MMORPG in which you can control **up to 5 characters** at the same time. Your characters can fight monsters, gather resources, craft items and much more. Unlike a traditional game, you'll have to **write your own scripts** in your preferred programming language to control your characters via an API.
+
+
+
+## Create Your Account
+
+<Steps>
+1. **Register** at [artifactsmmo.com/account/register](https://www.artifactsmmo.com/account/register)
+2. **Log in** and create your first character
+3. **Copy your token** from [your account page](https://www.artifactsmmo.com/my)
+</Steps>
+
+:::caution
+Your token is used to authenticate every API request. **Keep it secret.** It refreshes when you change your password.
+:::
+
+
+--- 
+## Your First API Call
+
+You can view your character using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+The API will return a list of your characters. Now it's time to start playing with our tutorial.
+
+--- 
+## Interactive Tutorial
+
+Now it's time to start our tutorial, available directly in our game client. The game client is a powerful web application that lets you control and monitor your characters in real time.
+
+It is available in **JavaScript and Python** and will guide you through the basics:
+- **Moving** your character across the map
+- **Fighting** your first monster
+- **Resting** to recover HP
+- **Crafting** your first weapon
+
+To start the tutorial, open the **game client** at [play.artifactsmmo.com](https://play.artifactsmmo.com) and click the **Tutorial** button in the top right corner.
+<Image src={tutorial} alt="Tutorial button location" />
+

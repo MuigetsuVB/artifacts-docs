@@ -1,0 +1,59 @@
+﻿
+> artifacts-docs@0.0.1 build
+> astro build
+
+[2m13 h 22 min 05 s[22m [34m[content][39m Syncing content
+[2m13 h 22 min 05 s[22m [34m[content][39m Synced content
+[2m13 h 22 min 05 s[22m [34m[types][39m Generated [2m493ms[22m
+[2m13 h 22 min 05 s[22m [34m[build][39m output: [34m"static"[39m
+[2m13 h 22 min 05 s[22m [34m[build][39m mode: [34m"static"[39m
+[2m13 h 22 min 05 s[22m [34m[build][39m directory: [34mC:\Users\Muige\OneDrive\Bureau\Artifacts\artifacts-docs\dist\[39m
+[2m13 h 22 min 05 s[22m [34m[build][39m Collecting build info...
+[2m13 h 22 min 05 s[22m [34m[build][39m [32mÔ£ô Completed in 771ms.[39m
+[2m13 h 22 min 05 s[22m [34m[build][39m Building static entrypoints...
+[2m13 h 22 min 13 s[22m [34m[vite][39m [32mÔ£ô built in 7.87s[39m
+[2m13 h 22 min 13 s[22m [34m[build][39m [32mÔ£ô Completed in 7.93s.[39m
+
+[42m[30m building client (vite) [39m[49m
+[2m13 h 22 min 13 s[22m [34m[vite][39m transforming...
+[2m13 h 22 min 13 s[22m [34m[vite][39m [32mÔ£ô[39m 37 modules transformed.
+[2m13 h 22 min 13 s[22m [34m[vite][39m rendering chunks...
+[2m13 h 22 min 14 s[22m [34m[vite][39m computing gzip size...
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[32m_astro/ec.0vx5m.js                                                             [39m[1m[2m 2.52 kB[22m[1m[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[35m_astro/ec.s8wh9.css                                                            [39m[1m[2m18.28 kB[22m[1m[22m[2m Ôöé gzip:  3.99 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/page.CjDIIMY3.js                                                        [39m[1m[2m 0.04 kB[22m[1m[22m[2m Ôöé gzip:  0.06 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.hwBsy0Mo.js  [39m[1m[2m 0.67 kB[22m[1m[22m[2m Ôöé gzip:  0.40 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/TableOfContents.astro_astro_type_script_index_0_lang.FuRcXuRY.js        [39m[1m[2m 2.06 kB[22m[1m[22m[2m Ôöé gzip:  0.97 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/index.QHSqUNs4.js                                                       [39m[1m[2m 2.30 kB[22m[1m[22m[2m Ôöé gzip:  1.05 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/Search.astro_astro_type_script_index_0_lang.cjYDvRdi.js                 [39m[1m[2m 2.69 kB[22m[1m[22m[2m Ôöé gzip:  1.38 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/ClientRouter.astro_astro_type_script_index_0_lang.C-sP5TAk.js           [39m[1m[2m13.11 kB[22m[1m[22m[2m Ôöé gzip:  4.54 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [2mdist/[22m[36m_astro/ui-core.D_Lfcn_I.js                                                     [39m[1m[2m72.93 kB[22m[1m[22m[2m Ôöé gzip: 22.86 kB[22m
+[2m13 h 22 min 14 s[22m [34m[vite][39m [32mÔ£ô built in 348ms[39m
+
+[42m[30m generating static routes [39m[49m
+[2m13 h 22 min 14 s[22m [32mÔûÂ[39m @astrojs/starlight/routes/static/404.astro
+[2m13 h 22 min 14 s[22m   [34mÔööÔöÇ[39m [2m/404.html[22m [2m(+24ms)[22m 
+[2m13 h 22 min 14 s[22m [32mÔûÂ[39m @astrojs/starlight/routes/static/index.astro
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/index.html[22m [2m(+33ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/funding/index.html[22m [2m(+14ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/api_guide/authorization/index.html[22m [2m(+42ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/changelog/index.html[22m [2m(+15ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/getting-started/index.html[22m [2m(+30ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/api_guide/response_codes/index.html[22m [2m(+15ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/achievements/index.html[22m [2m(+50ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/roadmap/index.html[22m [2m(+16ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/api_guide/openapi_spec/index.html[22m [2m(+14ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/api_guide/rate_limits/index.html[22m [2m(+15ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/events/index.html[22m [2m(+34ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/actions/index.html[22m [2m(+29ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/inventory_and_bank/index.html[22m [2m(+82ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/grand_exchange/index.html[22m [2m(+79ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/give/index.html[22m [2m(+31ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/maps_and_movement/index.html[22m [2m(+54ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/pending_items/index.html[22m [2m(+26ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/npcs/index.html[22m [2m(+37ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/recycling/index.html[22m [2m(+20ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/resting_and_using_items/index.html[22m [2m(+28ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/skills/index.html[22m [2m(+57ms)[22m 
+[2m13 h 22 min 14 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/stats_and_fights/index.html[22m [2m(+53ms)[22m 
+[2m13 h 22 min 15 s[22m   [34mÔö£ÔöÇ[39m [2m/concepts/tasks/index.html[22m

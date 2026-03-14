@@ -1,0 +1,445 @@
+---
+interface Props {
+  // Can be map IDs
+  code?: string;
+  codes?: string | string[];
+}
+
+const { code, codes } = Astro.props;
+
+// Normalize to an array of codes
+let mapsToFetch: string[] = [];
+if (codes) {
+  if (Array.isArray(codes)) {
+    mapsToFetch = codes;
+  } else {
+    mapsToFetch = codes.split(',').map(c => c.trim());
+  }
+} else if (code) {
+  mapsToFetch = [code];
+}
+---
+
+<div 
+  class="map-preview not-content loading" 
+  data-map-codes={mapsToFetch.join(',')}
+>
+  Loading maps...
+</div>
+
+<script>
+  async function fetchMapPreview(container: Element) {
+    const codesAttr = container.getAttribute('data-map-codes');
+    if (!codesAttr) return;
+
+    const codes = codesAttr.split(',');
+
+    try {
+      // Fetch all maps in parallel
+      const responses = await Promise.all(
+        codes.map(code => fetch(`https://api.artifactsmmo.com/maps/id/${code}`))
+      );
+      
+      const jsonResponses = await Promise.all(responses.map(res => res.json()));
+      const maps = jsonResponses.map(json => json.data);
+
+      // Syntax highlight JSON
+      const highlightJson = (json: string) => {
+        return json
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/("(?:\\.|[^"\\])*")\s*:/g, '<span class="json-key">$1</span>:')
+          .replace(/:\s*("(?:\\.|[^"\\])*")/g, ': <span class="json-string">$1</span>')
+          .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="json-number">$1</span>')
+          .replace(/:\s*(true|false)/g, ': <span class="json-bool">$1</span>')
+          .replace(/:\s*(null)/g, ': <span class="json-null">$1</span>')
+          .replace(/\[(\s*])/g, '[<span class="json-null">$1</span>')
+          .replace(/("(?:\\.|[^"\\])*")(?=\s*[,\]])/g, '<span class="json-string">$1</span>');
+      };
+
+      // Generate tab headers
+      const tabsHtml = maps.map((mapItem, index) => {
+        const content = mapItem.interactions?.content;
+        const imageUrl = `https://www.artifactsmmo.com/images/maps/${mapItem.skin || (content ? content.code : 'default')}.png`;
+        const isActive = index === 0 ? 'active' : '';
+        const mapName = mapItem.name || `Map [${mapItem.x}, ${mapItem.y}]`;
+        
+        return `
+          <button class="map-tab ${isActive}" data-index="${index}">
+            <div class="map-icon-wrapper">
+              <img src="${imageUrl}" alt="${mapName}" class="map-icon sprite" onerror="this.parentElement.style.display='none'" />
+            </div>
+            <div class="map-details">
+              <span class="map-name">${mapName}</span>
+              <div class="map-badges">
+                <span class="badge badge-type">${content && content.type ? content.type.replace(/_/g, ' ') : 'Empty'}</span>
+                ${mapItem.layer ? `<span class="badge badge-level">${mapItem.layer}</span>` : ''}
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      // Render the structure
+      container.innerHTML = `
+        <div class="map-tabs-container">
+          <div class="map-tabs">
+            ${tabsHtml}
+          </div>
+          <a href="https://api.artifactsmmo.com/docs/#/operations/get_map_by_id_maps_id__map_id__get" target="_blank" rel="noopener" class="map-api-link" title="View API docs">
+            API ↗
+          </a>
+        </div>
+        <details class="map-json-details" open>
+          <summary>
+            <span class="json-toggle-label">JSON</span>
+            <button class="copy-btn" title="Copy JSON">Copy</button>
+          </summary>
+          <div class="map-json-panes"></div>
+        </details>
+      `;
+
+      container.classList.remove('loading');
+
+      // Generate JSON pane contents
+      const panesContainer = container.querySelector('.map-json-panes')!;
+      let currentJson = '';
+
+      maps.forEach((mapItem, index) => {
+        const prettyJson = JSON.stringify(mapItem, null, 2);
+        const pane = document.createElement('pre');
+        pane.className = `map-json-pre ${index === 0 ? 'active' : ''}`;
+        pane.setAttribute('data-index', index.toString());
+        pane.innerHTML = `<code>${highlightJson(prettyJson)}</code>`;
+        panesContainer.appendChild(pane);
+        
+        if (index === 0) currentJson = prettyJson;
+      });
+
+      // Handle Tab Switching
+      const tabs = container.querySelectorAll('.map-tab');
+      const panes = container.querySelectorAll('.map-json-pre');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          // Remove active from all
+          tabs.forEach(t => t.classList.remove('active'));
+          panes.forEach(p => p.classList.remove('active'));
+
+          // Add active to clicked
+          const target = e.currentTarget as HTMLElement;
+          target.classList.add('active');
+          const index = target.getAttribute('data-index');
+          
+          container.querySelector(`.map-json-pre[data-index="${index}"]`)?.classList.add('active');
+          
+          // Update current json for copying
+          currentJson = JSON.stringify(maps[Number(index)], null, 2);
+        });
+      });
+
+      // Copy button
+      const copyBtn = container.querySelector('.copy-btn');
+      copyBtn?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          await navigator.clipboard.writeText(currentJson);
+          if (copyBtn) {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+
+    } catch (error) {
+      console.error(`Failed to fetch maps ${codes.join(',')}:`, error);
+      container.innerHTML = `<div class="map-error">Failed to load maps: <code>${codes.join(', ')}</code></div>`;
+      container.classList.remove('loading');
+    }
+  }
+
+  function initMapPreviews() {
+    document.querySelectorAll('.map-preview').forEach(container => {
+      fetchMapPreview(container);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMapPreviews, { once: true });
+  } else {
+    initMapPreviews();
+  }
+
+  document.addEventListener('astro:page-load', initMapPreviews);
+</script>
+
+<style is:global>
+  /* ── Container ── */
+  .map-preview {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+    background: var(--sl-color-gray-7);
+  }
+
+  .map-preview.loading {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--sl-color-gray-3);
+    font-style: italic;
+  }
+
+  /* ── Tabs Container ── */
+  .map-tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--sl-color-gray-6);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    padding-right: 1rem; /* Space for the API link */
+  }
+
+  .map-tabs {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--sl-color-gray-4) transparent;
+  }
+  
+  /* Webkit scrollbar for tabs */
+  .map-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  .map-tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .map-tabs::-webkit-scrollbar-thumb {
+    background-color: var(--sl-color-gray-5);
+    border-radius: 3px;
+  }
+
+  /* ── Individual Tab ── */
+  .map-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--sl-color-gray-5);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    min-width: max-content;
+    outline: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .map-tab:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .map-tab.active {
+    background: var(--sl-color-gray-7);
+    border-bottom-color: var(--sl-color-text-accent);
+  }
+
+  .map-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sl-color-gray-7);
+    flex-shrink: 0;
+  }
+
+  .map-tab.active .map-icon-wrapper {
+    border-color: var(--sl-color-gray-4);
+  }
+
+  .map-icon {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  .map-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .map-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.2;
+    transition: color 0.15s;
+  }
+
+  .map-tab.active .map-name {
+    color: var(--sl-color-white);
+  }
+
+  .map-badges {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+    color: var(--sl-color-gray-2);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 25%, transparent);
+  }
+
+  .map-tab.active .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 20%, transparent);
+    color: var(--sl-color-text-accent);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 35%, transparent);
+  }
+
+  .badge-level {
+    background: color-mix(in srgb, var(--sl-color-gray-3) 15%, transparent);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-6);
+  }
+
+  .map-tab.active .badge-level {
+    color: var(--sl-color-gray-2);
+    border-color: var(--sl-color-gray-5);
+  }
+
+  .map-api-link {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--sl-color-gray-5);
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .map-api-link:hover {
+    color: var(--sl-color-text-accent);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON collapsible ── */
+  .map-json-details {
+    margin: 0;
+  }
+
+  .map-json-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+    border-top: none;
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .map-json-details summary::-webkit-details-marker { display: none; }
+  .map-json-details summary::marker { display: none; content: ''; }
+
+  .map-json-details summary:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .json-toggle-label::before {
+    content: '▸ ';
+  }
+
+  .map-json-details[open] .json-toggle-label::before {
+    content: '▾ ';
+  }
+
+  .copy-btn {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 2px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .copy-btn:hover {
+    color: var(--sl-color-white);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON code block ── */
+  .map-json-pre {
+    display: none;
+    margin: 0 !important;
+    padding: 0.85rem 1rem !important;
+    border-radius: 0 0 8px 8px !important;
+    background: var(--sl-color-gray-7) !important;
+    border-top: 1px solid var(--sl-color-gray-5) !important;
+    overflow-x: auto;
+    font-size: 0.78rem !important;
+    line-height: 1.6 !important;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .map-json-pre.active {
+    display: block;
+  }
+
+  .map-json-pre code {
+    background: none !important;
+    padding: 0 !important;
+    color: var(--sl-color-gray-2) !important;
+    font-family: var(--sl-font-mono, ui-monospace, monospace) !important;
+    font-size: inherit !important;
+  }
+
+  /* ── JSON syntax colors ── */
+  .json-key { color: #7dc4e4; }
+  .json-string { color: #a6da95; }
+  .json-number { color: #f5a97f; }
+  .json-bool { color: #ee99a0; }
+  .json-null { color: #8087a2; }
+
+  /* ── Error state ── */
+  .map-error {
+    padding: 1rem;
+    color: var(--sl-color-red-high);
+    font-size: 0.85rem;
+  }
+
+  /* ── Global Sprite Class ── */
+  .sprite {
+    filter: drop-shadow(2px 0 0 #4e5b57) drop-shadow(0 2px 0 #4e5b57) drop-shadow(-2px 0 0 #4e5b57) drop-shadow(0 -2px 0 #4e5b57);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>

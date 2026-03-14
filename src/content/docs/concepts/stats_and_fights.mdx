@@ -1,0 +1,469 @@
+---
+title: Combat & Stats
+description: "Character stats, damage formulas, combat mechanics, monster types, effects, and fight actions in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+import MonsterPreview from '../../../components/site/MonsterPreview.astro';
+
+Combat is a turn-based system where stats determine damage output, defense, and turn order. This page covers all character stats, how combat works, and the fight action.
+
+## Stats
+
+Your character's stats depend on the equipment you have equipped. For more information about equipment, see [Equipment](/concepts/equipment).
+
+| Stat | Description |
+|---|---|
+| **Hit Points (HP)** | Your character's health pool. |
+| **Elemental Attacks** | Base attack values for fire, water, earth, and air. |
+| **Elemental Damages** | Percentage bonus to elemental attack damage. |
+| **Elemental Resistances** | Percentage reduction of incoming elemental damage. |
+| **Critical Strike** | Chance to deal 1.5× damage (1 point = 1% chance). |
+| **Initiative** | Determines turn order — higher acts first. |
+| **Threat** | Determines monster targeting priority in multi-character fights. |
+| **Haste** | Reduces fight cooldown duration (1 point = 1% reduction). |
+| **Wisdom** | Increases XP earned (1 point = 0.1% more XP). |
+| **Prospecting** | Increases drop chance (1 point = 0.1% more drops). |
+
+### Damage Formula
+
+Damage is calculated per element using rounding. The formula is:
+
+```
+Output = Round(Attack × Round(Damage × 0.01))
+```
+
+**Example:** 100 base attack + 30% damage = `Round(100 × Round(30 × 0.01)) = 130` total damage.
+
+- 1 damage = 1% extra base damage
+- `.5` always rounds **up**, below `.5` rounds **down**
+- Multi-element weapons calculate each element independently (separate attack instances in fight logs)
+
+### Resistance Formula
+
+Resistance uses the same logic:
+
+```
+Blocked = Round(Attack × Round(Resistance × 0.01))
+```
+
+**Example:** Player attacks with 100, monster has 30 resistance → blocks 30 damage.
+
+### Critical Strike
+
+Critical strike gives you a chance to deal **1.5× total attack damage**.
+
+- 1 critical strike = 1% chance
+- Example: 10 critical strike → 10% chance. A hit of 100 becomes 150 on critical.
+
+### Initiative
+
+Initiative determines the turn order in combat. The character or monster with the highest initiative acts first, followed by others in descending order.
+
+- **Tied initiative**: the one with higher HP acts first.
+- **Tied HP**: random order.
+
+### Threat
+
+In a multi-character fight, the monster targets the character with the **highest threat** 90% of the time. 10% of the time, it targets the character with the **lowest HP**. Ties are broken by lowest HP, then random.
+
+### Haste
+
+Haste reduces the cooldown of a fight. See the cooldown formula in Combat Mechanics below.
+
+### Wisdom & Prospecting
+
+- **Wisdom** increases XP earned: base rate is 100%, with 100 wisdom → 110% XP rate.
+- **Prospecting** increases drop chance: base rate is 100%, with 100 prospecting → 110% drop rate.
+
+Both apply to fights, gathering, and wisdom also applies to crafting.
+
+
+### Retrieving Character Data
+
+You can view a character, including their stats, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+
+ ---
+
+## Combat Mechanics
+
+Combat is turn-based. Turn order is determined by initiative.
+
+- Fights can last a **maximum of 100 turns** — if not over by then, you **lose**.
+- If you lose, your character returns to **spawn (0,0)** with **1 HP**.
+- Your inventory must have at least **1 free slot** before starting a fight (otherwise error 497).
+
+### Cooldown Formula
+
+```
+Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
+```
+
+**Example:** 20 turns + 10 haste → `20 × 2 - (0.1 × 40) = 36` seconds (instead of 40). Minimum cooldown is **5 seconds**.
+
+
+
+
+### Monster Types
+
+There are several types of monsters that can either fight alone or in groups.
+
+| Type | Description | XP Rate |
+|---|---|---|
+| `normal` | Standard monsters found throughout the world. | ×1 |
+| `elite` | Stronger monsters with better stats and drops. | ×1.4 |
+| `boss` | Powerful monsters that can be fought with up to 3 characters. | ×2 |
+
+
+:::caution
+If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
+:::
+
+### Monster Effects
+
+Some monsters have special abilities called effects that activate during combat in addition to their normal attacks. You can view a monster's effects in the `effects` array of its API response.
+
+Here are some examples of monsters with effects:
+
+<MonsterPreview codes="spider,cultist_emperor,rosenblood" />
+
+| Keyword | Effect |
+|---|---|
+| Burn | On first turn, applies a burn effect of X% of total attack (all elements). Damage applied each turn, decreasing by 10% per turn. |
+| Lifesteal | Restores X% of total attack (all elements) in HP after a critical strike. |
+| Healing | Every 3 played turns, restores X% of HP at the start of the turn. |
+| Reconstitution | At the beginning of turn X, restores all HP. |
+| Poison | At the start of its first turn, applies X poison to its opponent. Target loses X HP per turn. |
+| Corrupted | After every time the bearer is attacked, their resistance to the attack's element is reduced by X% (can go negative). |
+| Frenzy | On critical hit, grants X% damage to self and allies until end of next turn. |
+| Berserker Rage | Below 25% HP, gains X% damage permanently. Activates once per combat. |
+| Void Drain | Every 4 turns, drains X% HP from each enemy to heal self. |
+| Barrier | At fight start and every 5 played turns, gains a protective barrier of X HP. All attacks go to the barrier until destroyed. |
+| Protective Bubble | Grants X% resistance to a random element. Element changes each turn (cannot repeat). |
+
+### Retrieving Monsters
+
+#### All Monsters
+
+To retrieve a paginated list of all monsters, use the following endpoint:
+
+**Endpoint:** `GET /monsters`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_monsters_monsters_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/monsters?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/monsters?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/monsters"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+#### Monster by Code
+
+To retrieve specific monster details using its unique code, use the following endpoint:
+
+**Endpoint:** `GET /monsters/{code}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_monster_monsters__code__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/monsters/red_slime' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/monsters/red_slime';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/monsters/red_slime"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+## Actions
+
+To start a fight, your character must be on a map with a monster. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::caution
+Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a 497 error.
+:::
+
+### Fight
+
+**Endpoint:** `POST /my/{name}/action/fight`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/fight \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/fight';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/fight"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+### Multi-Characters Fight
+
+You can fight with up to 2 other of **your own characters** against `boss`-type monsters (up to 3 characters total). All participating characters must be on the boss's map. Each character receives XP, gold, and drops independently.
+
+
+**Endpoint:** `POST /my/{name}/action/fight`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_fight_my__name__action_fight_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/fight \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "participants": ["Character2", "Character3"]
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/fight';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ participants: ["Character2", "Character3"] })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/fight"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"participants": ["Character2", "Character3"]}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `participants` | Optional list of additional character names (max 2). All must be on the same map. Boss fights only. |
+
+## Experience to Level
+
+
+Here's the table showing the experience required to level up. This table applies to **all skills and combat**.
+
+| Level | XP required to level up |
+|------:|------------------------:|
+| 1 | 150 |
+| 2 | 250 |
+| 3 | 350 |
+| 4 | 450 |
+| 5 | 700 |
+| 6 | 950 |
+| 7 | 1,200 |
+| 8 | 1,450 |
+| 9 | 1,700 |
+| 10 | 2,100 |
+| 11 | 2,500 |
+| 12 | 2,900 |
+| 13 | 3,300 |
+| 14 | 3,700 |
+| 15 | 4,400 |
+| 16 | 5,100 |
+| 17 | 5,800 |
+| 18 | 6,500 |
+| 19 | 7,200 |
+| 20 | 8,200 |
+| 21 | 9,200 |
+| 22 | 10,200 |
+| 23 | 11,200 |
+| 24 | 12,200 |
+| 25 | 13,400 |
+| 26 | 14,600 |
+| 27 | 15,800 |
+| 28 | 17,000 |
+| 29 | 18,200 |
+| 30 | 19,700 |
+| 31 | 21,200 |
+| 32 | 22,700 |
+| 33 | 24,200 |
+| 34 | 25,700 |
+| 35 | 27,500 |
+| 36 | 29,300 |
+| 37 | 31,100 |
+| 38 | 32,900 |
+| 39 | 34,700 |
+| 40 | 36,500 |
+| 41 | 38,600 |
+| 42 | 40,700 |
+| 43 | 42,800 |
+| 44 | 44,900 |
+| 45 | 47,000 |
+| 46 | 48,800 |
+| 47 | 50,600 |
+| 48 | 52,400 |
+| 49 | 54,200 |
+| 50 | — (max level) |

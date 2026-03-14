@@ -1,0 +1,420 @@
+---
+title: Skills
+description: "Gathering and crafting skills, resource nodes, workshops, XP rates, and the experience-to-level table in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+import ResourcePreview from '../../../components/site/ResourcePreview.astro';
+
+
+Your characters have 8 skills that can gain XP and reach up to level 50. They allow you to gather resources and craft items.
+
+| Skill | Type | Description |
+| :--- | :--- | :--- |
+| **Woodcutting** | Gathering, Crafting | Harvesting wood from trees and crafting planks |
+| **Mining** | Gathering, Crafting | Extracting ores from rocks and crafting ingots. |
+| **Fishing** | Gathering | Catching fish from water sources. |
+| **Alchemy** | Gathering, Crafting | Collecting plants crafting potions. |
+| **Weaponry** | Crafting | Forging weapons for combat. |
+| **Gearcrafting** | Crafting | Creating armor and equipment. |
+| **Jewelrycrafting** | Crafting | Crafting rings and amulets. |
+| **Cooking** | Crafting | Preparing food for healing. |
+
+### Retrieving Character Skills
+
+You can view a character, including their skills, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+
+## Gathering
+
+Gathered resources are the foundation of the crafting system, as they are essential for almost every crafting recipe in the game.
+To gather a resource, your character must be located on a map tile that contains it. For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
+
+Here are some examples of resources:
+
+<ResourcePreview codes="copper_rocks,birch_tree,salmon_spot,torch_cactus" />
+
+
+:::caution
+If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
+:::
+
+
+### Retrieving Resources
+
+### All resources
+
+To retrieve a paginated list of all resources, use the following endpoint:
+
+
+**Endpoint:** `GET /resources`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_resources_resources_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/resources?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/resources?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/resources"
+response = requests.get(url, params={"page": 1, "size": 50})
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+### Resource by Code
+
+To retrieve specific resource details using its unique code, use the following endpoint:
+
+**Endpoint:** `GET /resources/{code}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_resource_resources__code__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/resources/copper_rocks' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/resources/copper_rocks';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/resources/copper_rocks"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+### Gather Action
+
+To gather a resource, use the following endpoint:
+
+**Endpoint:** `POST /my/{name}/action/gathering`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/gathering \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/gathering';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/gathering"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+
+## Crafting
+
+Crafting is an essential core mechanic; the vast majority of items in the game—including equipment, jewelry, weapons, potions, and food—are entirely player-crafted. To craft an item, your character must be on a map tile with a workshop for the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::caution
+If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
+:::
+
+:::note
+Crafting XP varies by skill:
+- **Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy**: Normal XP (1.0×)
+- **Cooking**: Reduced XP (**0.5×**)
+- **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
+:::
+
+### Retrieving Craftable Items
+
+To retrieve a paginated list of all items craftable with a specific skill, use the following endpoint:
+
+**Endpoint:** `GET /items?craft_skill={skill}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_items_items_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/items?craft_skill=weaponcrafting' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/items?craft_skill=weaponcrafting';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/items"
+response = requests.get(url, params={"craft_skill": "weaponcrafting"})
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+### Craft Action
+
+To craft an item at a workshop, use the following endpoint. You must have the required skill level and materials in your inventory:
+
+**Endpoint:** `POST /my/{name}/action/crafting`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/crafting \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "iron_sword"
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/crafting';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ code: "iron_sword" })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/crafting"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"code": "iron_sword"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to craft. |
+| `quantity` | Number of items to craft (optional, default 1). |
+
+
+
+
+## Experience to Level
+
+Here's the table showing the experience required to level up. This table applies to **all skills and combat**.
+
+| Level | XP required to level up |
+|------:|------------------------:|
+| 1 | 150 |
+| 2 | 250 |
+| 3 | 350 |
+| 4 | 450 |
+| 5 | 700 |
+| 6 | 950 |
+| 7 | 1,200 |
+| 8 | 1,450 |
+| 9 | 1,700 |
+| 10 | 2,100 |
+| 11 | 2,500 |
+| 12 | 2,900 |
+| 13 | 3,300 |
+| 14 | 3,700 |
+| 15 | 4,400 |
+| 16 | 5,100 |
+| 17 | 5,800 |
+| 18 | 6,500 |
+| 19 | 7,200 |
+| 20 | 8,200 |
+| 21 | 9,200 |
+| 22 | 10,200 |
+| 23 | 11,200 |
+| 24 | 12,200 |
+| 25 | 13,400 |
+| 26 | 14,600 |
+| 27 | 15,800 |
+| 28 | 17,000 |
+| 29 | 18,200 |
+| 30 | 19,700 |
+| 31 | 21,200 |
+| 32 | 22,700 |
+| 33 | 24,200 |
+| 34 | 25,700 |
+| 35 | 27,500 |
+| 36 | 29,300 |
+| 37 | 31,100 |
+| 38 | 32,900 |
+| 39 | 34,700 |
+| 40 | 36,500 |
+| 41 | 38,600 |
+| 42 | 40,700 |
+| 43 | 42,800 |
+| 44 | 44,900 |
+| 45 | 47,000 |
+| 46 | 48,800 |
+| 47 | 50,600 |
+| 48 | 52,400 |
+| 49 | 54,200 |
+| 50 | — (max level) |

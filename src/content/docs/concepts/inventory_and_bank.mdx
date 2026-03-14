@@ -1,0 +1,548 @@
+---
+title: Inventory & Bank
+description: "Character inventory management, bank storage, gold deposit and withdrawal, and bank expansion in Artifacts MMO."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+import ItemPreview from '../../../components/site/ItemPreview.astro';
+
+## Inventory
+
+Each character has 20 slots in their inventory, which can hold a maximum of 100 items. So you can have 20 different items, but a maximum of 100 items in total. At each level, the maximum total items increases by 2.
+
+  
+```http title="JSON"
+....
+"inventory": [
+  {
+    "slot": 0,
+    "code": "string",
+    "quantity": 0
+    }
+]
+``` 
+
+
+### Bags
+
+Your character can [equip](/concepts/equipment/#equip-item) a bag to increase the size of their inventory in the `bag_slot` slot.
+
+Here are some examples of bags you can equip:
+
+<ItemPreview codes="satchel,backpack" />
+
+### Retrieving Character Data
+
+You can view a character, including their inventory, using this request:
+
+**Endpoint:** `GET /characters/{name}`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_characters__name__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+---
+
+## Bank 
+
+At the bank, you can deposit items and gold. The bank is shared with all your characters, it's the best way to trade with your other characters.
+
+The bank is limited to 50 slots, but you can buy expansions at a cost of 4,500 gold for 20 slots, and the price doubles (×2) with each expansion purchased.
+
+### View bank items
+
+You can view the contents of your bank at any time using the following request:
+
+**Endpoint:** `GET /my/bank/items`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_bank_items_my_bank_items_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/my/bank/items' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/bank/items';
+const options = {
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/bank/items"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+### Get bank details
+
+You can also view general information about your bank (total gold, slots, expansions, next expansion cost) using the following request:
+
+**Endpoint:** `GET /my/bank`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_bank_details_my_bank_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --location --request GET 'https://api.artifactsmmo.com/my/bank' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/bank';
+const options = {
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/bank"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+
+### Deposit items
+
+
+To deposit items, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::note
+There is a **3-second cooldown** per different item deposit.
+:::
+
+
+To deposit items, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/deposit/item`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_item_my__name__action_bank_deposit_item_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '[
+    { "code": "string", "quantity": 1 },
+    { "code": "another_item", "quantity": 2 }
+]'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify([
+    { code: "string", quantity: 1 },
+    { code: "another_item", quantity: 2 }
+  ])
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/deposit/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = [
+    {"code": "string", "quantity": 1},
+    {"code": "another_item", "quantity": 2}
+]
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to deposit. |
+| `quantity` | Number of items to deposit. |
+
+
+
+
+### Withdraw items
+
+To withdraw items, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/).
+
+:::note
+There is a **3-second cooldown** per different item withdrawn.
+:::
+
+To withdraw items, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/item`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_item_my__name__action_bank_withdraw_item_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '[
+    { "code": "string", "quantity": 1 },
+    { "code": "another_item", "quantity": 2 }
+]'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify([
+    { code: "string", quantity: 1 },
+    { code: "another_item", quantity: 2 }
+  ])
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/item"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = [
+    {"code": "string", "quantity": 1},
+    {"code": "another_item", "quantity": 2}
+]
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `code` | The item code to withdraw. |
+| `quantity` | Number of items to withdraw. |
+
+
+
+
+
+
+### Withdraw Gold
+
+To withdraw gold, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/). You can withdraw **any amount of gold** per request.
+
+To withdraw gold, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/withdraw/gold`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "quantity": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: '{"quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/withdraw/gold"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `quantity` | Amount of gold to withdraw. |
+
+
+
+### Deposit gold
+
+To deposit gold, you must be on a map containing a bank.  For more details on map navigation, see [Maps and Movement](/concepts/maps_and_movement/). You can deposit **any amount of gold** per request, as long as you have the gold available.
+
+To deposit gold, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/deposit/gold`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_deposit_bank_gold_my__name__action_bank_deposit_gold_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "quantity": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: '{"quantity":1}'
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/deposit/gold"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"quantity": 1}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `quantity` | Amount of gold to deposit. |
+
+
+
+### Buy expansion
+
+To buy an expansion, you need to be on a map containing a bank. It costs 4,500 gold for 20 slots, and the price increases (x2) with each expansion purchased.
+
+To buy an expansion, use the following request:
+
+**Endpoint:** `POST /my/{name}/action/bank/buy_expansion`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/{name}/action/bank/buy_expansion"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+

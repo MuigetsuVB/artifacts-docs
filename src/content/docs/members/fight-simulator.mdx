@@ -1,0 +1,102 @@
+---
+title: Fight Simulator
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+:::caution
+Fight Simulator is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
+:::
+
+The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used via the game client or directly with the API.
+
+You can use this POST request to use the simulator.
+  
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/simulation/fight_simulation \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "characters": [
+    {
+      "level": 1,
+      "weapon_slot": "string",
+      "rune_slot": "string",
+      "shield_slot": "string",
+      "helmet_slot": "string",
+      "body_armor_slot": "string",
+      "leg_armor_slot": "string",
+      "boots_slot": "string",
+      "ring1_slot": "string",
+      "ring2_slot": "string",
+      "amulet_slot": "string",
+      "artifact1_slot": "string",
+      "artifact2_slot": "string",
+      "artifact3_slot": "string",
+      "utility1_slot": "string",
+      "utility1_slot_quantity": 1,
+      "utility2_slot": "string",
+      "utility2_slot_quantity": 1
+    }
+  ],
+  "monster": "MONSTER_CODE",
+  "iterations": 1
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: '{"characters":[{"level":1,"weapon_slot":"string","rune_slot":"string","shield_slot":"string","helmet_slot":"string","body_armor_slot":"string","leg_armor_slot":"string","boots_slot":"string","ring1_slot":"string","ring2_slot":"string","amulet_slot":"string","artifact1_slot":"string","artifact2_slot":"string","artifact3_slot":"string","utility1_slot":"string","utility1_slot_quantity":1,"utility2_slot":"string","utility2_slot_quantity":1}],"monster":"MONSTER_CODE","iterations":1}'
+
+};
+  
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/simulation/fight_simulation"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {
+    "characters": [
+        {
+            "level": 1,
+            "weapon_slot": "iron_sword",
+            "body_armor_slot": "iron_armor"
+        }
+    ],
+    "monster": "MONSTER_CODE",
+    "iterations": 100
+}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+

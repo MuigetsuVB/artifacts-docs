@@ -1,0 +1,442 @@
+---
+interface Props {
+  // Support both single code or array/comma-separated codes
+  code?: string;
+  codes?: string | string[];
+}
+
+const { code, codes } = Astro.props;
+
+// Normalize to an array of codes
+let itemsToFetch: string[] = [];
+if (codes) {
+  if (Array.isArray(codes)) {
+    itemsToFetch = codes;
+  } else {
+    itemsToFetch = codes.split(',').map(c => c.trim());
+  }
+} else if (code) {
+  itemsToFetch = [code];
+}
+---
+
+<div 
+  class="item-preview not-content loading" 
+  data-item-codes={itemsToFetch.join(',')}
+>
+  Loading items...
+</div>
+
+<script>
+  async function fetchItemPreview(container: Element) {
+    const codesAttr = container.getAttribute('data-item-codes');
+    if (!codesAttr) return;
+
+    const codes = codesAttr.split(',');
+
+    try {
+      // Fetch all items in parallel
+      const responses = await Promise.all(
+        codes.map(code => fetch(`https://api.artifactsmmo.com/items/${code}`))
+      );
+      
+      const jsonResponses = await Promise.all(responses.map(res => res.json()));
+      const items = jsonResponses.map(json => json.data);
+
+      // Syntax highlight JSON
+      const highlightJson = (json: string) => {
+        return json
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/("(?:\\.|[^"\\])*")\s*:/g, '<span class="json-key">$1</span>:')
+          .replace(/:\s*("(?:\\.|[^"\\])*")/g, ': <span class="json-string">$1</span>')
+          .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="json-number">$1</span>')
+          .replace(/:\s*(true|false)/g, ': <span class="json-bool">$1</span>')
+          .replace(/:\s*(null)/g, ': <span class="json-null">$1</span>')
+          .replace(/\[(\s*])/g, '[<span class="json-null">$1</span>')
+          .replace(/("(?:\\.|[^"\\])*")(?=\s*[,\]])/g, '<span class="json-string">$1</span>');
+      };
+
+      // Generate tab headers
+      const tabsHtml = items.map((item, index) => {
+        const imageUrl = `https://www.artifactsmmo.com/images/items/${item.code}.png`;
+        const isActive = index === 0 ? 'active' : '';
+        return `
+          <button class="item-tab ${isActive}" data-index="${index}">
+            <div class="item-icon-wrapper">
+              <img src="${imageUrl}" alt="${item.name}" class="item-icon sprite" />
+            </div>
+            <div class="item-details">
+              <span class="item-name">${item.name}</span>
+              <div class="item-badges">
+                <span class="badge badge-type">${item.type.replace(/_/g, ' ')}</span>
+                <span class="badge badge-level">Lv. ${item.level}</span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      // Render the structure
+      container.innerHTML = `
+        <div class="item-tabs-container">
+          <div class="item-tabs">
+            ${tabsHtml}
+          </div>
+          <a href="https://api.artifactsmmo.com/docs/#/operations/get_item_items__code__get" target="_blank" rel="noopener" class="item-api-link" title="View API docs">
+            API ↗
+          </a>
+        </div>
+        <details class="item-json-details" open>
+          <summary>
+            <span class="json-toggle-label">JSON</span>
+            <button class="copy-btn" title="Copy JSON">Copy</button>
+          </summary>
+          <div class="item-json-panes"></div>
+        </details>
+      `;
+
+      container.classList.remove('loading');
+
+      // Generate JSON pane contents
+      const panesContainer = container.querySelector('.item-json-panes')!;
+      let currentJson = '';
+
+      items.forEach((item, index) => {
+        const prettyJson = JSON.stringify(item, null, 2);
+        const pane = document.createElement('pre');
+        pane.className = `item-json-pre ${index === 0 ? 'active' : ''}`;
+        pane.setAttribute('data-index', index.toString());
+        pane.innerHTML = `<code>${highlightJson(prettyJson)}</code>`;
+        panesContainer.appendChild(pane);
+        
+        if (index === 0) currentJson = prettyJson;
+      });
+
+      // Handle Tab Switching
+      const tabs = container.querySelectorAll('.item-tab');
+      const panes = container.querySelectorAll('.item-json-pre');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          // Remove active from all
+          tabs.forEach(t => t.classList.remove('active'));
+          panes.forEach(p => p.classList.remove('active'));
+
+          // Add active to clicked
+          const target = e.currentTarget as HTMLElement;
+          target.classList.add('active');
+          const index = target.getAttribute('data-index');
+          
+          container.querySelector(`.item-json-pre[data-index="${index}"]`)?.classList.add('active');
+          
+          // Update current json for copying
+          currentJson = JSON.stringify(items[Number(index)], null, 2);
+        });
+      });
+
+      // Copy button
+      const copyBtn = container.querySelector('.copy-btn');
+      copyBtn?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          await navigator.clipboard.writeText(currentJson);
+          if (copyBtn) {
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+
+    } catch (error) {
+      console.error(`Failed to fetch items ${codes.join(',')}:`, error);
+      container.innerHTML = `<div class="item-error">Failed to load items: <code>${codes.join(', ')}</code></div>`;
+      container.classList.remove('loading');
+    }
+  }
+
+  function initItemPreviews() {
+    document.querySelectorAll('.item-preview').forEach(container => {
+      fetchItemPreview(container);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initItemPreviews, { once: true });
+  } else {
+    initItemPreviews();
+  }
+
+  document.addEventListener('astro:page-load', initItemPreviews);
+</script>
+
+<style is:global>
+  /* ── Container ── */
+  .item-preview {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+    background: var(--sl-color-gray-7);
+  }
+
+  .item-preview.loading {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--sl-color-gray-3);
+    font-style: italic;
+  }
+
+  /* ── Tabs Container ── */
+  .item-tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--sl-color-gray-6);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    padding-right: 1rem; /* Space for the API link */
+  }
+
+  .item-tabs {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--sl-color-gray-4) transparent;
+  }
+  
+  /* Webkit scrollbar for tabs */
+  .item-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  .item-tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .item-tabs::-webkit-scrollbar-thumb {
+    background-color: var(--sl-color-gray-5);
+    border-radius: 3px;
+  }
+
+  /* ── Individual Tab ── */
+  .item-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--sl-color-gray-5);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    min-width: max-content;
+    outline: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .item-tab:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .item-tab.active {
+    background: var(--sl-color-gray-7);
+    border-bottom-color: var(--sl-color-text-accent);
+  }
+
+  .item-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sl-color-gray-7);
+    flex-shrink: 0;
+  }
+
+  .item-tab.active .item-icon-wrapper {
+    border-color: var(--sl-color-gray-4);
+  }
+
+  .item-icon {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .item-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.2;
+    transition: color 0.15s;
+  }
+
+  .item-tab.active .item-name {
+    color: var(--sl-color-white);
+  }
+
+  .item-badges {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+    color: var(--sl-color-gray-2);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 25%, transparent);
+  }
+
+  .item-tab.active .badge-type {
+    background: color-mix(in srgb, var(--sl-color-accent) 20%, transparent);
+    color: var(--sl-color-text-accent);
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 35%, transparent);
+  }
+
+  .badge-level {
+    background: color-mix(in srgb, var(--sl-color-gray-3) 15%, transparent);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-6);
+  }
+
+  .item-tab.active .badge-level {
+    color: var(--sl-color-gray-2);
+    border-color: var(--sl-color-gray-5);
+  }
+
+  .item-api-link {
+    font-size: 0.75rem;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--sl-color-gray-5);
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .item-api-link:hover {
+    color: var(--sl-color-text-accent);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON collapsible ── */
+  .item-json-details {
+    margin: 0;
+  }
+
+  .item-json-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+    border-top: none;
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .item-json-details summary::-webkit-details-marker { display: none; }
+  .item-json-details summary::marker { display: none; content: ''; }
+
+  .item-json-details summary:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .json-toggle-label::before {
+    content: '▸ ';
+  }
+
+  .item-json-details[open] .json-toggle-label::before {
+    content: '▾ ';
+  }
+
+  .copy-btn {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 2px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .copy-btn:hover {
+    color: var(--sl-color-white);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  /* ── JSON code block ── */
+  .item-json-pre {
+    display: none;
+    margin: 0 !important;
+    padding: 0.85rem 1rem !important;
+    border-radius: 0 0 8px 8px !important;
+    background: var(--sl-color-gray-7) !important;
+    border-top: 1px solid var(--sl-color-gray-5) !important;
+    overflow-x: auto;
+    font-size: 0.78rem !important;
+    line-height: 1.6 !important;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .item-json-pre.active {
+    display: block;
+  }
+
+  .item-json-pre code {
+    background: none !important;
+    padding: 0 !important;
+    color: var(--sl-color-gray-2) !important;
+    font-family: var(--sl-font-mono, ui-monospace, monospace) !important;
+    font-size: inherit !important;
+  }
+
+  /* ── JSON syntax colors ── */
+  .json-key { color: #7dc4e4; }
+  .json-string { color: #a6da95; }
+  .json-number { color: #f5a97f; }
+  .json-bool { color: #ee99a0; }
+  .json-null { color: #8087a2; }
+
+  /* ── Error state ── */
+  .item-error {
+    padding: 1rem;
+    color: var(--sl-color-red-high);
+    font-size: 0.85rem;
+  }
+
+  /* ── Global Sprite Class ── */
+  .sprite {
+    filter: drop-shadow(2px 0 0 #4e5b57) drop-shadow(0 2px 0 #4e5b57) drop-shadow(-2px 0 0 #4e5b57) drop-shadow(0 -2px 0 #4e5b57);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>

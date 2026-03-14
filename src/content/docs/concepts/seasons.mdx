@@ -1,0 +1,137 @@
+---
+title: Seasons
+description: "x"
+---
+ 
+import ServerStatus from '../../../components/site/ServerStatus.astro';
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+
+Artifacts operates on a **seasonal server system**, with each season lasting approximately **4 months**. Every season resets progress and introduces new features, content, and challenges — giving you the chance to earn unique badges and compete for first completions.
+
+Information about the next season is generally revealed **one month before its release**. It is highly recommended to join our **Discord** or follow us on social media to stay updated.
+
+**Members** have access to the **Beta server** one week before the launch of the season to test it and provide feedback on **Discord**.
+
+Here is the information about the **current season**:
+
+<ServerStatus />
+
+## Retrieving Server Status
+
+You can retrieve the current server status, including the active season details, skins, and badges, using this endpoint:
+
+**Endpoint:** `GET /`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_server_details__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+---
+## Season rewards
+
+During a season, you earn rewards based on the number of **achievement points** you accumulate.
+
+### Badges
+
+Here are the different badges you can obtain based on your achievement points:
+
+| Type | Description | Points required |
+|---|---|---|
+| **Bronze** | Earn at least 50% of the achievement points to get this badge. | 100 points |
+| **Silver** | Earn at least 75% of the achievement points to upgrade your bronze badge to silver. | 150 points |
+| **Gold** | Earn all achievement points to upgrade your silver badge to gold. | 200 points |
+| **Color** | Be the first to earn all achievement points to upgrade your gold badge to color. | 200 points |
+
+#### Retrieving Badges
+
+To retrieve a paginated list of all badges, use the following endpoint:
+
+**Endpoint:** `GET /badges`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/badges?page=1&size=50' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/badges?page=1&size=50';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/badges"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+  </ApiSdkTabs>
+
+
+
+---
+
+### Skins
+
+This section will be added when the **skins system** is introduced.
