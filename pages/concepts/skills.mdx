@@ -62,6 +62,27 @@ fetch("https://api.artifactsmmo.com/my/INSERT_CHARACTER_NAME/action/gathering", 
 If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
 </Callout>
 
+### Gathering XP Calculation
+
+The XP gained from gathering resources is calculated based on the resource's level:
+
+| Resource Level | XP Formula |
+|---|---|
+| < 10 | 5 + (resource_level / player_level) × 8 |
+| 10-19 | 10 + (resource_level / player_level) × 8 |
+| 20-29 | 13 + (resource_level / player_level) × 8 |
+| 30-34 | 16 + (resource_level / player_level) × 8 |
+| 35-39 | 20 + (resource_level / player_level) × 8 |
+| 40-44 | 28 + (resource_level / player_level) × 8 |
+| 45+ | 36 + (resource_level / player_level) × 8 |
+
+**Penalties:**
+- If `player_level - resource_level > 10`: No XP is gained (XP = 0)
+
+**Wisdom Bonus:**
+- Each point of Wisdom grants a 0.1% XP bonus
+- Formula: `XP += XP × (wisdom × 0.001)`
+
 [View API Reference](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post)
 
  
@@ -149,6 +170,33 @@ Crafting XP varies by skill:
 - **Cooking**: Reduced XP (**0.5×**)
 - **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
 </Callout>
+
+### Crafting XP Calculation
+
+The base XP gained from crafting is calculated based on the item's level:
+
+| Item Level | XP Formula |
+|---|---|
+| < 5 | 50 + (item_level / player_level) × 25 |
+| 5-9 | 100 + (item_level / player_level) × 30 |
+| 10-14 | 200 + (item_level / player_level) × 35 |
+| 15-19 | 325 + (item_level / player_level) × 40 |
+| 20-24 | 450 + (item_level / player_level) × 45 |
+| 25-29 | 550 + (item_level / player_level) × 50 |
+| 30-34 | 650 + (item_level / player_level) × 55 |
+| 35-39 | 750 + (item_level / player_level) × 60 |
+| 40-44 | 850 + (item_level / player_level) × 65 |
+| 45+ | 1000 + (item_level / player_level) × 70 |
+
+**Reduction Multipliers by Crafting Type:**
+After calculating the base XP using the formula above, the following multipliers are applied:
+- **Gathering skills** (Mining, Woodcutting, Fishing): XP × 0.1 (90% reduction)
+- **Cooking**: XP × 0.5 (50% reduction)
+- **Other Crafts** (Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy): Full XP value (no reduction)
+
+**Wisdom Bonus:**
+- Each point of Wisdom grants a 0.1% XP bonus
+- Formula: `XP += XP × (wisdom × 0.001)`
 
 [View the API Reference](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post)
 
