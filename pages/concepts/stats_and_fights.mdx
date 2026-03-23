@@ -111,6 +111,33 @@ If your character is more than **5 levels above** the monster, you only earn **7
 Elite monsters give **1.4×** the base XP, and Boss monsters give **2.0×**. In multi-character fights, the **average level** of all participants is used for the XP calculation.
 </Callout>
 
+### Combat XP Calculation
+
+The XP gained from combat is calculated using the following formula:
+
+**Base Formula:**
+```
+XP = ((monster_level / player_level) × 20) + (0.04 × monster_hp)
+```
+
+**Level Penalties:**
+- If `player_level - monster_level > 5`: XP is reduced by 30% (XP × 0.7)
+- If `player_level - monster_level > 10`: No XP is gained (XP = 0)
+
+**Wisdom Bonus:**
+- Each point of Wisdom grants a 0.1% XP bonus
+- Formula: `XP += XP × (wisdom × 0.001)`
+
+**Monster Type Multipliers:**
+- Normal monsters: ×1.0 (no multiplier)
+- Elite monsters: ×1.4 (40% bonus)
+- Boss monsters: ×2.0 (100% bonus / doubles XP)
+
+**Level Up Rewards:**
+Each time you level up your combat level, you gain:
+- +5 Max HP
+- +2 inventory slots
+
 Here's the formula for calculating the cooldown:
 **Turns * 2 - (Haste * 0.01) * (Turns * 2)**
 
