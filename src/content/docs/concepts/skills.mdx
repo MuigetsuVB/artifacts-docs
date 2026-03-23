@@ -88,13 +88,15 @@ XP = Round((XP_base + (resource_level / player_level) × 8) × level_penalty × 
 ```
 
 **XP Base** (XP_base) by Resource Level:<br/>
-- Level < 10 → 5
-- Level 10-19 → 10
-- Level 20-29 → 13
-- Level 30-34 → 16
-- Level 35-39 → 20
-- Level 40-44 → 28
-- Level 45+ → 36
+| Resource Level | XP Base |
+|---|---|
+| < 10 | 5 |
+| 10-19 | 10 |
+| 20-29 | 13 |
+| 30-34 | 16 |
+| 35-39 | 20 |
+| 40-44 | 28 |
+| 45+ | 36 |
 
 
 **Level Penalty** (level_penalty):<br/>
@@ -273,30 +275,19 @@ XP = Round((XP_base + (item_level / player_level) × coefficient) × skill_multi
 ```
 
 
-**XP Base** (XP_base) by Item Level:<br/>
-- Level < 5 → 50
-- Level 5-9 → 100
-- Level 10-14 → 200
-- Level 15-19 → 325
-- Level 20-24 → 450
-- Level 25-29 → 550
-- Level 30-34 → 650
-- Level 35-39 → 750
-- Level 40-44 → 850
-- Level 45+ → 1000
-
-
-**Coefficient** by Item Level (used in the calculation):<br/>
-- Level < 5 → 25
-- Level 5-9 → 30
-- Level 10-14 → 35
-- Level 15-19 → 40
-- Level 20-24 → 45
-- Level 25-29 → 50
-- Level 30-34 → 55
-- Level 35-39 → 60
-- Level 40-44 → 65
-- Level 45+ → 70
+**XP Base** (XP_base) &  **Coefficient** (coefficient) by Item Level:<br/>
+| Item Level | XP Base | Coefficient |
+|---|---|---|
+| < 5 | 50 | 25 |
+| 5-9 | 100 | 30 |
+| 10-14 | 200 | 35 |
+| 15-19 | 325 | 40 |
+| 20-24 | 450 | 45 |
+| 25-29 | 550 | 50 |
+| 30-34 | 650 | 55 |
+| 35-39 | 750 | 60 |
+| 40-44 | 850 | 65 |
+| 45+ | 1000 | 70 |
 
 
 **Skill Multiplier** (skill_multiplier) by Craft Type:<br/>
