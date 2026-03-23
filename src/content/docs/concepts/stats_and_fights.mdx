@@ -154,7 +154,7 @@ Base combat XP is calculated with monster level and monster HP:
 XP = ROUND(((monster_level / player_level) × 20 + monster_hp × 0.04) × level_penalty × monster_multiplier × (1 + wisdom × 0.001))
 ```
 
-**Level Penalty:**
+**Level Penalty:**<br/>
 level_penalty = 0.7 if player_level - monster_level > 5, else 1.0 (if > 10 then 0)
 
 - Same level or lower than monster → 1.0× (100% XP)
@@ -162,10 +162,10 @@ level_penalty = 0.7 if player_level - monster_level > 5, else 1.0 (if > 10 then 
 - 10+ levels above monster → 0× (0 XP)
 
 
-**Monster Type Multiplier:**
+**Monster Type Multiplier:**<br/>
 monster_multiplier: Normal = 1.0 | Elite = 1.4 | Boss = 2.0
 
-**Wisdom Bonus:**
+**Wisdom Bonus:**<br/>
 wisdom_bonus = (1 + wisdom × 0.001)
 
 - Each wisdom point = +0.1% XP
@@ -175,8 +175,8 @@ wisdom_bonus = (1 + wisdom × 0.001)
 
 Each level up grants:
 
-- `+5` Max HP
-- `+2` inventory slots
+- +5 Max HP
+- +2 inventory slots
 
 
 ### Monster Types
