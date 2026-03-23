@@ -81,26 +81,30 @@ Here are some examples of resources:
 
 ### XP Formula
 
-Gathering XP is calculated with a base value by resource level, then scaled by level ratio:
+Gathering XP is calculated with resource level and your skill level:
 
 ```
-XP = Base + (resource_level / player_level) × 8
+XP = ROUND((XP_base + (resource_level / player_level) × 8) × level_penalty × wisdom_bonus)
 ```
 
-| Resource Level | XP Formula |
-|---|---|
-| `< 10` | `5 + (resource_level / player_level) × 8` |
-| `10-19` | `10 + (resource_level / player_level) × 8` |
-| `20-29` | `13 + (resource_level / player_level) × 8` |
-| `30-34` | `16 + (resource_level / player_level) × 8` |
-| `35-39` | `20 + (resource_level / player_level) × 8` |
-| `40-44` | `28 + (resource_level / player_level) × 8` |
-| `45+` | `36 + (resource_level / player_level) × 8` |
+**XP Base** (XP_base) by Resource Level:<br/>
+- Level < 10 → 5
+- Level 10-19 → 10
+- Level 20-29 → 13
+- Level 30-34 → 16
+- Level 35-39 → 20
+- Level 40-44 → 28
+- Level 45+ → 36
 
 
-Each point of Wisdom increases XP by 0.1%, and the bonus is applied after formula calculation: XP += XP × (wisdom × 0.001).
-If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
+**Level Penalty** (level_penalty):<br/>
+- Same level or lower than resource → 1.0 (100% XP)
+- 10+ levels above resource → 0 (0 XP)
 
+
+**Wisdom Bonus** (wisdom_bonus):<br/>
+- Formula: (1 + wisdom × 0.001)
+- Each wisdom point = +0.1% XP
 
 
 ### Retrieving Resources
@@ -261,35 +265,55 @@ Crafting is an essential core mechanic; the vast majority of items in the game�
 
 ### XP Formula
 
-Crafting XP uses item level ranges with a base and scaling factor:
+Crafting XP is calculated with item level and your crafting skill level:
 
 ```
-XP = Base + (item_level / player_level) × Factor
+XP = ROUND((XP_base + (item_level / player_level) × coefficient) × skill_multiplier × level_penalty × wisdom_bonus)
+
 ```
 
-| Item Level | XP Formula |
-|---|---|
-| `< 5` | `50 + (item_level / player_level) × 25` |
-| `5-9` | `100 + (item_level / player_level) × 30` |
-| `10-14` | `200 + (item_level / player_level) × 35` |
-| `15-19` | `325 + (item_level / player_level) × 40` |
-| `20-24` | `450 + (item_level / player_level) × 45` |
-| `25-29` | `550 + (item_level / player_level) × 50` |
-| `30-34` | `650 + (item_level / player_level) × 55` |
-| `35-39` | `750 + (item_level / player_level) × 60` |
-| `40-44` | `850 + (item_level / player_level) × 65` |
-| `45+` | `1000 + (item_level / player_level) × 70` |
 
-Reduction multipliers by crafting type:
+**XP Base** (XP_base) by Item Level:<br/>
+- Level < 5 → 50
+- Level 5-9 → 100
+- Level 10-14 → 200
+- Level 15-19 → 325
+- Level 20-24 → 450
+- Level 25-29 → 550
+- Level 30-34 → 650
+- Level 35-39 → 750
+- Level 40-44 → 850
+- Level 45+ → 1000
 
-| Crafting Type | Multiplier |
-|---|---|
-| Mining, Woodcutting, Fishing (crafting actions) | `×0.1` |
-| Cooking | `×0.5` |
-| Other crafts | `×1.0` |
 
-Each point of Wisdom increases XP by 0.1%, and the bonus is applied after formula calculation: XP += XP × (wisdom × 0.001).
-If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
+**Coefficient** by Item Level (used in the calculation):<br/>
+- Level < 5 → 25
+- Level 5-9 → 30
+- Level 10-14 → 35
+- Level 15-19 → 40
+- Level 20-24 → 45
+- Level 25-29 → 50
+- Level 30-34 → 55
+- Level 35-39 → 60
+- Level 40-44 → 65
+- Level 45+ → 70
+
+
+**Skill Multiplier** (skill_multiplier) by Craft Type:<br/>
+- Mining, Woodcutting, Fishing → 0.1 (90% reduction)
+- Cooking → 0.5 (50% reduction)
+- Others (Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy) → 1.0
+
+
+**Level Penalty** (level_penalty):<br/>
+- Same level or lower than item → 1.0 (100% XP)
+- 10+ levels above item → 0 (0 XP)
+
+
+**Wisdom Bonus** (wisdom_bonus):<br/>
+- Formula: (1 + wisdom × 0.001)
+- Each wisdom point = +0.1% XP
+
 
 ### Retrieving Craftable Items
 
