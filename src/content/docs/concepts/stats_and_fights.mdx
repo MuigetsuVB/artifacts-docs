@@ -151,9 +151,8 @@ Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
 Base combat XP is calculated with monster level and monster HP:
 
 ```
-XP = ROUND(((monster_level / player_level) × 20 + monster_hp × 0.04) × level_penalty × monster_multiplier × (1 + wisdom × 0.001))
+XP = ROUND(((monster_level / player_level) × 20 + monster_hp × 0.04) × level_penalty × monster_multiplier × wisdom_bonus)
 ```
-
 
 
 **Level Penalty** (level_penalty):<br/>
@@ -167,9 +166,10 @@ XP = ROUND(((monster_level / player_level) × 20 + monster_hp × 0.04) × level_
 - Elite → 1.4
 - Boss → 2.0
 
+
 **Wisdom Bonus** wisdom_bonus:<br/>
-- Each wisdom point = +0.1% XP
 - Formula: (1 + wisdom × 0.001)
+- Each wisdom point = +0.1% XP
 
 #### Level Up Rewards
 
