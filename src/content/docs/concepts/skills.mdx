@@ -79,11 +79,7 @@ Here are some examples of resources:
 <ResourcePreview codes="copper_rocks,birch_tree,salmon_spot,torch_cactus" />
 
 
-:::caution
-If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
-:::
-
-### Gathering XP Formula
+### XP Formula
 
 Gathering XP is calculated with a base value by resource level, then scaled by level ratio:
 
@@ -101,8 +97,10 @@ XP = Base + (resource_level / player_level) × 8
 | `40-44` | `28 + (resource_level / player_level) × 8` |
 | `45+` | `36 + (resource_level / player_level) × 8` |
 
-- If `player_level - resource_level > 10`, final XP is `0`.
-- Wisdom bonus applies after formula calculation: `XP += XP × (wisdom × 0.001)`.
+
+Each point of Wisdom increases XP by 0.1%, and the bonus is applied after formula calculation: XP += XP × (wisdom × 0.001).
+If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
+
 
 
 ### Retrieving Resources
