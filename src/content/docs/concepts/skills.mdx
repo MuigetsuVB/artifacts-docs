@@ -259,18 +259,7 @@ print(response.json())
 
 Crafting is an essential core mechanic; the vast majority of items in the game—including equipment, jewelry, weapons, potions, and food—are entirely player-crafted. To craft an item, your character must be on a map tile with a workshop for the matching skill. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
-:::caution
-If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
-:::
-
-:::note
-Crafting XP varies by skill:
-- **Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy**: Normal XP (1.0×)
-- **Cooking**: Reduced XP (**0.5×**)
-- **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
-:::
-
-### Crafting XP Formula
+### XP Formula
 
 Crafting XP uses item level ranges with a base and scaling factor:
 
@@ -299,7 +288,8 @@ Reduction multipliers by crafting type:
 | Cooking | `×0.5` |
 | Other crafts | `×1.0` |
 
-Wisdom bonus applies after multiplier: `XP += XP × (wisdom × 0.001)`.
+Each point of Wisdom increases XP by 0.1%, and the bonus is applied after formula calculation: XP += XP × (wisdom × 0.001).
+If your skill level exceeds the craft level by more than **10 levels**, you earn **0 XP** from crafting it.
 
 ### Retrieving Craftable Items
 
