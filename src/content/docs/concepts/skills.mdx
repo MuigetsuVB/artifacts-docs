@@ -83,6 +83,27 @@ Here are some examples of resources:
 If your skill level exceeds the resource level by more than **10 levels**, you earn **0 XP** from gathering it.
 :::
 
+### Gathering XP Formula
+
+Gathering XP is calculated with a base value by resource level, then scaled by level ratio:
+
+```
+XP = Base + (resource_level / player_level) × 8
+```
+
+| Resource Level | XP Formula |
+|---|---|
+| `< 10` | `5 + (resource_level / player_level) × 8` |
+| `10-19` | `10 + (resource_level / player_level) × 8` |
+| `20-29` | `13 + (resource_level / player_level) × 8` |
+| `30-34` | `16 + (resource_level / player_level) × 8` |
+| `35-39` | `20 + (resource_level / player_level) × 8` |
+| `40-44` | `28 + (resource_level / player_level) × 8` |
+| `45+` | `36 + (resource_level / player_level) × 8` |
+
+- If `player_level - resource_level > 10`, final XP is `0`.
+- Wisdom bonus applies after formula calculation: `XP += XP × (wisdom × 0.001)`.
+
 
 ### Retrieving Resources
 
@@ -251,6 +272,37 @@ Crafting XP varies by skill:
 - **Mining, Woodcutting, Fishing** (crafting, e.g. bars, planks): Very low XP (**0.1×**) — these skills are primarily leveled through gathering.
 :::
 
+### Crafting XP Formula
+
+Crafting XP uses item level ranges with a base and scaling factor:
+
+```
+XP = Base + (item_level / player_level) × Factor
+```
+
+| Item Level | XP Formula |
+|---|---|
+| `< 5` | `50 + (item_level / player_level) × 25` |
+| `5-9` | `100 + (item_level / player_level) × 30` |
+| `10-14` | `200 + (item_level / player_level) × 35` |
+| `15-19` | `325 + (item_level / player_level) × 40` |
+| `20-24` | `450 + (item_level / player_level) × 45` |
+| `25-29` | `550 + (item_level / player_level) × 50` |
+| `30-34` | `650 + (item_level / player_level) × 55` |
+| `35-39` | `750 + (item_level / player_level) × 60` |
+| `40-44` | `850 + (item_level / player_level) × 65` |
+| `45+` | `1000 + (item_level / player_level) × 70` |
+
+Reduction multipliers by crafting type:
+
+| Crafting Type | Multiplier |
+|---|---|
+| Mining, Woodcutting, Fishing (crafting actions) | `×0.1` |
+| Cooking | `×0.5` |
+| Other crafts | `×1.0` |
+
+Wisdom bonus applies after multiplier: `XP += XP × (wisdom × 0.001)`.
+
 ### Retrieving Craftable Items
 
 To retrieve a paginated list of all items craftable with a specific skill, use the following endpoint:
@@ -365,6 +417,21 @@ print(response.json())
 ## Experience to Level
 
 Here's the table showing the experience required to level up. This table applies to **all skills and combat**.
+
+### Leveling Progression Tiers
+
+| Level Range | XP Increase Per Level |
+|---|---|
+| `1-3` | `+100` |
+| `4-8` | `+250` |
+| `9-13` | `+400` |
+| `14-18` | `+700` |
+| `19-23` | `+1000` |
+| `24-28` | `+1200` |
+| `29-33` | `+1500` |
+| `34-39` | `+1800` |
+| `40-44` | `+2100` |
+| `45+` | `+1800` |
 
 | Level | XP required to level up |
 |------:|------------------------:|

@@ -146,7 +146,32 @@ Cooldown = Turns × 2 - (Haste × 0.01) × (Turns × 2)
 
 **Example:** 20 turns + 10 haste → `20 × 2 - (0.1 × 40) = 36` seconds (instead of 40). Minimum cooldown is **5 seconds**.
 
+### XP Formula
 
+Base combat XP is calculated with monster level and monster HP:
+
+```
+XP = ((monster_level / player_level) × 20) + (0.04 × monster_hp)
+```
+
+Monster type multipliers:
+
+| Type | XP Multiplier |
+|---|---|
+| `normal` | `×1.0` |
+| `elite` | `×1.4` |
+| `boss` | `×2.0` |
+
+- Each point of Wisdom increases XP by `0.1%`, and the bonus is applied after formula calculation: `XP += XP × (wisdom × 0.001)`.
+- If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
+
+
+### Level Up Rewards
+
+Each level up grants:
+
+- `+5` Max HP
+- `+2` inventory slots
 
 
 ### Monster Types
@@ -160,9 +185,7 @@ There are several types of monsters that can either fight alone or in groups.
 | `boss` | Powerful monsters that can be fought with up to 3 characters. | ×2 |
 
 
-:::caution
-If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
-:::
+
 
 ### Monster Effects
 
