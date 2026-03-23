@@ -362,6 +362,53 @@ print(response.json())
 
 
 
+## Skill XP Calculation
+
+### Gathering XP
+
+Experience points from gathering resources are calculated using formulas that vary by resource level:
+
+| Resource Level | XP Formula |
+|---|---|
+| < 10 | `5 + (resource_level / player_level) × 8` |
+| 10-19 | `10 + (resource_level / player_level) × 8` |
+| 20-29 | `13 + (resource_level / player_level) × 8` |
+| 30-34 | `16 + (resource_level / player_level) × 8` |
+| 35-39 | `20 + (resource_level / player_level) × 8` |
+| 40-44 | `28 + (resource_level / player_level) × 8` |
+| 45+ | `36 + (resource_level / player_level) × 8` |
+
+**Penalties and Bonuses:**
+- **Level Penalty**: If `player_level - resource_level > 10`, you earn **0 XP** from gathering
+- **Wisdom Bonus**: XP is increased by wisdom: `XP += XP × (wisdom × 0.001)`
+
+### Crafting XP
+
+Experience points from crafting items are calculated using formulas that vary by item level:
+
+| Item Level | XP Formula |
+|---|---|
+| < 5 | `50 + (item_level / player_level) × 25` |
+| 5-9 | `100 + (item_level / player_level) × 30` |
+| 10-14 | `200 + (item_level / player_level) × 35` |
+| 15-19 | `325 + (item_level / player_level) × 40` |
+| 20-24 | `450 + (item_level / player_level) × 45` |
+| 25-29 | `550 + (item_level / player_level) × 50` |
+| 30-34 | `650 + (item_level / player_level) × 55` |
+| 35-39 | `750 + (item_level / player_level) × 60` |
+| 40-44 | `850 + (item_level / player_level) × 65` |
+| 45+ | `1000 + (item_level / player_level) × 70` |
+
+**Reduction Multipliers by Crafting Type:**
+- **Gathering skills** (Mining, Woodcutting, Fishing): XP × 0.1 (90% reduction) — these skills are primarily leveled through gathering
+- **Cooking**: XP × 0.5 (50% reduction)
+- **Other crafts** (Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy): Full XP value (1.0×)
+
+**Penalties and Bonuses:**
+- **Level Penalty**: If `player_level - item_level > 10`, you earn **0 XP** from crafting
+- **Wisdom Bonus**: XP is increased by wisdom: `XP += XP × (wisdom × 0.001)`
+
+
 ## Experience to Level
 
 Here's the table showing the experience required to level up. This table applies to **all skills and combat**.
