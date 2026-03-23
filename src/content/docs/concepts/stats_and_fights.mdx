@@ -164,6 +164,39 @@ There are several types of monsters that can either fight alone or in groups.
 If your character is more than **5 levels above** the monster, you only earn **70% XP**. If more than **10 levels above**, you earn **0 XP**.
 :::
 
+### Combat XP Calculation
+
+Experience points from combat are calculated using the following formula:
+
+**Base Formula:**
+```
+XP = ((monster_level / player_level) × 20) + (0.04 × monster_hp)
+```
+
+**Level Penalties:**
+- If `player_level - monster_level > 5`: XP is reduced by 30% (`XP × 0.7`)
+- If `player_level - monster_level > 10`: No XP is earned (`XP = 0`)
+
+**Wisdom Bonus:**
+
+The wisdom stat increases XP earned from combat. Each point of wisdom provides a 0.1% XP bonus:
+```
+XP += XP × (wisdom × 0.001)
+```
+
+**Monster Type Multipliers:**
+
+Different monster types provide XP multipliers:
+- **Normal**: ×1.0 (no multiplier)
+- **Elite**: ×1.4 (40% bonus)
+- **Boss**: ×2.0 (100% bonus / doubles XP)
+
+**Level Up Rewards:**
+
+Each time you level up, your character gains:
+- **+5 Max HP**
+- **+2 Inventory slots**
+
 ### Monster Effects
 
 Some monsters have special abilities called effects that activate during combat in addition to their normal attacks. You can view a monster's effects in the `effects` array of its API response.
