@@ -17,3 +17,8 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# temporary/debug files
+build_error*.txt
+temp.html
+tmp_*.json
