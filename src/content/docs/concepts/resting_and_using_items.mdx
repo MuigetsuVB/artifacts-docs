@@ -84,14 +84,14 @@ There are several types of consumables:
 
 ### Conditions
 
-To use an item, your character must meet all the item's conditions. Conditions use the `ConditionSchema` logic, which can reference any character stat (e.g., `level`, `mining_level`, `hp`, etc.) using various operators:
-
-| Operator | Meaning |
-|---|---|
-| `eq` | Equal to |
-| `ne` | Not equal to |
-| `gt` | Greater than |
-| `lt` | Less than |
+To use an item, your character must meet all the item's conditions. 
+| Operator | Meaning | Notes |
+| -------- | ------- | ----- |
+| `eq` | Equal to | `code` = character variable (e.g. `level`), `value` = required value. |
+| `ne` | Not equal to | `code` = character variable (e.g. `level`), `value` = required value. |
+| `gt` | Greater than | `code` = character variable (e.g. `hp`), `value` = required value. |
+| `lt` | Less than | `code` = character variable (e.g. `hp`), `value` = required value. |
+| `achievement_unlocked` | Specific achievement must be completed | `code` = achievement identifier. |
 
 
 :::note
