@@ -37,7 +37,7 @@ Next, you need to include your token and the types of notifications you want to 
 ```python
 message = {
         "token": token,
-        "subscriptions": ["event_spawn", "event_removed", "grandexchange_neworder", "grandexchange_sell", "achievement_unlocked", "test"]
+        "subscriptions": ["event_spawn", "event_removed", "grandexchange_buy_order", "grandexchange_sell_order", "achievement_unlocked", "test"]
     }    
 ```
 
@@ -58,7 +58,7 @@ token = "YOUR_TOKEN"  # Replace with your token
 
 message = {
         "token": token,
-        "subscriptions": ["event_spawn", "event_removed", "grandexchange_neworder", "grandexchange_sell", "achievement_unlocked", "test"]
+        "subscriptions": ["event_spawn", "event_removed", "grandexchange_buy_order", "grandexchange_sell", "achievement_unlocked", "test"]
     }    
 
 async def receive_messages():
@@ -93,7 +93,7 @@ const token = "YOUR_TOKEN"; // Replace with your token
 
 const message = {
     token: token,
-    subscriptions: ["event_new", "grandexchange_sell", "my_grandexchange_sell", "grandexchange_neworder"]
+    subscriptions: ["event_spawn", "event_removed", "grandexchange_buy_order", "grandexchange_sell"]
 };
 
 async function receiveMessages() {
@@ -141,7 +141,7 @@ public class WebSocketHandler extends WebSocketClient {
     public void onOpen(ServerHandshake handshakedata) {
         String message = """
         {"token": "%s",
-        "subscriptions": ["event_spawn", "event_removed,"grandexchange_sell", "grandexchange_neworder", "achievement_unlocked"]};
+        "subscriptions": ["event_spawn", "event_removed,"grandexchange_buy_order", "grandexchange_sell", "achievement_unlocked"]};
         """.formatted(TOKEN);
         send(message);
         System.out.println("Connected to WebSocket server");
@@ -182,7 +182,7 @@ Server messages always include notification type and data. Data is always the sa
 Here's an example of a server message:
 ```python
 {
-  'type': 'grandexchange_neworder', 
+  'type': 'grandexchange_buy_order', 
   'data': {"id":"67337920ef441b2c7466d5e8","seller":"muigetsu","code":"copper_ore","quantity":1,"price":1,"created_at":"2024-11-12T15:49:52.343Z"}
 }
 ```
