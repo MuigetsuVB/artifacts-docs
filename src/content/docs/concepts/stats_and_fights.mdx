@@ -30,10 +30,10 @@ Your character's stats depend on the equipment you have equipped. For more infor
 Damage is calculated per element using rounding. The formula is:
 
 ```
-Output = Round(Attack × Round(Damage × 0.01))
+Output = Round(Attack × (1 + Round(Damage × 0.01)))
 ```
 
-**Example:** 100 base attack + 30% damage = `Round(100 × Round(30 × 0.01)) = 130` total damage.
+**Example:** 100 base attack + 30% damage = `Round(100 × (1 + Round(30 × 0.01))) = 130` total damage.
 
 - 1 damage = 1% extra base damage
 - `.5` always rounds **up**, below `.5` rounds **down**
