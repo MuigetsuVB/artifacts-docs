@@ -2,6 +2,185 @@
 title: Changelog
 ---
 
+import CollapsibleContent from '../../components/site/CollapsibleContent.astro';
+
+## Update 06/27/27: version 8.0.0
+
+Here's the patch notes for version 8.0.0.
+
+**New content**
+- **New monsters:**
+  - Full Moon Vampire (Lvl 24)
+  - Echoless Bat (Lvl 38)
+  - Pixie (Lvl 40)
+  - Dryad (Lvl 40)
+  - Solar Desert Scorpion (Lvl 50)
+  - Baby Red Dragon (Lvl 50)
+  - Red Dragon (Lvl 51)
+  - Flameche (Lvl 52)
+  - Fennec (Lvl 52)
+  - Sonnengott (Lvl 55)
+- **New items:**
+
+<CollapsibleContent collapsedHeight="200px" label="Show all new items">
+
+- Small Bag of Gems (Lvl 1)
+- Bag of Gems (Lvl 1)
+- Prime Fabric (Lvl 10)
+- Forest Staff (Lvl 10)
+- Raw Porkchop (Lvl 19)
+- Cooked Porkchop (Lvl 20)
+- Full Moon Vampire Cape (Lvl 24)
+- Perfect Bow (Lvl 30)
+- Bat Heart (Lvl 38)
+- Echoless Bat Wing (Lvl 38)
+- Enhanced Boost Potion (Lvl 40)
+- Enchanted Potion (Lvl 40)
+- Enchanted Mushroom (Lvl 40)
+- Dryad Hair (Lvl 40)
+- Enchanted Coin (Lvl 40)
+- Enchanted Rune (Lvl 40)
+- Diamond Armor (Lvl 40)
+- Diamond Skirt (Lvl 40)
+- Enhanced Health Potion (Lvl 45)
+- Enhanced Antidote (Lvl 45)
+- Enhanced Health Splash Potion (Lvl 50)
+- Fennec Tail (Lvl 50)
+- Fire Crystal (Lvl 50)
+- Fire Dust (Lvl 50)
+- Sonnengott Key (Lvl 50)
+- Baby Red Dragon Scale (Lvl 50)
+- Red Dragon Scale (Lvl 50)
+- Dragon Bone (Lvl 50)
+- Sonnengott Cloak (Lvl 50)
+- Lava Fish (Lvl 50)
+- Red Dragon Boots (Lvl 50)
+- Red Dragon Legs Armor (Lvl 50)
+- Red Dragon Armor (Lvl 50)
+- Sandwhisper Potion (Lvl 50)
+- Fennec Ear (Lvl 50)
+- Solar Desert Scorpion Tail (Lvl 50)
+- Powerful Rune (Lvl 50)
+- Lava Underground Potion (Lvl 50)
+- Medic Armor (Lvl 50)
+- Red Dragon Shield (Lvl 50)
+- Medic Skirt (Lvl 50)
+- Sonnengott Coin (Lvl 55)
+
+</CollapsibleContent>
+
+- **New resources:**
+  - Enchanted Mushroom
+  - Lava Fish Spot
+- **New events:**
+  - Full Moon
+  - Silent Night
+  - Small Becomes Great
+  - Sunsting Awakening
+- **New raids:**
+  - Enchanted Fairy
+  - God of the Sun
+- **New skins:**
+  - Beastmaster
+  - Gladiator
+  - Necromancer
+  - Purple Sorceress
+  - Robin Hood
+  - Sorcerer
+  - Sultan
+  - Zombie
+- **New NPCs:**
+  - Beastmaster
+  - Sorceress
+- **New map areas:**
+  - Underground Lava Area
+  - Enchanted Forest Area
+
+**Raids**
+- Added scheduled raids: cooperative encounters where all players attack the same boss and reduce a shared HP pool.
+- New endpoints:
+  - `GET /raids`
+  - `GET /raids/{code}`
+  - `GET /raids/{code}/leaderboard`
+- Added `raid_started` and `raid_ended` for WebSocket notifications.
+- Added raid-specific error codes for inactive raids, invalid raid resources, and raid locking.
+
+**Gems, subscriptions, and payments**
+- Replaced the previous funding flow with subscriptions and gems.
+- Added Stripe checkout support for paid subscriptions and gem packs.
+- Added member tokens, which can be redeemed for 30 days of membership.
+- New endpoints:
+  - `GET /my/subscription`
+  - `POST /my/buy_subscription`
+  - `POST /my/subscribe/member_token`
+  - `POST /my/subscribe/cancel`
+  - `POST /my/buy_gems`
+  - `GET /my/purchase_history`
+  - `GET /my/gems_history`
+- Added purchase confirmation emails for subscriptions, gem packs, and Gems Shop purchases.
+
+**Gems Shop**
+- Added the Gems Shop catalog and purchases.
+- New endpoints:
+  - `GET /gems_shop/`
+  - `POST /gems_shop/skin`
+  - `POST /gems_shop/spawn_event`
+  - `POST /gems_shop/subscription`
+- Skins, event spawns, and subscription time can now be purchased with gems.
+- Event purchases can fail when the event is already active, on cooldown, not purchasable, or when the maximum number of active events is reached.
+
+**Game Assistant**
+- Added the member-only Game Assistant.
+- New endpoint `POST /game_assistant/ask`.
+- Members receive a daily free question limit. When the daily limit is reached, a question can spend 1 gem by sending `pay_with_gems: true`.
+- Added `GET /my/rates` to expose current account, data, action, simulation, and assistant rate limits.
+
+**Season rewards**
+- Added the new season reward system.
+- New endpoints:
+  - `GET /season_rewards`
+  - `GET /season_rewards/{code}`
+- Season rewards can now grant badges, skins, gems, and other rewards based on achievement points.
+- Added `season_reward_unlocked` WebSocket notifications.
+
+**Skins**
+- Added account skins and character skin changes.
+- New public skins endpoints:
+  - `GET /skins`
+  - `GET /skins/{code}`
+
+**Character stats**
+- Added member-only gameplay statistics for characters.
+- New endpoint `GET /characters/{name}/stats`.
+- Statistics include monsters killed, resources gathered, action counts, and deaths.
+
+**Equipment**
+- `POST /my/{name}/action/equip` now accepts a list of items to equip.
+- `POST /my/{name}/action/unequip` now accepts a list of slots to unequip.
+- Equip and unequip cooldowns are now 3 seconds multiplied by the number of different items processed.
+- Utilities can specify quantities when equipped or unequipped.
+
+**Recycling**
+- Added enhanced recycling with the `enhanced` payload field.
+- Enhanced recycling returns 30% more resources, rounded and capped by the recipe ingredients.
+- Enhanced recycling spends gold based on item level and total recipe ingredients.
+- Items now expose a `recyclable` field.
+
+**Events**
+- Events now support `price`, `cooldown`, and `cooldown_expiration`.
+- Events can now be purchased from the Gems Shop when they are marked purchasable.
+- Event spawning has been refactored to prevent duplicate active events across workers.
+
+**Sandbox and Beta Server**
+- Added sandbox utilities:
+  - `POST /sandbox/clear_cooldown`
+  - `POST /sandbox/teleport`
+- Existing sandbox grant and reset endpoints remain available on sandbox/beta environments.
+
+**Account**
+- Added `POST /my/change_email`.
+- Account details now include membership, membership expiration, gems, member tokens, badges, and owned skins.
+
 ## Update 04/14/26: version 7.0.4
 
 Here's the patch notes for version 7.0.4.
@@ -535,7 +714,7 @@ Here's the patch notes for Season 3.
 - Added a new endpoint `/events` that lists all existing events.
 
 **Bank Expansion:**
-- The cost of an expansion is now 2500 gold and doubles with each purchase (the price may be adjusted based on test server data).
+- The cost of an expansion is now 2500 gold and doubles with each purchase (the price may be adjusted based on beta server data).
 
 **Monsters:**
 - 6 new monsters.

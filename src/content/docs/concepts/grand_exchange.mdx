@@ -18,7 +18,7 @@ You can browse all active orders (sell and buy) using the following request. Use
 
 **Endpoint:** `GET /grandexchange/orders`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_orders_grandexchange_orders_get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -78,7 +78,7 @@ To consult an item's sales history over the last 7 days, use the following reque
 
 **Endpoint:** `GET /grandexchange/history/{code}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_history_grandexchange_history__code__get">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_ge_history_grandexchange_history__code__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -133,13 +133,13 @@ print(response.json())
 
 To put items up for sale, use the following request. The items are removed from your inventory when the order is created.
 
-**Endpoint:** `POST /my/{name}/action/grandexchange/sell`
+**Endpoint:** `POST /my/{name}/action/grandexchange/create_sell_order`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_sell_post">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_create_sell_order_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_sell_order \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
@@ -152,7 +152,7 @@ To put items up for sale, use the following request. The items are removed from 
   </Fragment>
   <Fragment slot="api-javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order';
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_sell_order';
 const options = {
   method: 'POST',
   headers: {
@@ -176,7 +176,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-sell-order"
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_sell_order"
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
@@ -279,13 +279,13 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
 
 ### Create a buy order
 
-**Endpoint:** `POST /my/{name}/action/grandexchange/create-buy-order`
+**Endpoint:** `POST /my/{name}/action/grandexchange/create_buy_order`
 
 <ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
-  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order \
+  --url https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_buy_order \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
@@ -298,7 +298,7 @@ When you create a buy order, the **total gold** (`price × quantity`) is deducte
   </Fragment>
   <Fragment slot="api-javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order';
+  const url = 'https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_buy_order';
 const options = {
   method: 'POST',
   headers: {
@@ -322,7 +322,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create-buy-order"
+url = "https://api.artifactsmmo.com/my/{name}/action/grandexchange/create_buy_order"
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",
@@ -350,7 +350,7 @@ To sell your items to an existing buy order, use the following request. The item
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/fill`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_buy_order_my__name__action_grandexchange_fill_post">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_my__name__action_grandexchange_fill_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
@@ -419,11 +419,11 @@ You cannot fill your own buy orders. The items purchased through a buy order are
 
 ## Cancel an order
 
-You can cancel any of your active orders (sell or buy). To find an order to cancel, first check [your orders list](https://api.artifactsmmo.com/docs/#/operations/get_ge_sell_orders_grandexchange_orders_get).
+You can cancel any of your active orders (sell or buy). To find an order to cancel, first check [your orders list](https://api.artifactsmmo.com/docs/#/operations/get_ge_orders_grandexchange_orders_get).
 
 **Endpoint:** `POST /my/{name}/action/grandexchange/cancel`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_sell_order_my__name__action_grandexchange_cancel_post">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_order_my__name__action_grandexchange_cancel_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \

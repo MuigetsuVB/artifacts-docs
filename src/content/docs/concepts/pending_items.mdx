@@ -18,6 +18,7 @@ Pending items can come from several sources:
 
 - `achievement` — Items rewards from completing [achievements](/concepts/achievements).
 - `grand_exchange` — Items purchased through [buy orders](/concepts/grand_exchange#buy-orders) on the Grand Exchange.
+- `raid` - Rewards earned from [raids](/concepts/raids/).
 
 
 ---
@@ -25,20 +26,20 @@ Pending items can come from several sources:
 
 You can view all your unclaimed pending items using the following request:
 
-**Endpoint:** `GET /my/pending-items`
+**Endpoint:** `GET /my/pending_items`
 
 <ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_pending_items_my_pending_items_get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
-  --url https://api.artifactsmmo.com/my/pending-items \
+  --url https://api.artifactsmmo.com/my/pending_items \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN'
   ```
   </Fragment>
   <Fragment slot="api-javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/my/pending-items';
+  const url = 'https://api.artifactsmmo.com/my/pending_items';
 const options = {
   method: 'GET',
   headers: {
@@ -60,7 +61,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/my/pending-items"
+url = "https://api.artifactsmmo.com/my/pending_items"
 headers = {
     "Accept": "application/json",
     "Authorization": "Bearer YOUR_TOKEN"
@@ -91,7 +92,7 @@ Each pending item contains the following information:
 | Field | Description |
 |---|---|
 | `id` | Unique identifier for the pending item. |
-| `source` | Origin of the item (`achievement`, `grand_exchange`, `event`). |
+| `source` | Origin of the item (`achievement`, `grand_exchange`, `admin`, `event`, `raid`, or `other`). |
 | `source_id` | Reference ID from the source (e.g., achievement code, order ID). |
 | `description` | Human-readable description. |
 | `gold` | Gold amount included in the reward. |

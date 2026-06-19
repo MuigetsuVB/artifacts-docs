@@ -1,0 +1,78 @@
+---
+title: Character Stats
+description: "Retrieve detailed gameplay statistics for a character."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+:::caution
+Character Stats is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
+:::
+
+The Character Stats endpoint provides detailed gameplay statistics for a character. Statistics are collected for every character, but they are only visible while the character's account has an active subscription.
+
+You can retrieve the statistics of any visible member character without authentication.
+
+## Get Character Stats
+
+**Endpoint:** `GET /characters/{name}/stats`
+
+Replace `YOUR_CHARACTER_NAME` with the name of the character whose statistics you want to retrieve.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_stats_characters__name__stats_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME/stats' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME/stats';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/characters/YOUR_CHARACTER_NAME/stats"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+## Response
+
+The response contains the following fields under `data`:
+
+| Field | Description |
+|---|---|
+| `monsters_killed` | Number of monsters killed, grouped by monster code. |
+| `resources_gathered` | Number of resources gathered, grouped by resource code. |
+| `action_counts` | Number of actions performed, grouped by action type. |
+| `deaths` | Total number of character deaths. |
+
+If the character does not exist or its statistics are not visible, the endpoint returns a `404` response.

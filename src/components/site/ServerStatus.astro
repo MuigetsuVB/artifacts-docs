@@ -18,18 +18,21 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
 </div>
 
 <script>
-  interface Badge {
+  interface SeasonReward {
     code: string;
+    type: 'badge' | 'skin' | 'gold' | 'item';
     description: string;
     required_points: number;
+    quantity: number;
+    member_required: boolean;
+    first_only: boolean;
   }
 
   interface Season {
     name: string;
     number: number;
     start_date: string;
-    badges: Badge[];
-    skins: { code: string; description: string; required_points: number }[];
+    rewards: SeasonReward[];
   }
 
   interface ServerData {
@@ -64,6 +67,9 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
         const showSkins = container.getAttribute('data-show-skins') === 'true';
         const showBadges = container.getAttribute('data-show-badges') === 'true';
         const showStatus = container.getAttribute('data-show-status') === 'true';
+        const rewards = data.season.rewards ?? [];
+        const badgeRewards = rewards.filter(reward => reward.type === 'badge');
+        const skinRewards = rewards.filter(reward => reward.type === 'skin');
         
         let html = '';
 
@@ -91,13 +97,13 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
           `;
         }
 
-        if (showBadges && data.season.badges && data.season.badges.length > 0) {
-          const badgesHtml = data.season.badges
+        if (showBadges && badgeRewards.length > 0) {
+          const badgesHtml = badgeRewards
             .map(badge => {
-              const badgeName = badge.code.split('_')[1].charAt(0).toUpperCase() + badge.code.split('_')[1].slice(1);
+              const badgeName = badge.code.split('_').slice(1).join(' ') || badge.code;
               return `
                 <div class="badge-item">
-                  <img src="http://artifactsmmo.com/images/badges/${badge.code}.png" alt="${badge.code}" class="badge-image sprite" />
+                  <img src="https://artifactsmmo.com/images/badges/${badge.code}.png" alt="${badge.code}" class="badge-image sprite" />
                   <div class="badge-info">
                     <div class="badge-name">${badgeName}</div>
                     <div class="badge-description">${badge.description}</div>
@@ -116,11 +122,11 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
           `;
         }
 
-        if (showSkins && data.season.skins && data.season.skins.length > 0) {
-          const skinsHtml = data.season.skins
+        if (showSkins && skinRewards.length > 0) {
+          const skinsHtml = skinRewards
             .map(skin => `
               <div class="badge-item">
-                <img src="http://artifactsmmo.com/images/characters/${skin.code}.png" alt="${skin.code}" class="badge-image sprite" />
+                <img src="https://artifactsmmo.com/images/characters/${skin.code}.png" alt="${skin.code}" class="badge-image sprite" />
                 <div class="badge-info">
                   <div class="badge-name">${skin.code}</div>
                   <div class="badge-description">${skin.description}</div>

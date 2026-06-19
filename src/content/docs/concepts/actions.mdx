@@ -81,19 +81,20 @@ You can use the `expiration` field to schedule your next action precisely. Simpl
 | [Withdraw gold](https://api.artifactsmmo.com/docs/#/operations/action_withdraw_bank_gold_my__name__action_bank_withdraw_gold_post) | `/my/{name}/action/bank/withdraw/gold` | [Inventory & Bank](/concepts/inventory_and_bank/) |
 | [Buy expansion](https://api.artifactsmmo.com/docs/#/operations/action_buy_bank_expansion_my__name__action_bank_buy_expansion_post) | `/my/{name}/action/bank/buy_expansion` | [Inventory & Bank](/concepts/inventory_and_bank/) |
 | [Buy item (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_buy_item_my__name__action_grandexchange_buy_post) | `/my/{name}/action/grandexchange/buy` | [Grand Exchange](/concepts/grand_exchange/) |
-| [Sell order (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_create_sell_order_post) | `/my/{name}/action/grandexchange/sell` | [Grand Exchange](/concepts/grand_exchange/) |
+| [Sell order (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_sell_order_my__name__action_grandexchange_create_sell_order_post) | `/my/{name}/action/grandexchange/create_sell_order` | [Grand Exchange](/concepts/grand_exchange/) |
 | [Buy order (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_create_buy_order_my__name__action_grandexchange_create_buy_order_post) | `/my/{name}/action/grandexchange/create_buy_order` | [Grand Exchange](/concepts/grand_exchange/) |
 | [Fill order (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_fill_my__name__action_grandexchange_fill_post) | `/my/{name}/action/grandexchange/fill` | [Grand Exchange](/concepts/grand_exchange/) |
 | [Cancel order (GE)](https://api.artifactsmmo.com/docs/#/operations/action_ge_cancel_order_my__name__action_grandexchange_cancel_post) | `/my/{name}/action/grandexchange/cancel` | [Grand Exchange](/concepts/grand_exchange/) |
 | [Buy item (NPC)](https://api.artifactsmmo.com/docs/#/operations/action_npc_buy_item_my__name__action_npc_buy_post) | `/my/{name}/action/npc/buy` | [NPCs & Trading](/concepts/npcs/) |
 | [Sell item (NPC)](https://api.artifactsmmo.com/docs/#/operations/action_npc_sell_item_my__name__action_npc_sell_post) | `/my/{name}/action/npc/sell` | [NPCs & Trading](/concepts/npcs/) |
-| [Give items](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post) | `/my/{name}/action/give` | [Characters & Account](/concepts/characters-and-account/) |
+| [Give items](https://api.artifactsmmo.com/docs/#/operations/action_give_items_my__name__action_give_item_post) | `/my/{name}/action/give/item` | [Give Items & Gold](/concepts/give/) |
+| [Give gold](https://api.artifactsmmo.com/docs/#/operations/action_give_gold_my__name__action_give_gold_post) | `/my/{name}/action/give/gold` | [Give Items & Gold](/concepts/give/) |
 | [Accept task](https://api.artifactsmmo.com/docs/#/operations/action_accept_new_task_my__name__action_task_new_post) | `/my/{name}/action/task/new` | [Tasks](/concepts/tasks/) |
 | [Complete task](https://api.artifactsmmo.com/docs/#/operations/action_complete_task_my__name__action_task_complete_post) | `/my/{name}/action/task/complete` | [Tasks](/concepts/tasks/) |
 | [Exchange (task)](https://api.artifactsmmo.com/docs/#/operations/action_task_exchange_my__name__action_task_exchange_post) | `/my/{name}/action/task/exchange` | [Tasks](/concepts/tasks/) |
 | [Cancel task](https://api.artifactsmmo.com/docs/#/operations/action_task_cancel_my__name__action_task_cancel_post) | `/my/{name}/action/task/cancel` | [Tasks](/concepts/tasks/) |
-| [Claim pending item](https://api.artifactsmmo.com/docs/#/operations/action_claim_pending_item_my__name__action_claim_item__id__post) | `/my/{name}/action/claim/{id}` | [Characters & Account](/concepts/characters-and-account/) |
-| [Change skin](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post) | `/my/{name}/action/change_skin` | [Characters & Account](/concepts/characters-and-account/) |
+| [Claim pending item](https://api.artifactsmmo.com/docs/#/operations/action_claim_pending_item_my__name__action_claim_item__id__post) | `/my/{name}/action/claim_item/{id}` | [Pending Items](/concepts/pending_items/) |
+| [Change skin](https://api.artifactsmmo.com/docs/#/operations/action_change_skin_my__name__action_change_skin_post) | `/my/{name}/action/change_skin` | |
 
 ---
 ## Logs
@@ -105,9 +106,9 @@ Every action your character performs is recorded in a log journal. Logs are pagi
 
 To retrieve logs for a specific character, use the following endpoint:
 
-**Endpoint:** `POST /my/{name}/logs`
+**Endpoint:** `GET /my/logs/{name}`
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my__name__logs_get">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_logs_my_logs__name__get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
@@ -156,7 +157,7 @@ print(response.json())
 
 To retrieve logs for all your characters across your account, use the following endpoint:
 
-**Endpoint:** `POST /my/logs`
+**Endpoint:** `GET /my/logs`
 
 <ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_characters_logs_my_logs_get">
   <Fragment slot="api-curl">

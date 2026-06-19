@@ -1,0 +1,95 @@
+---
+title: Game Assistant
+description: "Ask the AI-powered Game Assistant questions about game mechanics and public API usage."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+:::caution
+Game Assistant is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
+:::
+
+The Game Assistant answers questions about Artifacts game mechanics and public API usage.
+
+## Ask a Question
+
+**Endpoint:** `POST /game_assistant/ask`
+
+Members receive a limited number of free questions per day. When no free question remains, set `pay_with_gems` to `true` to spend **1 gem** for the question. If free questions are still available, no gem is spent even when `pay_with_gems` is `true`.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/ask_game_assistant_game_assistant_ask_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/game_assistant/ask \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "question": "How does enhanced recycling work?",
+  "pay_with_gems": true
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/game_assistant/ask';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    question: 'How does enhanced recycling work?',
+    pay_with_gems: true
+  })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/game_assistant/ask"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json"
+}
+data = {
+    "question": "How does enhanced recycling work?",
+    "pay_with_gems": True
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The response contains:
+
+- `data.answer`: The assistant's answer.
+- `data.assistant`: Your updated daily Game Assistant rate limit, including the remaining questions and reset time.
+- `data.paid_with_gems`: Whether this question cost 1 gem.
+
+Questions must contain between 1 and 50,000 characters.
+
+| Field | Description |
+|---|---|
+| `question` | Your question, between 1 and 50,000 characters. |
+| `pay_with_gems` | Whether to spend 1 gem if no free member question is available (optional, default `false`). |
+
+## Daily Limit
+
+The Game Assistant has a separate daily usage limit. Use the [Get Rate Limits endpoint](/api_guide/rate_limits/#game-rate-limits) to retrieve your current limit, remaining questions, and UTC reset time. If the daily limit is reached and `pay_with_gems` is not enabled, the endpoint returns a `570` response.

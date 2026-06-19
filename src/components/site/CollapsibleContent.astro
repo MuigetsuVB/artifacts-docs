@@ -1,0 +1,83 @@
+---
+interface Props {
+  collapsedHeight?: string;
+  label?: string;
+}
+
+const {
+  collapsedHeight = '200px',
+  label = 'Show more',
+} = Astro.props;
+---
+
+<div class="collapsible-content" style={`--collapsed-height: ${collapsedHeight};`}>
+  <div class="collapsible-content__body">
+    <slot />
+  </div>
+  <button class="collapsible-content__toggle" type="button" data-show-label={label} data-hide-label="Show less">
+    {label}
+  </button>
+</div>
+
+<style>
+  .collapsible-content {
+    margin: 0.75rem 0 1rem;
+  }
+
+  .collapsible-content__body {
+    max-height: var(--collapsed-height);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .collapsible-content__body::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3rem;
+    background: linear-gradient(to bottom, transparent, var(--sl-color-bg));
+    pointer-events: none;
+  }
+
+  .collapsible-content.is-open .collapsible-content__body {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .collapsible-content.is-open .collapsible-content__body::after {
+    display: none;
+  }
+
+  .collapsible-content__toggle {
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--sl-color-accent-high);
+    font-weight: 600;
+    margin-top: 0.5rem;
+    user-select: none;
+    font: inherit;
+  }
+
+  .collapsible-content__toggle:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.collapsible-content').forEach((container) => {
+    const button = container.querySelector('.collapsible-content__toggle');
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    button.addEventListener('click', () => {
+      const isOpen = container.classList.toggle('is-open');
+      button.textContent = isOpen
+        ? button.dataset.hideLabel || 'Show less'
+        : button.dataset.showLabel || 'Show more';
+    });
+  });
+</script>

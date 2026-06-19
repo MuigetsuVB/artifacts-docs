@@ -151,6 +151,8 @@ export default defineConfig({
             { label: 'NPCs', link: '/concepts/npcs/' },
             { label: 'Tasks', link: '/concepts/tasks/' },
             { label: 'Events', link: '/concepts/events/' },
+            { label: 'Raids', link: '/concepts/raids/' },
+            { label: 'Gems Shop', link: '/concepts/gems-shop/' },
 
           ],
         },
@@ -166,10 +168,11 @@ export default defineConfig({
         {
           label: '[lucide:crown] Members',
           items: [
-            { label: 'Event Tokens', link: '/members/event-tokens/' },
+            { label: 'Character Stats', link: '/members/character-stats/' },
+            { label: 'Game Assistant', link: '/members/game-assistant/' },
             { label: 'Fight Simulator', link: '/members/fight-simulator/' },
             { label: 'Sandbox Server', link: '/members/sandbox-server/' },
-            { label: 'Test Server', link: '/members/test-server/' },
+            { label: 'Beta Server', link: '/members/test-server/' },
             { label: 'WebSockets', link: '/members/websockets/' },
 
           ],

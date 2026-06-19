@@ -5,7 +5,7 @@ title: Fight Simulator
 import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
 :::caution
-Fight Simulator is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
+Fight Simulator is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
 :::
 
 The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used via the game client or directly with the API.
@@ -13,11 +13,11 @@ The Fight Simulator allows you to simulate solo or group battles against a monst
 You can use this POST request to use the simulator.
   
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_simulation_post">
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_post">
   <Fragment slot="api-curl">
   ```http
   curl --request POST \
-  --url https://api.artifactsmmo.com/simulation/fight_simulation \
+  --url https://api.artifactsmmo.com/simulation/fight \
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
@@ -51,7 +51,7 @@ You can use this POST request to use the simulator.
   </Fragment>
   <Fragment slot="api-javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/simulation/fight_simulation';
+  const url = 'https://api.artifactsmmo.com/simulation/fight';
 const options = {
   method: 'POST',
   headers: {
@@ -76,7 +76,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/simulation/fight_simulation"
+url = "https://api.artifactsmmo.com/simulation/fight"
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json",

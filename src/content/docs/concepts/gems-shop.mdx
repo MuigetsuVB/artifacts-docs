@@ -1,0 +1,290 @@
+---
+title: Gems Shop
+description: "View the gems catalog and spend gems on skins, spawn events, and subscription time."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+The Gems Shop lets you spend gems on cosmetic skins, community spawn events, and subscription time. The catalog is public, but purchases require authentication.
+
+You can obtain gems from [season rewards](/concepts/seasons/#season-rewards), a paid subscription, or gem packs purchased in your [member area](https://www.artifactsmmo.com/account/).
+
+## View the Shop
+
+Use `GET /gems_shop/` to retrieve the current catalog and prices.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_catalog_gems_shop__get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/gems_shop/' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/gems_shop/';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/gems_shop/"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The response is divided into:
+
+| Field | Description |
+|---|---|
+| `skins` | Purchasable skins with their code, name, description, and gem price. |
+| `spawn_events` | Purchasable events with their content, duration, and gem price. |
+| `subscriptions` | Subscription offers with their duration and gem price. |
+
+Your gem balance is available from `GET /my/details`, and your gem transactions are available from `GET /my/gems_history`.
+
+## Skins
+
+Buy a skin with `POST /gems_shop/skin`. Send the skin code from the catalog.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/buy_skin_gems_shop_skin_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/gems_shop/skin \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "gladiator"
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/gems_shop/skin';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ code: 'gladiator' })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/gems_shop/skin"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json"
+}
+data = {"code": "gladiator"}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The skin is permanently added to your account. A skin cannot be purchased twice, and skins without a catalog price are not purchasable.
+
+## Spawn Events
+
+Buy and immediately spawn a community event with `POST /gems_shop/spawn_event`.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/buy_spawn_event_gems_shop_spawn_event_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/gems_shop/spawn_event \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "code": "bandit_camp"
+}'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/gems_shop/spawn_event';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ code: 'bandit_camp' })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/gems_shop/spawn_event"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN",
+    "Content-Type": "application/json"
+}
+data = {"code": "bandit_camp"}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+Only events listed in the Gems Shop catalog can be purchased. A purchase can fail when the event is already active, is on cooldown, or the maximum number of active events has been reached. See [Events](/concepts/events/) for more information.
+
+## Buy a Subscription with Gems
+
+Use `POST /gems_shop/subscription` to buy the subscription offer shown in the catalog.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/buy_subscription_gems_shop_subscription_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url https://api.artifactsmmo.com/gems_shop/subscription \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/gems_shop/subscription';
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/gems_shop/subscription"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.post(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The current offer grants one month of membership. You cannot buy it while your account already has an active subscription. Check the catalog for the current duration and price before purchasing.
+
+## Gem History
+
+Use `GET /my/gems_history` to list your gem credits and debits, including Gems Shop purchases.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_my_gems_history_my_gems_history_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url https://api.artifactsmmo.com/my/gems_history \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/gems_history';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/gems_history"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The response contains a `data` array with one entry per gem transaction:
+
+| Field | Description |
+|---|---|
+| `type` | Gem transaction type. |
+| `gems` | Signed gem delta. Positive values add gems, negative values spend gems. |
+| `description` | Human-readable transaction description. |
+| `metadata` | Additional transaction metadata. |
+| `created_at` | Transaction creation date. |

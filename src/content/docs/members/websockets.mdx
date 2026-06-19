@@ -5,7 +5,7 @@ title: WebSockets
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution
-WebSockets is a feature reserved for members. If you are a founder, you have access to this feature until the game launches.
+WebSockets is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
 :::
   
 WebSockets allow you to receive real-time notifications from the server.
@@ -15,6 +15,9 @@ WebSockets allow you to receive real-time notifications from the server.
 |--|--|--|--|--|
 | Event spawn|event_spawn | Events|Server|Send `ActiveEventSchema` when an event spawn. |
 | Event removed|event_removed| Events |Server| Send `ActiveEventSchema` when an event expires and is removed. |
+| Raid started|raid_started| Raids |Server| Send `{ result: null, raid: RaidSchema }` when a raid instance starts. |
+| Raid ended|raid_ended| Raids |Server| Send `{ result: RaidInstanceResult, raid: RaidSchema }` when a raid instance ends. `RaidInstanceResult` is `success` or `failure`. |
+
 | Grand Exchange new sell order | grandexchange_sell_order | Grand Exchange | Server | Send `GEOrderSchema` when a sell order is created on the Grand Exchange |
 | Grand Exchange new buy order | grandexchange_buy_order | Grand Exchange | Server | Send `GEOrderSchema` when a buy order is created on the Grand Exchange |
 | Grand Exchange buy | grandexchange_buy | Grand Exchange | Server | Send `GeOrderHistorySchema` when a buy is completed (buyer purchases from a sell order) |
@@ -22,9 +25,10 @@ WebSockets allow you to receive real-time notifications from the server.
 | Pending Item Received | pending_item_received | Pending Items | Server | Send `PendingItemSchema` when an item is sent to the player's pending items (from achievements, Grand Exchange purchases, etc.) |
 | Online characters |online_characters | Characters|Server| Send `array[ActiveCharacterSchema]` at the connection and every 10 minutes with the list of online characters. |
 | Version |version | Server|Server| Send the API server version at the connection and at every update. |
-| Announcement |announcement | Announcements|Server| Sends `{"message": "string"}` when a new announcement is published. |
+| Announcement |announcement | Announcements|Server| Sends an announcement message when a new announcement is published. |
 | Achievement unlock |achievement_unlocked | Achievements|Account| Send `AchievementSchema` when an achievement is unlocked on your account. |
 | Account log |account_log | Logs|Account| Send `LogSchema` every time an action is performed on one of the characters in your account. |
+| Season reward unlocked|season_reward_unlocked| Season Rewards |Account| Send `SeasonRewardSchema` to the targeted account when a season reward is granted. |
 | Test |test | Test|Test| Send Test message every 60 seconds. |
 
 

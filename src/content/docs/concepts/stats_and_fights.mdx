@@ -27,13 +27,19 @@ Your character's stats depend on the equipment you have equipped. For more infor
 
 ### Damage Formula
 
-Damage is calculated per element using rounding. The formula is:
+Attack is calculated independently for each element. The global damage bonus (`dmg`) and the matching elemental damage bonus (`dmg_{element}`) are added together before being applied to the base elemental attack:
 
 ```
-Output = Round(Attack × Round(Damage × 0.01))
+Total damage bonus = Global damage + Elemental damage
+Elemental attack = Round(Base elemental attack × (1 + Total damage bonus / 100))
 ```
 
-**Example:** 100 base attack + 30% damage = `Round(100 × Round(30 × 0.01)) = 130` total damage.
+**Example:** 100 base fire attack + 20 fire damage + 10 global damage:
+
+```
+Total damage bonus = 20 + 10 = 30%
+Elemental attack = Round(100 × (1 + 30 / 100)) = 130
+```
 
 - 1 damage = 1% extra base damage
 - `.5` always rounds **up**, below `.5` rounds **down**
@@ -41,20 +47,28 @@ Output = Round(Attack × Round(Damage × 0.01))
 
 ### Resistance Formula
 
-Resistance uses the same logic:
+Resistance is applied after the elemental attack has been calculated:
 
 ```
-Blocked = Round(Attack × Round(Resistance × 0.01))
+Final damage = Round(Elemental attack × (1 - Resistance / 100))
 ```
 
-**Example:** Player attacks with 100, monster has 30 resistance → blocks 30 damage.
+**Example:** An elemental attack of 130 against 30 resistance:
+
+```
+Final damage = Round(130 × (1 - 30 / 100)) = 91
+```
 
 ### Critical Strike
 
-Critical strike gives you a chance to deal **1.5× total attack damage**.
+Critical strike gives you a chance to multiply the damage remaining after resistance by **1.5×**:
+
+```
+Critical damage = Round(Final damage × 1.5)
+```
 
 - 1 critical strike = 1% chance
-- Example: 10 critical strike → 10% chance. A hit of 100 becomes 150 on critical.
+- Example: 10 critical strike gives a 10% chance. Final damage of 91 becomes `Round(91 × 1.5) = 137`.
 
 ### Initiative
 
@@ -136,7 +150,7 @@ Combat is turn-based. Turn order is determined by initiative.
 
 - Fights can last a **maximum of 100 turns** — if not over by then, you **lose**.
 - If you lose, your character returns to **spawn (0,0)** with **1 HP**.
-- Your inventory must have at least **1 free slot** before starting a fight (otherwise error 497).
+- Your inventory must have at least **1 free slot** before starting a normal fight (otherwise error 497). This requirement does not apply to raid fights.
 
 ### Cooldown Formula
 
@@ -191,6 +205,7 @@ There are several types of monsters that can either fight alone or in groups.
 | `normal` | Standard monsters found throughout the world. | ×1 |
 | `elite` | Stronger monsters with better stats and drops. | ×1.4 |
 | `boss` | Powerful monsters that can be fought with up to 3 characters. | ×2 |
+| `raid_boss` | Raid monsters with a shared HP pool that can be fought with up to 3 characters. See [Raids](/concepts/raids/). | ×2 |
 
 
 
@@ -320,7 +335,7 @@ print(response.json())
 To start a fight, your character must be on a map with a monster. For more information about maps, see [Maps and Movement](/concepts/maps_and_movement/).
 
 :::caution
-Your inventory must have at least **1 free slot** before starting a fight, otherwise you will receive a 497 error.
+Your inventory must have at least **1 free slot** before starting a normal fight, otherwise you will receive a 497 error. This requirement does not apply to raid fights.
 :::
 
 ### Fight
@@ -379,7 +394,7 @@ print(response.json())
 
 ### Multi-Characters Fight
 
-You can fight with up to 2 other of **your own characters** against `boss`-type monsters (up to 3 characters total). All participating characters must be on the boss's map. Each character receives XP, gold, and drops independently.
+You can fight with up to 2 other of **your own characters** against `boss` and `raid_boss` monsters (up to 3 characters total). All participating characters must be on the same map. Normal boss fights grant XP, gold, and drops independently; raid fights use the [raid reward system](/concepts/raids/#rewards).
 
 
 **Endpoint:** `POST /my/{name}/action/fight`

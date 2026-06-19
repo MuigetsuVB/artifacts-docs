@@ -2,123 +2,229 @@
 title: Rate limits
 ---
 
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+Rate limits protect the game servers and are shared across endpoints in the same bucket. Standard HTTP rate limits are applied per IP address. The Game Assistant daily limit is applied per account.
+
+When a limit is exceeded, the API returns HTTP `429 Too Many Requests`.
+
 ## Rate Limit Values
 
-| Type       | /second    | /minute    | /hour       |
-|------------|------------|------------|-------------|
-| `account`  | 10/s       | —          | 500/h       |
-| `data`     | 20/s       | 500/min    | 10 000/h    |
-| `action`   | 20/2s      | 500/min    | 10 000/h    |
+| Type | /second | /minute | /hour | /day |
+|---|---:|---:|---:|---:|
+| `account` | 10 | - | 300 | - |
+| `data` | 10 | 200 | 2,000 | - |
+| `action` | 10 | 100 | 5,000 | - |
+| `simulation` | 1 | - | 100 | - |
+| `assistant` | - | - | - | 25 |
+
+The `assistant` limit is available to members only and can be changed independently from the standard API limits.
+
+:::note
+Limits may change. Use `GET /` for the configured public game limits and `GET /my/rates` for your current remaining requests and reset times.
+:::
+
+## Game Rate Limits
+
+Use `GET /my/rates` to retrieve the current rate limit windows for your IP and account.
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_rate_limits_my_rates_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url https://api.artifactsmmo.com/my/rates \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/rates';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/rates"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The response contains:
+
+| Field | Description |
+|---|---|
+| `account` | Current second and hour windows for account endpoints. |
+| `data` | Current second, minute, and hour windows for data endpoints. |
+| `action` | Current second, minute, and hour windows for character actions. |
+| `simulation` | Current second and hour windows for the Fight Simulator. |
+| `assistant` | Current daily Game Assistant usage for members; `null` for non-members. |
+
+Each available window contains:
+
+| Field | Description |
+|---|---|
+| `limit` | Maximum requests allowed during the window. |
+| `remaining` | Requests remaining during the current window. |
+| `reset` | UTC datetime when the window resets. |
+
+The public `GET /` server status endpoint also exposes the configured `account`, `token`, `data`, and `action` limits. The `token` limit uses the same values as the `account` bucket.
 
 ---
 
-## Endpoints — `account` type
+## Account Endpoints
 
-### Account Management
+These endpoints share the `account` rate limit.
+
+### Account and Character Management
+
 | Method | Endpoint |
-|--------|----------|
+|---|---|
 | `POST` | `/accounts/create` |
 | `POST` | `/accounts/forgot_password` |
 | `POST` | `/accounts/reset_password` |
-| `POST` | `/token` |
-| `POST` | `/my/change_password` |
-
-
-### Characters
-| Method | Endpoint |
-|--------|----------|
 | `POST` | `/characters/create` |
 | `POST` | `/characters/delete` |
+| `POST` | `/token` |
+| `POST` | `/my/change_password` |
+| `POST` | `/my/change_email` |
+
+### Subscription and Gems
+
+| Method | Endpoint |
+|---|---|
+| `POST` | `/my/buy_subscription` |
+| `POST` | `/my/subscribe/cancel` |
+| `POST` | `/my/buy_gems` |
+| `GET` | `/my/rates` |
+| `POST` | `/gems_shop/skin` |
+| `POST` | `/gems_shop/spawn_event` |
+| `POST` | `/gems_shop/subscription` |
+
+### Game Assistant
+
+| Method | Endpoint |
+|---|---|
+| `POST` | `/game_assistant/ask` |
+
+`POST /game_assistant/ask` consumes the `account` bucket and the separate member-only `assistant` daily limit.
 
 ---
 
-## Endpoints — `data` type
+## Data Endpoints
 
-### Server Status
+These endpoints share the `data` rate limit.
+
+### Server and My Account
+
 | Method | Endpoint |
-|--------|----------|
+|---|---|
 | `GET` | `/` |
+| `GET` | `/my/bank` |
+| `GET` | `/my/bank/items` |
+| `GET` | `/my/grandexchange/orders` |
+| `GET` | `/my/grandexchange/history` |
+| `GET` | `/my/details` |
+| `GET` | `/my/pending_items` |
+| `GET` | `/my/subscription` |
+| `GET` | `/my/purchase_history` |
+| `GET` | `/my/gems_history` |
+| `GET` | `/my/logs` |
+| `GET` | `/my/logs/{name}` |
+| `GET` | `/my/characters` |
 
-### Public Accounts
+### Accounts and Characters
+
 | Method | Endpoint |
-|--------|----------|
+|---|---|
 | `GET` | `/accounts/{account}` |
 | `GET` | `/accounts/{account}/characters` |
 | `GET` | `/accounts/{account}/achievements` |
-
-### Public Characters
-| Method | Endpoint |
-|--------|----------|
 | `GET` | `/characters/active` |
 | `GET` | `/characters/{name}` |
+| `GET` | `/characters/{name}/stats` |
 
-### Items
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/items` |
-| `GET` | `/items/{code}` |
+### Game Data
 
-### Monsters
 | Method | Endpoint |
-|--------|----------|
-| `GET` | `/monsters` |
-| `GET` | `/monsters/{code}` |
-
-### Resources
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/resources` |
-| `GET` | `/resources/{code}` |
-
-### Maps
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/maps` |
-| `GET` | `/maps/{layer}` |
-| `GET` | `/maps/{layer}/{x}/{y}` |
-
-### Events
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/events` |
-| `GET` | `/events/active` |
-
-### Grand Exchange (public)
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/grandexchange/orders` |
-| `GET` | `/grandexchange/orders/{id}` |
-| `GET` | `/grandexchange/history/{code}` |
-
-### Achievements & Badges (public)
-| Method | Endpoint |
-|--------|----------|
+|---|---|
 | `GET` | `/achievements` |
 | `GET` | `/achievements/{code}` |
 | `GET` | `/badges` |
 | `GET` | `/badges/{code}` |
-
-### My Account (data)
-| Method | Endpoint |
-|--------|----------|
-| `GET` | `/my/details` |
-| `GET` | `/my/characters` |
-| `GET` | `/my/bank` |
-| `GET` | `/my/bank/items` |
-| `GET` | `/my/grandexchange/orders` |
-| `GET` | `/my/grandexchange/history/{code}` |
-| `GET` | `/my/logs` |
-| `GET` | `/my/logs/{name}` |
-| `GET` | `/my/pending-items` |8
+| `GET` | `/skins` |
+| `GET` | `/skins/{code}` |
+| `GET` | `/season_rewards` |
+| `GET` | `/season_rewards/{code}` |
+| `GET` | `/effects` |
+| `GET` | `/effects/{code}` |
+| `GET` | `/events` |
+| `GET` | `/events/active` |
+| `GET` | `/grandexchange/history/{code}` |
+| `GET` | `/grandexchange/orders` |
+| `GET` | `/grandexchange/orders/{id}` |
+| `GET` | `/items` |
+| `GET` | `/items/{code}` |
+| `GET` | `/leaderboard/characters` |
+| `GET` | `/leaderboard/accounts` |
+| `GET` | `/maps` |
+| `GET` | `/maps/{layer}` |
+| `GET` | `/maps/{layer}/{x}/{y}` |
+| `GET` | `/maps/id/{map_id}` |
+| `GET` | `/monsters` |
+| `GET` | `/monsters/{code}` |
+| `GET` | `/npcs/details` |
+| `GET` | `/npcs/details/{code}` |
+| `GET` | `/npcs/items` |
+| `GET` | `/npcs/items/{code}` |
+| `GET` | `/raids` |
+| `GET` | `/raids/{code}` |
+| `GET` | `/raids/{code}/leaderboard` |
+| `GET` | `/resources` |
+| `GET` | `/resources/{code}` |
+| `GET` | `/tasks/list` |
+| `GET` | `/tasks/list/{code}` |
+| `GET` | `/tasks/rewards` |
+| `GET` | `/tasks/rewards/{code}` |
+| `GET` | `/gems_shop/` |
+| `GET` | `/payment/success` |
+| `GET` | `/payment/cancelled` |
 
 ---
 
-## Endpoints — `action` type
+## Action Endpoints
 
-### Character Actions (`/my/{name}/action/...`)
+These endpoints share the `action` rate limit.
+
+### Character Actions
+
 | Method | Endpoint |
-|--------|----------|
+|---|---|
 | `POST` | `/my/{name}/action/move` |
+| `POST` | `/my/{name}/action/transition` |
 | `POST` | `/my/{name}/action/rest` |
 | `POST` | `/my/{name}/action/equip` |
 | `POST` | `/my/{name}/action/unequip` |
@@ -132,31 +238,50 @@ title: Rate limits
 | `POST` | `/my/{name}/action/bank/withdraw/item` |
 | `POST` | `/my/{name}/action/bank/withdraw/gold` |
 | `POST` | `/my/{name}/action/bank/buy_expansion` |
+| `POST` | `/my/{name}/action/npc/buy` |
+| `POST` | `/my/{name}/action/npc/sell` |
+| `POST` | `/my/{name}/action/grandexchange/buy` |
+| `POST` | `/my/{name}/action/grandexchange/create_sell_order` |
+| `POST` | `/my/{name}/action/grandexchange/cancel` |
+| `POST` | `/my/{name}/action/grandexchange/create_buy_order` |
+| `POST` | `/my/{name}/action/grandexchange/fill` |
 | `POST` | `/my/{name}/action/task/new` |
 | `POST` | `/my/{name}/action/task/complete` |
 | `POST` | `/my/{name}/action/task/cancel` |
 | `POST` | `/my/{name}/action/task/exchange` |
-| `POST` | `/my/{name}/action/npc/buy` |
-| `POST` | `/my/{name}/action/npc/sell` |
-| `POST` | `/my/{name}/action/grandexchange/sell` |
-| `POST` | `/my/{name}/action/grandexchange/buy` |
-| `POST` | `/my/{name}/action/grandexchange/cancel` |
-| `POST` | `/my/{name}/action/give` |
-| `POST` | `/my/{name}/action/claim/{id}` |
+| `POST` | `/my/{name}/action/task/trade` |
+| `POST` | `/my/{name}/action/give/gold` |
+| `POST` | `/my/{name}/action/give/item` |
+| `POST` | `/my/{name}/action/claim_item/{id}` |
 | `POST` | `/my/{name}/action/change_skin` |
 | `POST` | `/my/{name}/action/delete` |
-| `POST` | `/my/{name}/action/transition` |
 
-### Events (member required)
-| Method | Endpoint |
-|--------|----------|
-| `POST` | `/events/spawn` |
+### Sandbox Actions
 
-### Sandbox only
 | Method | Endpoint |
-|--------|----------|
+|---|---|
 | `POST` | `/sandbox/give_item` |
 | `POST` | `/sandbox/give_gold` |
 | `POST` | `/sandbox/give_xp` |
 | `POST` | `/sandbox/spawn_event` |
 | `POST` | `/sandbox/reset_account` |
+
+---
+
+## Simulation Endpoint
+
+The Fight Simulator has its own `simulation` bucket.
+
+| Method | Endpoint |
+|---|---|
+| `POST` | `/simulation/fight` |
+
+---
+
+## Internal Endpoint
+
+| Method | Endpoint |
+|---|---|
+| `POST` | `/webhooks/stripe` |
+
+This is an internal Stripe webhook endpoint. It is not intended for game API clients and does not use one of the standard shared rate limit buckets.

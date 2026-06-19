@@ -22,6 +22,26 @@ resources returned = floor((total items in recipe - 1) / 5) + 1
 
 With a **minimum of 1 resource** per recycled item.
 
+### Enhanced Recycling
+
+Set `enhanced` to `true` to recover **30% more resources**, rounded to the nearest whole resource and capped at the total number of ingredients in the recipe.
+
+Enhanced recycling costs gold based on the recycled item's level:
+
+```
+gold cost = total ingredients in recipe x quantity recycled x gold per ingredient
+```
+
+| Item level | Gold per ingredient |
+|---|---:|
+| 1-20 | 5 |
+| 21-30 | 10 |
+| 31-40 | 15 |
+| 41-45 | 20 |
+| 46+ | 25 |
+
+The response's `details.enhanced` field confirms whether enhanced recycling was used, and `details.gold` contains the amount of gold spent.
+
 
 ## Recycle Item
 
@@ -40,7 +60,8 @@ To recycle an item at the matching skill's workshop, use this endpoint:
   --header 'Content-Type: application/json' \
   --data '{
   "code": "iron_sword",
-  "quantity": 5
+  "quantity": 5,
+  "enhanced": true
 }'
   ```
   </Fragment>
@@ -54,7 +75,7 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer YOUR_TOKEN'
   },
-  body: JSON.stringify({ code: "iron_sword", quantity: 5 })
+  body: JSON.stringify({ code: "iron_sword", quantity: 5, enhanced: true })
 };
   
 try {
@@ -76,7 +97,7 @@ headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer YOUR_TOKEN"
 }
-data = {"code": "iron_sword", "quantity": 5}
+data = {"code": "iron_sword", "quantity": 5, "enhanced": True}
 
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
@@ -87,7 +108,8 @@ print(response.json())
 | Field | Description |
 |---|---|
 | `code` | The item code to recycle. |
-| `quantity` | Number of items to recycle. |
+| `quantity` | Number of items to recycle (optional, default 1). |
+| `enhanced` | Whether to use enhanced recycling and spend gold for 30% more returned resources (optional, default `false`). |
 
 
 

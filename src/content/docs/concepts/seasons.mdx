@@ -1,18 +1,16 @@
 ---
 title: Seasons
-description: "x"
+description: "Seasonal resets, server status, and season rewards."
 ---
- 
-import ServerStatus from '../../../components/site/ServerStatus.astro';
 
+import ServerStatus from '../../../components/site/ServerStatus.astro';
 import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
-
-Artifacts operates on a **seasonal server system**, with each season lasting approximately **4 months**. Every season resets progress and introduces new features, content, and challenges — giving you the chance to earn unique badges and compete for first completions.
+Artifacts operates on a **seasonal server system**, with each season lasting approximately **4 months**. Every season resets progress and introduces new features, content, and challenges, giving you the chance to earn unique rewards and compete for first completions.
 
 Information about the next season is generally revealed **one month before its release**. It is highly recommended to join our **Discord** or follow us on social media to stay updated.
 
-**Members** have access to the **Beta server** one week before the launch of the season to test it and provide feedback on **Discord**.
+**Members** have access to the **Beta server** before the launch of a season to test it and provide feedback on **Discord**.
 
 Here is the information about the **current season**:
 
@@ -20,7 +18,7 @@ Here is the information about the **current season**:
 
 ## Retrieving Server Status
 
-You can retrieve the current server status, including the active season details, skins, and badges, using this endpoint:
+You can retrieve the current server status, including the active season details and the current season reward track, using this endpoint:
 
 **Endpoint:** `GET /`
 
@@ -64,41 +62,48 @@ print(response.json())
   </Fragment>
   </ApiSdkTabs>
 
-
-
 ---
-## Season rewards
 
-During a season, you earn rewards based on the number of **achievement points** you accumulate.
+## Season Rewards
 
-### Badges
+During a season, you automatically earn rewards when your account reaches the required number of **achievement points**. The reward track can contain badges, skins, gold, and items, and the exact rewards may change each season.
 
-Here are the different badges you can obtain based on your achievement points:
+Items earned from season rewards are sent to your [pending items](/concepts/pending_items/).
 
-| Type | Description | Points required |
-|---|---|---|
-| **Bronze** | Earn at least 50% of the achievement points to get this badge. | 100 points |
-| **Silver** | Earn at least 75% of the achievement points to upgrade your bronze badge to silver. | 150 points |
-| **Gold** | Earn all achievement points to upgrade your silver badge to gold. | 200 points |
-| **Color** | Be the first to earn all achievement points to upgrade your gold badge to color. | 200 points |
+| Field | Description |
+|---|---|
+| `code` | Code of the badge, skin, item, or other reward. |
+| `type` | Reward type: `badge`, `skin`, `gold`, or `item`. |
+| `required_points` | Achievement points required to earn the reward. |
+| `quantity` | Quantity granted. |
+| `member_required` | Whether an active subscription is required to earn the reward. |
+| `first_only` | Whether only the first player to reach the requirement receives the reward. |
 
-#### Retrieving Badges
+Season badge tiers upgrade as you reach higher thresholds: a higher badge replaces the lower badge. A `first_only` color badge can be awarded to the first player to earn all required achievement points.
 
-To retrieve a paginated list of all badges, use the following endpoint:
+:::note
+The reward track contains rewards available to everyone and additional rewards reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
+:::
 
-**Endpoint:** `GET /badges`
+### Retrieving Season Rewards
 
-<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_badges_badges_get">
+The current reward track is included in the server status response from `GET /`.
+
+Use `GET /season_rewards` to retrieve a paginated list of all current season rewards. You can filter it by `type`.
+
+**Endpoint:** `GET /season_rewards`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_all_season_rewards_season_rewards_get">
   <Fragment slot="api-curl">
   ```http
   curl --request GET \
-  --url 'https://api.artifactsmmo.com/badges?page=1&size=50' \
+  --url 'https://api.artifactsmmo.com/season_rewards?page=1&size=50' \
   --header 'Accept: application/json'
   ```
   </Fragment>
   <Fragment slot="api-javascript">
   ```js
-  const url = 'https://api.artifactsmmo.com/badges?page=1&size=50';
+  const url = 'https://api.artifactsmmo.com/season_rewards?page=1&size=50';
 const options = {
   method: 'GET',
   headers: {
@@ -119,7 +124,7 @@ try {
   ```python
   import requests
 
-url = "https://api.artifactsmmo.com/badges"
+url = "https://api.artifactsmmo.com/season_rewards"
 headers = {"Accept": "application/json"}
 
 response = requests.get(url, params={"page": 1, "size": 50}, headers=headers)
@@ -128,10 +133,4 @@ print(response.json())
   </Fragment>
   </ApiSdkTabs>
 
-
-
----
-
-### Skins
-
-This section will be added when the **skins system** is introduced.
+Use `GET /season_rewards/{code}` to retrieve every reward threshold associated with a specific reward code.

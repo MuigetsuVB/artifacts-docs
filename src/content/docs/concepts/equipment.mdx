@@ -6,7 +6,7 @@ description: "All item types, equipment slots, conditions, runes, utilities, and
 import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 import ItemPreview from '../../../components/site/ItemPreview.astro';
 
-Your character has 15 equipment slots that allow you to modify your stats and add unique effects to your character.
+Your character has 16 equipment slots that allow you to modify your stats and add unique effects to your character.
 
 ## Equipment Types
 
@@ -168,9 +168,9 @@ Items may have conditions that must be met before equipping. Conditions use the 
 The `code` field can reference any character stat (e.g., `level`, `mining_level`, `attack_fire`).
 
 
-### Equip Item
+### Equip Items
 
-To equip an item when you meet the conditions, use the following endpoint:
+To equip one or more items when you meet the conditions, use the following endpoint. The request body is an array containing between 1 and 20 items. The cooldown is **3 seconds per array entry**.
 
 **Endpoint:** `POST /my/{name}/action/equip`
 
@@ -182,10 +182,16 @@ To equip an item when you meet the conditions, use the following endpoint:
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
-  --data '{
-  "code": "iron_sword",
-  "slot": "weapon"
-}'
+  --data '[
+  {
+    "code": "iron_sword",
+    "slot": "weapon"
+  },
+  {
+    "code": "iron_armor",
+    "slot": "body_armor"
+  }
+]'
   ```
   </Fragment>
   <Fragment slot="api-javascript">
@@ -198,7 +204,10 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer YOUR_TOKEN'
   },
-  body: JSON.stringify({ code: "iron_sword", slot: "weapon" })
+  body: JSON.stringify([
+    { code: "iron_sword", slot: "weapon" },
+    { code: "iron_armor", slot: "body_armor" }
+  ])
 };
 
 try {
@@ -220,7 +229,10 @@ headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer YOUR_TOKEN"
 }
-data = {"code": "iron_sword", "slot": "weapon"}
+data = [
+    {"code": "iron_sword", "slot": "weapon"},
+    {"code": "iron_armor", "slot": "body_armor"}
+]
 
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
@@ -232,15 +244,15 @@ print(response.json())
 |---|---|
 | `code` | The item code to equip. |
 | `slot` | Equipment slot: `weapon`, `shield`, `helmet`, `body_armor`, `leg_armor`, `boots`, `ring1`, `ring2`, `amulet`, `artifact1`, `artifact2`, `artifact3`, `utility1`, `utility2`, `bag`, `rune`. |
-| `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
+| `quantity` | Item quantity (optional, default 1). Only for utilities (1-100). |
 
-### Unequip Item
+### Unequip Items
 
 :::caution
-You must have at least **1 free inventory slot** to unequip. Your character must also have enough HP to survive any stat changes from unequipping.
+Your character must have enough inventory space for the returned items and enough HP to survive any stat changes from unequipping.
 :::
 
-To unequip an item, use the following endpoint:
+To unequip one or more items, use the following endpoint. The request body is an array containing between 1 and 20 items. The cooldown is **3 seconds per array entry**.
 
 **Endpoint:** `POST /my/{name}/action/unequip`
 
@@ -252,9 +264,14 @@ To unequip an item, use the following endpoint:
   --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_TOKEN' \
   --header 'Content-Type: application/json' \
-  --data '{
-  "slot": "weapon"
-}'
+  --data '[
+  {
+    "slot": "weapon"
+  },
+  {
+    "slot": "body_armor"
+  }
+]'
   ```
   </Fragment>
   <Fragment slot="api-javascript">
@@ -267,7 +284,10 @@ const options = {
     Accept: 'application/json',
     Authorization: 'Bearer YOUR_TOKEN'
   },
-  body: JSON.stringify({ slot: "weapon" })
+  body: JSON.stringify([
+    { slot: "weapon" },
+    { slot: "body_armor" }
+  ])
 };
 
 try {
@@ -289,7 +309,10 @@ headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer YOUR_TOKEN"
 }
-data = {"slot": "weapon"}
+data = [
+    {"slot": "weapon"},
+    {"slot": "body_armor"}
+]
 
 response = requests.post(url, json=data, headers=headers)
 print(response.json())
@@ -300,4 +323,4 @@ print(response.json())
 | Field | Description |
 |---|---|
 | `slot` | Equipment slot to unequip. |
-| `quantity` | Item quantity (optional, default 1). Only for utilities (1–100). |
+| `quantity` | Item quantity (optional, default 1). Only for utilities (1-100). |
