@@ -62,8 +62,8 @@ Not every map is freely traversable. The field `access.type` can be:
 | ---- | ----------- |
 | `standard` | Freely accessible. |
 | `blocked` | Not walkable (void, obstacle, mountain, water, etc.). |
-| `teleportation` | Only reachable via teleport effects (e.g. consumable). |
 | `conditional` | Requires all listed conditions to be satisfied. |
+| `restricted` | Only accessible from other restricted maps. Restricted maps cannot communicate with normal maps. |
 
 Conditions may appear in:
 - `access.conditions` (to step onto / remain on a tile)
