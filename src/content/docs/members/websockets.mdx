@@ -17,7 +17,6 @@ WebSockets allow you to receive real-time notifications from the server.
 | Event removed|event_removed| Events |Server| Send `ActiveEventSchema` when an event expires and is removed. |
 | Raid started|raid_started| Raids |Server| Send `{ result: null, raid: RaidSchema }` when a raid instance starts. |
 | Raid ended|raid_ended| Raids |Server| Send `{ result: RaidInstanceResult, raid: RaidSchema }` when a raid instance ends. `RaidInstanceResult` is `success` or `failure`. |
-
 | Grand Exchange new sell order | grandexchange_sell_order | Grand Exchange | Server | Send `GEOrderSchema` when a sell order is created on the Grand Exchange |
 | Grand Exchange new buy order | grandexchange_buy_order | Grand Exchange | Server | Send `GEOrderSchema` when a buy order is created on the Grand Exchange |
 | Grand Exchange buy | grandexchange_buy | Grand Exchange | Server | Send `GeOrderHistorySchema` when a buy is completed (buyer purchases from a sell order) |
