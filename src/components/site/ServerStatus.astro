@@ -58,11 +58,6 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
         });
       };
 
-      // Calculate approximate season end (4 months from start)
-      const startDate = new Date(data.season.start_date);
-      const endDate = new Date(startDate);
-      endDate.setMonth(endDate.getMonth() + 4);
-
       containers.forEach(container => {
         const showSkins = container.getAttribute('data-show-skins') === 'true';
         const showBadges = container.getAttribute('data-show-badges') === 'true';
@@ -90,8 +85,8 @@ const { showSkins = true, showBadges = true, showStatus = true } = Astro.props;
                 <span class="value">${formatDate(data.season.start_date)}</span>
               </div>
               <div class="status-item">
-                <span class="label">Season End:</span>
-                <span class="value">${formatDate(endDate.toISOString())}</span>
+                <span class="label">Season Duration:</span>
+                <span class="value">4 months</span>
               </div>
             </div>
           `;
