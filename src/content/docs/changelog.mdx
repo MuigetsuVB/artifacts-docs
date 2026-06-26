@@ -206,6 +206,15 @@ Here's the patch notes for version 8.0.0.
 **Bank**
 - Bank expansion prices now start at 3,500 gold, double with each purchase, and are capped at 448,000 gold.
 
+**API breaking changes**
+- `GET /my/pending-items` has been replaced by `GET /my/pending_items`.
+- `POST /simulation/fight_simulation` has been replaced by `POST /simulation/fight`.
+- `POST /my/{name}/action/grandexchange/create-buy-order` has been replaced by `POST /my/{name}/action/grandexchange/create_buy_order`.
+- `POST /my/{name}/action/grandexchange/create-sell-order` has been replaced by `POST /my/{name}/action/grandexchange/create_sell_order`.
+- `POST /events/spawn` has been removed. Use `POST /gems_shop/spawn_event` on the main server, or `POST /sandbox/spawn_event` on sandbox environments.
+- `POST /my/{name}/action/equip` now expects an array of equipment objects instead of a single object.
+- `POST /my/{name}/action/unequip` now expects an array of unequip objects instead of a single object.
+
 ## Update 04/14/26: version 7.0.4
 
 Here's the patch notes for version 7.0.4.
