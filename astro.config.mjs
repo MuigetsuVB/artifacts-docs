@@ -32,12 +32,13 @@ export default defineConfig({
         Header: './src/components/site/Header.astro',
         Search: './src/components/site/Search.astro',
         Pagination: './src/components/ion/Pagination.astro',
+        ThemeSelect: './src/components/site/ThemeSelect.astro',
       },
       title: 'Artifacts',
       favicon: '/src/assets/images/favicon.png',
       logo: {
         dark: './src/styles/logo.png',
-        light: './src/styles/logo.png',
+        light: './src/styles/logo-light.png',
         alt: 'Artifacts logo',
         replacesTitle: true,
       },
@@ -93,7 +94,7 @@ export default defineConfig({
         {
           tag: 'script',
           content:
-            "try { localStorage.setItem('starlight-theme', 'dark'); } catch {} document.documentElement.dataset.theme = 'dark';",
+            "try { const storedTheme = localStorage.getItem('starlight-theme'); const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark'; if (!storedTheme) localStorage.setItem('starlight-theme', 'dark'); document.documentElement.dataset.theme = theme; } catch { document.documentElement.dataset.theme = 'dark'; }",
         },
         {
           tag: 'meta',
