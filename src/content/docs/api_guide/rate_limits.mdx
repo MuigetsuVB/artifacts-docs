@@ -15,7 +15,7 @@ When a limit is exceeded, the API returns HTTP `429 Too Many Requests`.
 | `account` | 10 | - | 300 | - |
 | `data` | 10 | 200 | 2,000 | - |
 | `action` | 10 | 100 | 5,000 | - |
-| `simulation` | 1 | - | 100 | - |
+| `simulation` | 1 | - | - | - |
 | `assistant` | - | - | - | 25 |
 
 The `assistant` limit is available to members only and can be changed independently from the standard API limits.
@@ -80,7 +80,7 @@ The response contains:
 | `account` | Current second and hour windows for account endpoints. |
 | `data` | Current second, minute, and hour windows for data endpoints. |
 | `action` | Current second, minute, and hour windows for character actions. |
-| `simulation` | Current second and hour windows for the Fight Simulator. |
+| `simulation` | Current second window for the Fight Simulator. |
 | `assistant` | Current daily Game Assistant usage for members; `null` for non-members. |
 
 Each available window contains:
