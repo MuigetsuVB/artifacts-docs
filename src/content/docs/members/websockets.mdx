@@ -21,6 +21,8 @@ WebSockets allow you to receive real-time notifications from the server.
 | Grand Exchange new buy order | grandexchange_buy_order | Grand Exchange | Server | Send `GEOrderSchema` when a buy order is created on the Grand Exchange |
 | Grand Exchange buy | grandexchange_buy | Grand Exchange | Server | Send `GeOrderHistorySchema` when a buy is completed (buyer purchases from a sell order) |
 | Grand Exchange sell | grandexchange_sell | Grand Exchange | Server | Send `GeOrderHistorySchema` when a sale is completed (seller fills a buy order) |
+| Grand Exchange cancel sell order | grandexchange_cancel_sell_order | Grand Exchange | Server | Send `GEOrderSchema` when a sell order is cancelled on the Grand Exchange |
+| Grand Exchange cancel buy order | grandexchange_cancel_buy_order | Grand Exchange | Server | Send `GEOrderSchema` when a buy order is cancelled on the Grand Exchange |
 | Pending Item Received | pending_item_received | Pending Items | Server | Send `PendingItemSchema` when an item is sent to the player's pending items (from achievements, Grand Exchange purchases, etc.) |
 | Online characters |online_characters | Characters|Server| Send `array[ActiveCharacterSchema]` at the connection and every 10 minutes with the list of online characters. |
 | Version |version | Server|Server| Send the API server version at the connection and at every update. |
