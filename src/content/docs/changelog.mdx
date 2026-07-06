@@ -4,6 +4,19 @@ title: Changelog
 
 import CollapsibleContent from '../../components/site/CollapsibleContent.astro';
 
+## Update 07/06/26: version 8.0.1
+
+Here's the patch notes for version 8.0.1.
+
+**Changes**
+- Nomadic Merchant now buys Forest Staff for 100 gold.
+- Fish Merchant now buys Lava Fish for 1 gold.
+- Events spawned with gems now have a minimum 2-hour cooldown before they can be spawned again.
+
+**WebSockets**
+- Added `grandexchange_cancel_sell_order`, sent with `GEOrderSchema` when a sell order is cancelled on the Grand Exchange.
+- Added `grandexchange_cancel_buy_order`, sent with `GEOrderSchema` when a buy order is cancelled on the Grand Exchange.
+
 ## Update 06/27/26: version 8.0.0
 
 Here's the patch notes for version 8.0.0.
