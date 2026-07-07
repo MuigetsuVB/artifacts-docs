@@ -4,13 +4,23 @@ title: Fight Simulator
 
 import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
 
+import { Image } from 'astro:assets';
+import sim from '/src/assets/images/sim.png';
+
+
 :::caution
 Fight Simulator is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
 :::
 
-The Fight Simulator allows you to simulate solo or group battles against a monster. It can be used via the game client or directly with the API.
+The Fight Simulator allows you to simulate solo or group battles against a monster.  It can be used via the game client or directly with the API.
 
-You can use this POST request to use the simulator.
+You can simulate up to 100 iterations at once and get the details and logs of each simulation.
+
+Interface available in the client (add a link to play.artifactsmmo.com):
+<Image src={sim} alt="Sim interface" />
+
+
+Otherwise, you can use this POST request to use the simulator.
   
 
 <ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/fight_simulation_simulation_fight_post">

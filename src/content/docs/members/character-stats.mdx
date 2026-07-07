@@ -4,6 +4,10 @@ description: "Retrieve detailed gameplay statistics for a character."
 ---
 
 import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+import { Image } from 'astro:assets';
+import stats1 from '/src/assets/images/stats1.png';
+import stats2 from '/src/assets/images/stats2.png';
+
 
 :::caution
 Character Stats is a feature reserved for members. You can sign up for a subscription in your [member area](https://www.artifactsmmo.com/account/).
@@ -12,6 +16,11 @@ Character Stats is a feature reserved for members. You can sign up for a subscri
 The Character Stats endpoint provides detailed gameplay statistics for a character. Statistics are collected for every character, but they are only visible while the character's account has an active subscription.
 
 You can retrieve the statistics of any visible member character without authentication.
+
+In addition to being available via the API, character stats are also visible in the client and on the leaderboard.
+<Image src={stats1} alt="Stats 1" />
+<Image src={stats2} alt="Stats 2" />
+
 
 ## Get Character Stats
 
