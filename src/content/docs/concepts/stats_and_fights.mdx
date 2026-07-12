@@ -168,6 +168,10 @@ Combat XP is calculated with monster level and monster HP:
 XP = Round(((monster_level / player_level) × 20 + monster_hp × 0.04) × level_penalty × monster_multiplier × wisdom_bonus)
 ```
 
+In a group fight, the formula uses the group's average level instead of each character's level. The average is rounded down to the nearest integer. This same group level is used to calculate the base XP and level penalty for every participant. The wisdom bonus is then applied separately using each character's own wisdom, so characters in the same group may receive different amounts of XP.
+
+**Example:** A group of level 20, 24, and 25 characters uses `floor((20 + 24 + 25) / 3) = 23` as `player_level` for the XP formula.
+
 
 **Level Penalty** (level_penalty):<br/>
 - Same level or lower than monster → 1.0 (100% XP)
