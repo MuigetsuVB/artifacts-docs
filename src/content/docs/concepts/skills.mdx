@@ -269,10 +269,11 @@ Crafting is an essential core mechanic; the vast majority of items in the game�
 
 ### XP Formula
 
-Crafting XP is calculated with item level and your crafting skill level:
+Crafting XP is calculated from the item level, your crafting skill level, and the
+total number of material units consumed by one craft:
 
 ```
-XP = Round((XP_base + (item_level / player_level) × coefficient) × skill_multiplier × level_penalty × wisdom_bonus)
+XP = Round((XP_base + (item_level / player_level) × coefficient) × crafting_multiplier × level_penalty × wisdom_bonus)
 
 ```
 
@@ -293,15 +294,42 @@ XP = Round((XP_base + (item_level / player_level) × coefficient) × skill_multi
 | 45+ | 1000 | 70 |
 <br/>
 
-**Skill Multiplier** (skill_multiplier):<br/>
-- Mining, Woodcutting, Fishing → 0.1 (90% reduction)
-- Cooking → 0.5 (50% reduction)
-- Others (Weaponcrafting, Gearcrafting, Jewelrycrafting, Alchemy) → 1.0
+**Crafting Multiplier** (crafting_multiplier):<br/>
+
+For Cooking, Alchemy, Weaponcrafting, Gearcrafting, and Jewelrycrafting:
+
+```
+ingredient_count = Sum(quantity of each material in the recipe)
+crafting_multiplier = Clamp(0.2832 + 0.2171 × √ingredient_count, 0.50, 1.55)
+```
+
+`ingredient_count` is the total quantity of materials consumed by one craft,
+not the number of distinct material types. For example, a recipe requiring 10
+bars and 5 pieces of wood has an `ingredient_count` of 15. The result quantity
+of the recipe does not change this value.
+
+The square root makes expensive recipes grant more XP without allowing very
+large recipes to scale linearly. The multiplier is limited to a minimum of 0.50
+and a maximum of 1.55.
+
+| Material units | Crafting multiplier |
+|---:|---:|
+| 1 | 0.50 |
+| 3 | 0.66 |
+| 6 | 0.82 |
+| 10 | 0.97 |
+| 15 | 1.12 |
+| 20 | 1.25 |
+| 25 | 1.37 |
+| 30 | 1.47 |
+
+Mining, Woodcutting, and Fishing recipes use a fixed crafting multiplier of
+`0.1` instead of the ingredient-based formula.
 
 
 **Level Penalty** (level_penalty):<br/>
 - Same level or lower than item → 1.0 (100% XP)
-- 10+ levels above item → 0 (0 XP)
+- More than 10 levels above item → 0 (0 XP)
 
 
 **Wisdom Bonus** (wisdom_bonus):<br/>
