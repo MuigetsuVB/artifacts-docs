@@ -8,30 +8,115 @@ import CollapsibleContent from '../../components/site/CollapsibleContent.astro';
 
 Here’s the patch notes for version 9.0.0.
 
+**New content**
+
+- **New seasonal feature:** [Seasonal Altar & Daily Seasonal Offerings](/concepts/seasonal_altar/), available **only during Season 9: Altar of Sacrifice**.
+- **New artifacts:**
+  - Altar Doll (Lvl 1), obtained from the A Helping Hand achievement.
+  - Altar Totem (Lvl 40), obtained from the A Favored Champion achievement.
+- **New Cooking tools:**
+  - Ash Rolling Pin (Lvl 1)
+  - Iron Knife (Lvl 10)
+  - Steel Cleaver (Lvl 20)
+  - Gold Knife (Lvl 30)
+  - Mithril Cleaver (Lvl 40)
+  - Adamantite Spatula (Lvl 50)
+  - Voidstone Knife (Lvl 50)
+- **New skins:**
+  - Alien, King, and Queen, available in the Gems Shop.
+  - Altarion, available through the Season 9 reward track.
+- **New season badges:** Bronze, Silver, Gold, and Color badges for Season 9.
+
 **Seasonal Altar & Daily Seasonal Offerings**
 
-- Added the [Seasonal Altar](/concepts/seasonal_altar/), a **temporary feature available only during Season 9**.
-- A shared daily rotation offers combat and two selected skills, with four target brackets per category: 10–20, 21–30, 31–40, and 41–50.
-- Each character can accept and complete one offering per category per day, for up to three daily completions. The rotation resets at midnight UTC.
-- Accepting an offering immediately grants **+50% XP** for its exact monster, resource node, or crafted item. Monster and resource favors also grant **+50% item drop quantities on average**.
-- Completing an offering consumes the requested items and grants **25% of the current level's XP requirement** in the corresponding category. Favors remain active until the daily reset, even after completion.
-- Added public and character offering endpoints, plus actions to accept and complete offerings at the altar.
+- Added the Seasonal Altar, where characters accept offerings, activate favors, and sacrifice items for XP. **The altar and daily offerings are temporary features for Season 9 only.**
+- Every day includes combat and two selected skills. All eight skills appear once per four-day cycle.
+- Each category offers four target brackets: 10–20, 21–30, 31–40, and 41–50. Offerings can request monster drops, gathered resources, or crafted items.
+- The rotation is shared worldwide. Selections, favors, and completions are tracked separately for each character.
+- Each character can accept and complete one offering per category per day, for up to three completions. An accepted offering cannot be changed that day.
+- Accepting an offering immediately grants **+50% XP** for its exact monster, resource node, or crafted item. No items are consumed on acceptance.
+- Monster and resource favors also grant **+50% item drop quantities on average**. This increases quantities of successful drops, rather than drop chances. Craft favors do not increase crafted quantities.
+- Completing an offering consumes the requested items and grants **25% of the XP required to advance from the character's current level** in that category. The immediate XP reward is zero at maximum level.
+- Favors remain active after completion. The rotation, accepted offerings, and favors reset at **00:00 UTC**.
+- Acceptance and completion must be performed at the altar. Each action has a **3-second cooldown**.
+- New endpoints:
+  - `GET /seasonal_offerings`: retrieve the public daily rotation, requirements, favors, and reset time.
+  - `GET /my/{name}/offerings`: retrieve the rotation together with a character's selections, completed categories, and active favors.
+  - `POST /my/{name}/action/offering/accept`: accept an offering and activate its favor.
+  - `POST /my/{name}/action/offering`: complete an accepted offering and receive its XP reward.
+- Both action endpoints accept an `offering_id` from the current rotation. Character-specific endpoints require a bearer token.
+- Character offering responses include `selected_offerings`, `completed_categories`, and `active_favors`. Action responses include the updated character, cooldown, offering, and `favor_expires_at`; completion also returns `reward.category` and `reward.xp`.
+- Added error codes `574` (already completed), `575` (offering unavailable), `576` (already selected), and `577` (not accepted). See [Response Codes](/api_guide/response_codes/) for the full list.
 
 **Achievements & Artifacts**
 
-- Added altar-related achievements with the new `favor` objective type, progressed by completing daily offerings across your account's characters.
-- Added **two new artifacts**, obtainable by completing altar-related achievements.
+- Added the `favor` achievement objective type, progressed by completing daily offerings. All characters on an account contribute to the same achievement progress.
 
-**Crafting & Skill Progression**
+| Achievement | Objective | Rewards |
+|---|---|---|
+| A Helping Hand | Complete 50 offerings. | 2,000 gold and 5 Altar Dolls. |
+| A Favored Champion | Complete 500 offerings. | 4,000 gold and 5 Altar Totems. |
 
-- Reworked [crafting XP](/concepts/skills/#crafting) to provide smoother progression. Cooking, Alchemy, Weaponcrafting, Gearcrafting, and Jewelrycrafting XP now scale with the total material units consumed by a recipe, using a capped square-root multiplier.
-- Rebalanced crafting recipes.
-- Separated gathering and crafting cooldown bonuses with [action-specific effect keywords](/concepts/skills/#gathering-and-crafting-effect-keywords), such as `alchemy_gathering` and `alchemy_crafting`. Bare skill effect codes no longer reduce cooldowns.
-- Crafting cooldown bonuses apply to the entire batch, with a minimum cooldown of one second.
+- Artifact rewards are sent to the account's [pending items](/concepts/pending_items/).
+- Altar Doll grants **10% gathering and crafting cooldown reductions** across all supported skills.
+- Altar Totem grants **20% damage, 50 prospecting, 5% critical strike, and 5% resistance to every element**.
 
-**Gems Shop**
+**Balance changes**
 
-- Added three new skins to the shop: **Alien**, **King**, and **Queen**.
+- Reworked [crafting XP](/concepts/skills/#crafting) for smoother progression across Cooking, Alchemy, Weaponcrafting, Gearcrafting, and Jewelrycrafting.
+- Crafting XP now accounts for the **total quantity of materials consumed by one craft**, using a square-root multiplier capped between **0.50 and 1.55**. The number of material types and the recipe's output quantity do not multiply XP.
+- Mining and Woodcutting refining recipes retain their fixed **0.1** XP multiplier.
+- Rebalanced crafting recipes, including Diamond Armor and Diamond Skirt.
+- Crafting cooldown bonuses now reduce the duration of the **entire batch** before rounding, with a minimum cooldown of **1 second per batch**.
+
+**Cooking tools**
+
+- Added equipment with Cooking-specific crafting cooldown reductions:
+
+| Tool | Level | Cooking cooldown reduction |
+|---|---:|---:|
+| Ash Rolling Pin | 1 | 10% |
+| Iron Knife | 10 | 20% |
+| Steel Cleaver | 20 | 30% |
+| Gold Knife | 30 | 40% |
+| Mithril Cleaver | 40 | 50% |
+| Adamantite Spatula | 50 | 60% |
+| Voidstone Knife | 50 | 70% |
+
+**Season rewards**
+
+- Added the Season 9 reward track and its Bronze, Silver, Gold, and Color badges.
+- Added the **Altarion** skin as a member reward at **100 achievement points**.
+- Fixed season badge upgrades so higher tiers replace previously awarded lower tiers, and lower tiers cannot replace a higher badge already owned.
+
+**API changes**
+
+- Added `seasonal_altar` to map content types. Use `GET /maps?content_type=seasonal_altar` to find an altar.
+- Added `offering` as an action type, cooldown reason, and log type for accepting and completing offerings.
+- `POST /my/{name}/action/fight`, `POST /my/{name}/action/gathering`, and `POST /my/{name}/action/crafting` now apply the character's active favor when its target matches the action.
+- Offering selections and favors are preserved when a character is renamed.
+
+**API breaking changes**
+
+- Gathering and crafting cooldowns now use separate [effect keywords](/concepts/skills/#gathering-and-crafting-effect-keywords):
+
+| Skill | Gathering keyword | Crafting keyword |
+|---|---|---|
+| Mining | `mining_gathering` | `mining_crafting` |
+| Woodcutting | `woodcutting_gathering` | `woodcutting_crafting` |
+| Fishing | `fishing_gathering` | — |
+| Alchemy | `alchemy_gathering` | `alchemy_crafting` |
+| Weaponcrafting | — | `weaponcrafting_crafting` |
+| Gearcrafting | — | `gearcrafting_crafting` |
+| Jewelrycrafting | — | `jewelrycrafting_crafting` |
+| Cooking | — | `cooking_crafting` |
+
+- Bare skill effect codes such as `mining`, `woodcutting`, `fishing`, and `alchemy` no longer grant cooldown reductions. Update scripts that read or filter these effects.
+- Skill identifiers in recipes, resource nodes, workshops, and character level fields remain unchanged.
+
+**Seasonal event**
+
+- Ended the previous temporary event-ticket drops from monsters, resources, and raid rewards.
 
 ## Update 09/02/26: version 8.2.3
 
