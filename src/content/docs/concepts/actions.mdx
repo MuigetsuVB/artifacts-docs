@@ -51,8 +51,9 @@ You can use the `expiration` field to schedule your next action precisely. Simpl
 | Movement | 5s per tile | — |
 | Fight | 2s per turn | Reduced with haste |
 | Rest | 1s per 5 HP (min 3s) | — |
-| Gathering | 30s + resource level/2 | Reduced with tools |
-| Crafting | 5s per item | — |
+| Gathering | 29s + max(1, floor(resource level / 2)) | Reduced by matching `_gathering` effects. |
+| Crafting | About 5s per craft | Skill overlevel adjustment and matching `_crafting` effects; minimum 1s per batch. |
+| Accept/Complete offering | 3s | At the Seasonal Altar; Season 9 only. |
 | Recycling | 3s per item | — |
 | Deposit/Withdraw | 3s per different item | — |
 | Give item | 3s per different item | — |
@@ -71,6 +72,8 @@ You can use the `expiration` field to schedule your next action precisely. Simpl
 | [Use item](https://api.artifactsmmo.com/docs/#/operations/action_use_item_my__name__action_use_post) | `/my/{name}/action/use` | [Resting & Using items](/concepts/resting_and_using_items/) |
 | [Gathering](https://api.artifactsmmo.com/docs/#/operations/action_gathering_my__name__action_gathering_post) | `/my/{name}/action/gathering` | [Skills](/concepts/skills/) |
 | [Crafting](https://api.artifactsmmo.com/docs/#/operations/action_crafting_my__name__action_crafting_post) | `/my/{name}/action/crafting` | [Skills](/concepts/skills/) |
+| Accept offering | `/my/{name}/action/offering/accept` | [Seasonal Altar (Season 9)](/concepts/seasonal_altar/) |
+| Complete offering | `/my/{name}/action/offering` | [Seasonal Altar (Season 9)](/concepts/seasonal_altar/) |
 | [Recycling](https://api.artifactsmmo.com/docs/#/operations/action_recycling_my__name__action_recycling_post) | `/my/{name}/action/recycling` | [Recycling](/concepts/recycling/) |
 | [Equip item](https://api.artifactsmmo.com/docs/#/operations/action_equip_item_my__name__action_equip_post) | `/my/{name}/action/equip` | [Equipment](/concepts/equipment) |
 | [Unequip item](https://api.artifactsmmo.com/docs/#/operations/action_unequip_item_my__name__action_unequip_post) | `/my/{name}/action/unequip` | [Equipment](/concepts/equipment) |

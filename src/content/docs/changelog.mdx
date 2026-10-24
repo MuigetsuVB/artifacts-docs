@@ -4,6 +4,35 @@ title: Changelog
 
 import CollapsibleContent from '../../components/site/CollapsibleContent.astro';
 
+## Update 09/30/26: version 9.0.0
+
+Here’s the patch notes for version 9.0.0.
+
+**Seasonal Altar & Daily Seasonal Offerings**
+
+- Added the [Seasonal Altar](/concepts/seasonal_altar/), a **temporary feature available only during Season 9**.
+- A shared daily rotation offers combat and two selected skills, with four target brackets per category: 10–20, 21–30, 31–40, and 41–50.
+- Each character can accept and complete one offering per category per day, for up to three daily completions. The rotation resets at midnight UTC.
+- Accepting an offering immediately grants **+50% XP** for its exact monster, resource node, or crafted item. Monster and resource favors also grant **+50% item drop quantities on average**.
+- Completing an offering consumes the requested items and grants **25% of the current level's XP requirement** in the corresponding category. Favors remain active until the daily reset, even after completion.
+- Added public and character offering endpoints, plus actions to accept and complete offerings at the altar.
+
+**Achievements & Artifacts**
+
+- Added altar-related achievements with the new `favor` objective type, progressed by completing daily offerings across your account's characters.
+- Added **two new artifacts**, obtainable by completing altar-related achievements.
+
+**Crafting & Skill Progression**
+
+- Reworked [crafting XP](/concepts/skills/#crafting) to provide smoother progression. Cooking, Alchemy, Weaponcrafting, Gearcrafting, and Jewelrycrafting XP now scale with the total material units consumed by a recipe, using a capped square-root multiplier.
+- Rebalanced crafting recipes.
+- Separated gathering and crafting cooldown bonuses with [action-specific effect keywords](/concepts/skills/#gathering-and-crafting-effect-keywords), such as `alchemy_gathering` and `alchemy_crafting`. Bare skill effect codes no longer reduce cooldowns.
+- Crafting cooldown bonuses apply to the entire batch, with a minimum cooldown of one second.
+
+**Gems Shop**
+
+- Added three new skins to the shop: **Alien**, **King**, and **Queen**.
+
 ## Update 09/02/26: version 8.2.3
 
 Here's the patch notes for version 8.2.3.

@@ -40,9 +40,14 @@ code_username_already_used: int = 456
 code_email_already_used: int = 457
 code_same_password: int = 458
 code_current_password_invalid: int = 459
+code_same_email: int = 463
 code_account_not_member: int = 451
 code_account_skin_not_owned: int = 550
-code_membership_already_active: int = 565
+code_skin_already_owned: int = 551
+code_skin_not_purchasable: int = 552
+code_member_already_active: int = 565
+code_insufficient_member_tokens: int = 572
+code_stripe_subscription_active: int = 573
 
 # Character Error Codes
 code_character_not_enough_hp: int = 483
@@ -100,6 +105,22 @@ code_npc_not_for_sale: int = 441
 code_npc_not_for_buy: int = 442
 
 # Event Error Codes
-code_event_insufficient_tokens: int = 563
+code_insufficient_gems: int = 563
 code_event_not_found: int = 564
+code_event_on_cooldown: int = 566
+code_event_not_purchasable: int = 571
+
+# Raid Error Codes
+code_raid_not_active: int = 567
+code_raid_invalid_resource: int = 568
+code_raid_locked: int = 569
+
+# Assistant Error Codes
+code_assistant_rate_limit: int = 570
+
+# Seasonal Offering Error Codes (Season 9 only)
+code_offering_already_completed: int = 574  # Offering already completed in this category today.
+code_offering_unavailable: int = 575  # Feature or requested offering unavailable.
+code_offering_already_selected: int = 576  # Offering already selected in this category today.
+code_offering_not_accepted: int = 577  # This character must accept the offering first.
 ```

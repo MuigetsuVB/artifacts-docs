@@ -1,0 +1,356 @@
+---
+title: Altar & Daily Seasonal Offerings
+description: "Season 9's temporary altar: daily offerings, targeted XP and drop favors, completion rewards, and API requests."
+---
+
+import ApiSdkTabs from '../../../components/site/ApiSdkTabs.astro';
+
+The altar lets each character accept daily offerings, gain favors for specific
+activities, and sacrifice items for an immediate XP reward. Offerings are shared
+worldwide, but selections, favors, and completions are tracked per character.
+
+:::note[Season 9 only]
+The Seasonal Altar and Daily Seasonal Offerings are temporary features for
+**Season 9: Altar of Sacrifice**. They are available during this season only.
+:::
+
+---
+
+## Daily Rotation
+
+Every day includes **combat and two selected skills**. Each category has four
+offering brackets: **10–20, 21–30, 31–40, and 41–50**. Choose the target you
+want to work on from the available offerings.
+
+| Category | Offering source |
+|---|---|
+| Combat | Items dropped by a specific monster. |
+| Mining, Woodcutting, Alchemy | A gathering resource or a crafted item, depending on the day's rotation. |
+| Fishing | A gathering resource. |
+| Weaponcrafting, Gearcrafting, Jewelrycrafting, Cooking | A crafted item. |
+
+Each character can select **one offering per category per UTC day**, for up to
+**three offerings per day**. Brackets are alternative choices within a category,
+not extra completions. Once accepted, the selection cannot be changed that day.
+
+The rotation resets at **00:00 UTC**. Accepted offerings and favors expire at
+that reset, including unfinished offerings. Use the response's `expires_at`
+timestamp to track the deadline.
+
+---
+
+## Using the Altar
+
+1. Find an altar with `GET /maps?content_type=seasonal_altar` and move your
+   character to its map tile.
+2. Read today's offerings and select an `id` from the response.
+3. **Accept** the offering at the altar. Its favor activates immediately;
+   no items are consumed at this step.
+4. Gather, fight, or craft with the favor, and collect the requested items.
+5. Return to the altar with the full required quantity in your character's
+   inventory and **complete** the accepted offering. The items are consumed.
+
+Acceptance and completion each have a **3-second cooldown**. Both actions
+require the character to be at the altar and free of cooldown.
+
+---
+
+## Favors
+
+Favors apply from acceptance until the daily reset, **including after completion**.
+They follow the character when it leaves the altar.
+
+| Favor target | XP multiplier | Item drop quantity multiplier |
+|---|---:|---:|
+| Specific monster | ×1.5 | ×1.5 |
+| Specific resource node | ×1.5 | ×1.5 |
+| Specific crafted item | ×1.5 | ×1.0 (no extra crafted items) |
+
+The favor only applies to the exact `target_type` and `target_code` returned by
+the API. A favor for one resource node does not boost every resource in that
+skill. For combat, the XP favor applies to that character's XP from the matching
+monster, rather than to every participant's XP.
+
+The drop bonus increases **quantities of successful item drops**, rather than
+drop chances. Fractional quantities are resolved randomly: one dropped item
+becomes either one or two, with equal probability, averaging 1.5 items. A failed
+drop roll still gives nothing.
+
+The XP bonus is applied after the normal XP calculation and rounding. Activities
+that grant zero XP because of the level penalty still grant zero XP with a favor.
+
+---
+
+## Completion Rewards and Achievements
+
+Completing an offering grants **25% of the XP required to advance from your
+current level** in that category, rounded to the nearest integer with halves
+rounded up. This uses your level at completion, rather than the offering bracket
+or the XP remaining until your next level.
+
+For example, a skill at level 20 requires 8,200 XP to advance to level 21, so
+completing an offering for that skill grants **2,050 XP**. Combat offerings grant
+combat XP; skill offerings grant XP in the corresponding skill. At maximum
+level, the immediate XP reward is **0**, but you can still complete the offering.
+
+Each completed offering advances achievement objectives of type `favor`.
+Progress is shared across your account, as with other
+[achievements](/concepts/achievements/). Two new artifacts can be obtained by
+completing altar-related achievements. Achievement item rewards are sent to
+your [pending items](/concepts/pending_items/).
+
+---
+
+## Retrieving Daily Offerings
+
+To retrieve the worldwide rotation, including the selected skills, item requirements, favors, and reset time, use the following request. This endpoint does not require authentication.
+
+**Endpoint:** `GET /seasonal_offerings`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_daily_seasonal_offerings_seasonal_offerings_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/seasonal_offerings' \
+  --header 'Accept: application/json'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/seasonal_offerings';
+const options = {
+  method: 'GET',
+  headers: { Accept: 'application/json' }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/seasonal_offerings"
+headers = {"Accept": "application/json"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+The response includes the following fields under `data`:
+
+| Field | Description |
+|---|---|
+| `date` | UTC date of the daily rotation. |
+| `expires_at` | Next daily reset at midnight UTC. |
+| `skills` | The two skills selected for the day. Combat is always included separately. |
+| `xp_reward_percent` | Percentage of the current level's XP requirement granted on completion. |
+| `offerings` | Available offerings, each with an `id`, `category`, `type`, level bracket, `requirement`, and `favor`. |
+
+---
+
+## Retrieving Character Offerings
+
+To view today's rotation together with your character's accepted offerings, completed categories, and active favors, use the following request:
+
+**Endpoint:** `GET /my/{name}/offerings`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/get_character_seasonal_offerings_my__name__offerings_get">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request GET \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/offerings' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/offerings';
+const options = {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  }
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/offerings"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+In addition to the daily rotation, `data` includes:
+
+| Field | Description |
+|---|---|
+| `selected_offerings` | This character's selections, with a status of `accepted` or `completed`, requirements, favors, and timestamps. |
+| `completed_categories` | Categories in which this character already completed an offering today. |
+| `active_favors` | Favors active for this character until the reset, including those from completed offerings. |
+
+---
+
+## Accept an Offering
+
+To accept an offering and activate its favor, use the following request. Your character must be at the altar and free of cooldown. Replace `OFFERING_ID` with an `id` from today's rotation.
+
+**Endpoint:** `POST /my/{name}/action/offering/accept`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_accept_seasonal_offering_my__name__action_offering_accept_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering/accept' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "offering_id": "OFFERING_ID"
+  }'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering/accept';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ offering_id: 'OFFERING_ID' })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering/accept"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"offering_id": "OFFERING_ID"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `offering_id` | Identifier of the offering to accept from today's rotation. |
+
+The result is returned under `data`, including the updated `character`, `cooldown`, `offering`, and `favor_expires_at`. Acceptance activates the favor immediately without consuming items.
+
+---
+
+## Complete an Offering
+
+To complete an accepted offering, return to the altar with the full required quantity in your inventory and use the following request. Your character must be free of cooldown.
+
+**Endpoint:** `POST /my/{name}/action/offering`
+
+<ApiSdkTabs apiUrl="https://api.artifactsmmo.com/docs/#/operations/action_complete_seasonal_offering_my__name__action_offering_post">
+  <Fragment slot="api-curl">
+  ```http
+  curl --request POST \
+  --url 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "offering_id": "OFFERING_ID"
+  }'
+  ```
+  </Fragment>
+  <Fragment slot="api-javascript">
+  ```js
+  const url = 'https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering';
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer YOUR_TOKEN'
+  },
+  body: JSON.stringify({ offering_id: 'OFFERING_ID' })
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+  ```
+  </Fragment>
+  <Fragment slot="api-python">
+  ```python
+  import requests
+
+url = "https://api.artifactsmmo.com/my/YOUR_CHARACTER_NAME/action/offering"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_TOKEN"
+}
+data = {"offering_id": "OFFERING_ID"}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+  ```
+  </Fragment>
+</ApiSdkTabs>
+
+| Field | Description |
+|---|---|
+| `offering_id` | Identifier of the offering already accepted by this character today. |
+
+Completion consumes the requested items and grants the XP reward. The response includes the updated `character`, `cooldown`, `offering`, `favor_expires_at`, and the following reward fields under `data`:
+
+| Field | Description |
+|---|---|
+| `reward.category` | Combat or skill category receiving the XP. |
+| `reward.xp` | XP granted immediately on completion. |

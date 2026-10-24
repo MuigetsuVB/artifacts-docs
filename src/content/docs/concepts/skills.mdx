@@ -14,8 +14,8 @@ Your characters have 8 skills that can gain XP and reach up to level 50. They al
 | **Woodcutting** | Gathering, Crafting | Harvesting wood from trees and crafting planks |
 | **Mining** | Gathering, Crafting | Extracting ores from rocks and crafting ingots. |
 | **Fishing** | Gathering | Catching fish from water sources. |
-| **Alchemy** | Gathering, Crafting | Collecting plants crafting potions. |
-| **Weaponry** | Crafting | Forging weapons for combat. |
+| **Alchemy** | Gathering, Crafting | Collecting plants and crafting potions. |
+| **Weaponcrafting** | Crafting | Forging weapons for combat. |
 | **Gearcrafting** | Crafting | Creating armor and equipment. |
 | **Jewelrycrafting** | Crafting | Crafting rings and amulets. |
 | **Cooking** | Crafting | Preparing food for healing. |
@@ -81,7 +81,9 @@ Here are some examples of resources:
 
 ### XP Formula
 
-Gathering XP is calculated with resource level and your skill level:
+Gathering XP is calculated with resource level and your skill level. In the
+formula, `player_level` means the level of the skill used to gather, rather than
+your combat level. `Round` rounds to the nearest integer, with halves rounded up.
 
 ```
 XP = Round((XP_base + (resource_level / player_level) × 8) × level_penalty × wisdom_bonus)
@@ -102,13 +104,17 @@ XP = Round((XP_base + (resource_level / player_level) × 8) × level_penalty × 
 <br/>
 
 **Level Penalty** (level_penalty):<br/>
-- Same level or lower than resource → 1.0 (100% XP)
-- 10+ levels above resource → 0 (0 XP)
+- Up to 10 levels above the resource → 1.0 (no additional penalty)
+- More than 10 levels above the resource → 0 (0 XP)
 
 
 **Wisdom Bonus** (wisdom_bonus):<br/>
 - Formula: (1 + wisdom × 0.001)
 - Each wisdom point = +0.1% XP
+
+During Season 9, an active [altar favor](/concepts/seasonal_altar/) for this exact
+resource node multiplies the rounded XP by 1.5, then rounds again. It cannot
+restore XP lost to the level penalty.
 
 
 ### Retrieving Resources
@@ -272,6 +278,10 @@ Crafting is an essential core mechanic; the vast majority of items in the game�
 Crafting XP is calculated from the item level, your crafting skill level, and the
 total number of material units consumed by one craft:
 
+`player_level` means your level in the recipe's skill, and `item_level` is the
+recipe's required skill level (`craft.level`). This Season 9 formula weights
+recipes by their material cost to make crafting progression smoother.
+
 ```
 XP = Round((XP_base + (item_level / player_level) × coefficient) × crafting_multiplier × level_penalty × wisdom_bonus)
 
@@ -300,7 +310,7 @@ For Cooking, Alchemy, Weaponcrafting, Gearcrafting, and Jewelrycrafting:
 
 ```
 ingredient_count = Sum(quantity of each material in the recipe)
-crafting_multiplier = Clamp(0.2832 + 0.2171 × √ingredient_count, 0.50, 1.55)
+crafting_multiplier = Clamp(0.2832 + 0.2171 × √Max(1, ingredient_count), 0.50, 1.55)
 ```
 
 `ingredient_count` is the total quantity of materials consumed by one craft,
@@ -323,18 +333,63 @@ and a maximum of 1.55.
 | 25 | 1.37 |
 | 30 | 1.47 |
 
-Mining, Woodcutting, and Fishing recipes use a fixed crafting multiplier of
+Mining and Woodcutting refining recipes use a fixed crafting multiplier of
 `0.1` instead of the ingredient-based formula.
+
+For example, at skill level 20 with a level 20 recipe and no wisdom, the base
+is `450 + (20 / 20) × 45 = 495` XP:
+
+| Material units per craft | XP per craft |
+|---:|---:|
+| 1 | 248 |
+| 3 | 326 |
+| 20 | 621 |
+| 30 | 729 |
+
+XP is rounded per craft, then summed across the batch. A recipe's output
+quantity does not multiply its XP. With 100 wisdom, the 20-material example
+grants 683 XP per craft.
 
 
 **Level Penalty** (level_penalty):<br/>
-- Same level or lower than item → 1.0 (100% XP)
+- Up to 10 levels above the recipe → 1.0 (no additional penalty)
 - More than 10 levels above item → 0 (0 XP)
 
 
 **Wisdom Bonus** (wisdom_bonus):<br/>
 - Formula: (1 + wisdom × 0.001)
 - Each wisdom point = +0.1% XP
+
+### Gathering and Crafting Effect Keywords
+
+Equipment uses separate effect codes for gathering and crafting cooldowns:
+
+| Skill | Gathering effect | Crafting effect |
+|---|---|---|
+| Mining | `mining_gathering` | `mining_crafting` |
+| Woodcutting | `woodcutting_gathering` | `woodcutting_crafting` |
+| Fishing | `fishing_gathering` | — |
+| Alchemy | `alchemy_gathering` | `alchemy_crafting` |
+| Weaponcrafting | — | `weaponcrafting_crafting` |
+| Gearcrafting | — | `gearcrafting_crafting` |
+| Jewelrycrafting | — | `jewelrycrafting_crafting` |
+| Cooking | — | `cooking_crafting` |
+
+A value of `-20` means a 20% cooldown reduction. Bonuses for the same skill
+and action add together. Gathering bonuses only affect gathering; crafting
+bonuses only affect crafting. These effects change cooldowns, not XP per action.
+
+For crafting, the combined reduction is capped at 100% and applies to the whole
+batch before rounding, with a minimum cooldown of 1 second. For example, 10
+crafts at the recipe's level take 50 seconds before bonuses; a `-25` crafting
+effect reduces that to 38 seconds after rounding.
+
+:::note[API migration]
+Bare skill codes such as `mining`, `woodcutting`, `fishing`, and `alchemy` no
+longer grant cooldown reductions. Use the action-specific effect codes above.
+Skill identifiers in recipes, resources, workshops, and character levels stay
+the same: for example, `craft.skill` is still `alchemy`.
+:::
 
 
 ### Retrieving Craftable Items

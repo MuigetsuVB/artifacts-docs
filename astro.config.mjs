@@ -137,6 +137,7 @@ export default defineConfig({
           label: '[lucide:swords] Game Concepts',
           items: [
             { label: 'Seasons', link: '/concepts/seasons/' },
+            { label: 'Altar & Daily Offerings', link: '/concepts/seasonal_altar/' },
             { label: 'Achievements', link: '/concepts/achievements/' },
             { label: 'Actions & Cooldowns', link: '/concepts/actions/' },
             { label: 'Maps & Movement', link: '/concepts/maps_and_movement/' },
