@@ -91,6 +91,7 @@ Here’s the patch notes for version 9.0.0.
 
 **API changes**
 
+- Increased the maximum page size of `GET /my/bank/items` from **100 to 1,000** to reduce requests when retrieving large banks. Use `?size=1000`; the default page size remains **50**.
 - Added `seasonal_altar` to map content types. Use `GET /maps?content_type=seasonal_altar` to find an altar.
 - Added `offering` as an action type, cooldown reason, and log type for accepting and completing offerings.
 - `POST /my/{name}/action/fight`, `POST /my/{name}/action/gathering`, and `POST /my/{name}/action/crafting` now apply the character's active favor when its target matches the action.
